@@ -1,0 +1,8 @@
+fastapi
+uvicorn[standard]
+SQLAlchemy
+aiomysql
+python-dotenv
+alembic
+pydantic-settings
+PyMySQL
