@@ -1,5 +1,6 @@
 from app.models.user import User
 from app.repositories.user_repository import UserRepository
+from app.utils.security import hash_password
 
 
 class UserService:
@@ -10,11 +11,37 @@ class UserService:
         existing_user = await self.user_repository.get_by_email(email)
         if existing_user:
             raise ValueError("Email already exists")
-        return await self.user_repository.create(email=email, password=password)
+        hashed_password = hash_password(password)
+        return await self.user_repository.create(email=email, password=hashed_password)
 
     async def get_user_by_id(self, user_id: int) -> User | None:
         return await self.user_repository.get_by_id(user_id)
 
     async def get_user_by_email(self, email: str) -> User | None:
         return await self.user_repository.get_by_email(email)
+
+    async def list_users(self) -> list[User]:
+        return await self.user_repository.list()
+
+    async def update_user(
+        self, user_id: int, email: str | None = None, password: str | None = None
+    ) -> User | None:
+        user = await self.user_repository.get_by_id(user_id)
+        if not user:
+            return None
+
+        if email and email != user.email:
+            existing_user = await self.user_repository.get_by_email(email)
+            if existing_user:
+                raise ValueError("Email already exists")
+
+        hashed_password = hash_password(password) if password is not None else None
+        return await self.user_repository.update(user=user, email=email, password=hashed_password)
+
+    async def delete_user(self, user_id: int) -> bool:
+        user = await self.user_repository.get_by_id(user_id)
+        if not user:
+            return False
+        await self.user_repository.delete(user)
+        return True
 
