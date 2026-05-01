@@ -4,7 +4,6 @@ from pydantic import BaseModel, ConfigDict
 
 
 class PaperCreate(BaseModel):
-    user_id: int
     title: str
     content: str | None = None
     file_path: str | None = None

@@ -1,6 +1,8 @@
+from __future__ import annotations
+
 from app.models.user import User
 from app.repositories.user_repository import UserRepository
-from app.utils.security import hash_password
+from app.utils.security import hash_password, verify_password
 
 
 class UserService:
@@ -13,6 +15,15 @@ class UserService:
             raise ValueError("Email already exists")
         hashed_password = hash_password(password)
         return await self.user_repository.create(email=email, password=hashed_password)
+
+    async def authenticate_user(self, email: str, password: str) -> User | None:
+        """Xác thực email + password. Trả về User nếu đúng, None nếu sai."""
+        user = await self.user_repository.get_by_email(email)
+        if not user:
+            return None
+        if not verify_password(password, user.password):
+            return None
+        return user
 
     async def get_user_by_id(self, user_id: int) -> User | None:
         return await self.user_repository.get_by_id(user_id)
@@ -44,4 +55,3 @@ class UserService:
             return False
         await self.user_repository.delete(user)
         return True
-

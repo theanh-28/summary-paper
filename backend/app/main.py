@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.api.auth_routes import router as auth_router
 from app.api.paper_routes import router as paper_router
 from app.api.routes import router as health_router
 from app.api.summary_routes import router as summary_router
@@ -28,6 +29,7 @@ async def root():
 
 
 app.include_router(health_router)
+app.include_router(auth_router)
 app.include_router(user_router)
 app.include_router(paper_router)
 app.include_router(summary_router)
