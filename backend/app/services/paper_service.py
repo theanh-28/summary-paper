@@ -37,13 +37,12 @@ class PaperService:
     async def update_paper(
         self,
         paper_id: int,
-        owner_id: int,
         title: str | None = None,
         content: str | None = None,
         file_path: str | None = None,
+        # TODO: Thêm owner_id: int sau khi có JWT để kiểm tra quyền sở hữu
     ) -> Paper | None:
-        # Lấy paper VÀ kiểm tra owner cùng lúc
-        paper = await self.paper_repository.get_by_id_and_owner(paper_id=paper_id, user_id=owner_id)
+        paper = await self.paper_repository.get_by_id(paper_id)
         if not paper:
             return None
         return await self.paper_repository.update(
@@ -53,9 +52,9 @@ class PaperService:
             file_path=file_path,
         )
 
-    async def delete_paper(self, paper_id: int, owner_id: int) -> bool:
-        # Chỉ xóa nếu paper thuộc về owner_id
-        paper = await self.paper_repository.get_by_id_and_owner(paper_id=paper_id, user_id=owner_id)
+    async def delete_paper(self, paper_id: int) -> bool:
+        # TODO: Thêm owner_id: int sau khi có JWT để kiểm tra quyền sở hữu
+        paper = await self.paper_repository.get_by_id(paper_id)
         if not paper:
             return False
         await self.paper_repository.delete(paper)

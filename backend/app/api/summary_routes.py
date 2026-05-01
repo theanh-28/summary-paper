@@ -23,6 +23,22 @@ async def create_summary(payload: SummaryCreate, db: AsyncSession = Depends(get_
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
 
 
+@router.get("/", response_model=list[SummaryRead])
+async def list_summaries(skip: int = 0, limit: int = 100, db: AsyncSession = Depends(get_db)):
+    summary_service = SummaryService(SummaryRepository(db), PaperRepository(db))
+    return await summary_service.list_summaries(skip=skip, limit=limit)
+
+
+# Đặt route cụ thể /by-paper/{paper_id} TRƯỚC /{summary_id}
+# để FastAPI không nhầm "by-paper" là summary_id
+@router.get("/by-paper/{paper_id}", response_model=list[SummaryRead])
+async def list_summaries_by_paper(
+    paper_id: int, skip: int = 0, limit: int = 100, db: AsyncSession = Depends(get_db)
+):
+    summary_service = SummaryService(SummaryRepository(db), PaperRepository(db))
+    return await summary_service.list_summaries_by_paper(paper_id=paper_id, skip=skip, limit=limit)
+
+
 @router.get("/{summary_id}", response_model=SummaryRead)
 async def get_summary(summary_id: int, db: AsyncSession = Depends(get_db)):
     summary_service = SummaryService(SummaryRepository(db), PaperRepository(db))
@@ -30,20 +46,6 @@ async def get_summary(summary_id: int, db: AsyncSession = Depends(get_db)):
     if not summary:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Summary not found")
     return summary
-
-
-@router.get("/", response_model=list[SummaryRead])
-async def list_summaries(skip: int = 0, limit: int = 100, db: AsyncSession = Depends(get_db)):
-    summary_service = SummaryService(SummaryRepository(db), PaperRepository(db))
-    return await summary_service.list_summaries(skip=skip, limit=limit)
-
-
-@router.get("/by-paper/{paper_id}", response_model=list[SummaryRead])
-async def list_summaries_by_paper(
-    paper_id: int, skip: int = 0, limit: int = 100, db: AsyncSession = Depends(get_db)
-):
-    summary_service = SummaryService(SummaryRepository(db), PaperRepository(db))
-    return await summary_service.list_summaries_by_paper(paper_id=paper_id, skip=skip, limit=limit)
 
 
 @router.put("/{summary_id}", response_model=SummaryRead)
