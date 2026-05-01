@@ -20,8 +20,8 @@ class UserService:
     async def get_user_by_email(self, email: str) -> User | None:
         return await self.user_repository.get_by_email(email)
 
-    async def list_users(self) -> list[User]:
-        return await self.user_repository.list()
+    async def list_users(self, skip: int = 0, limit: int = 100) -> list[User]:
+        return await self.user_repository.list(skip=skip, limit=limit)
 
     async def update_user(
         self, user_id: int, email: str | None = None, password: str | None = None

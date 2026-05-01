@@ -28,8 +28,8 @@ class UserRepository:
         result = await self.db.execute(select(User).where(User.email == email))
         return result.scalar_one_or_none()
 
-    async def list(self) -> list[User]:
-        result = await self.db.execute(select(User).order_by(User.id))
+    async def list(self, skip: int = 0, limit: int = 100) -> list[User]:
+        result = await self.db.execute(select(User).order_by(User.id).offset(skip).limit(limit))
         return list(result.scalars().all())
 
     async def update(self, user: User, email: str | None = None, password: str | None = None) -> User:

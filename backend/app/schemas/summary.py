@@ -11,7 +11,6 @@ class SummaryCreate(BaseModel):
 
 
 class SummaryUpdate(BaseModel):
-    paper_id: int | None = None
     type: Literal["short", "detailed"] | None = None
     content: str | None = None
 

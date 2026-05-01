@@ -11,7 +11,6 @@ class PaperCreate(BaseModel):
 
 
 class PaperUpdate(BaseModel):
-    user_id: int | None = None
     title: str | None = None
     content: str | None = None
     file_path: str | None = None

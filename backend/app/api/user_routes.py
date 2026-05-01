@@ -28,9 +28,9 @@ async def get_user(user_id: int, db: AsyncSession = Depends(get_db)):
 
 
 @router.get("/", response_model=list[UserRead])
-async def list_users(db: AsyncSession = Depends(get_db)):
+async def list_users(skip: int = 0, limit: int = 100, db: AsyncSession = Depends(get_db)):
     user_service = UserService(UserRepository(db))
-    return await user_service.list_users()
+    return await user_service.list_users(skip=skip, limit=limit)
 
 
 @router.put("/{user_id}", response_model=UserRead)

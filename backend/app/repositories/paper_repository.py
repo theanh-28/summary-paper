@@ -25,20 +25,31 @@ class PaperRepository:
         result = await self.db.execute(select(Paper).where(Paper.id == paper_id))
         return result.scalar_one_or_none()
 
-    async def list(self) -> list[Paper]:
-        result = await self.db.execute(select(Paper).order_by(Paper.id))
+    async def get_by_id_and_owner(self, paper_id: int, user_id: int) -> Paper | None:
+        """Lấy paper theo id VÀ kiểm tra user_id để đảm bảo quyền sở hữu."""
+        result = await self.db.execute(
+            select(Paper).where(Paper.id == paper_id, Paper.user_id == user_id)
+        )
+        return result.scalar_one_or_none()
+
+    async def list(self, skip: int = 0, limit: int = 100) -> list[Paper]:
+        result = await self.db.execute(select(Paper).order_by(Paper.id).offset(skip).limit(limit))
+        return list(result.scalars().all())
+
+    async def list_by_owner(self, user_id: int, skip: int = 0, limit: int = 100) -> list[Paper]:
+        """Chỉ trả về các paper thuộc về user_id."""
+        result = await self.db.execute(
+            select(Paper).where(Paper.user_id == user_id).order_by(Paper.id).offset(skip).limit(limit)
+        )
         return list(result.scalars().all())
 
     async def update(
         self,
         paper: Paper,
-        user_id: int | None = None,
         title: str | None = None,
         content: str | None = None,
         file_path: str | None = None,
     ) -> Paper:
-        if user_id is not None:
-            paper.user_id = user_id
         if title is not None:
             paper.title = title
         if content is not None:
@@ -52,4 +63,3 @@ class PaperRepository:
     async def delete(self, paper: Paper) -> None:
         await self.db.delete(paper)
         await self.db.commit()
-

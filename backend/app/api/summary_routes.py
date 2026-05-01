@@ -33,9 +33,17 @@ async def get_summary(summary_id: int, db: AsyncSession = Depends(get_db)):
 
 
 @router.get("/", response_model=list[SummaryRead])
-async def list_summaries(db: AsyncSession = Depends(get_db)):
+async def list_summaries(skip: int = 0, limit: int = 100, db: AsyncSession = Depends(get_db)):
     summary_service = SummaryService(SummaryRepository(db), PaperRepository(db))
-    return await summary_service.list_summaries()
+    return await summary_service.list_summaries(skip=skip, limit=limit)
+
+
+@router.get("/by-paper/{paper_id}", response_model=list[SummaryRead])
+async def list_summaries_by_paper(
+    paper_id: int, skip: int = 0, limit: int = 100, db: AsyncSession = Depends(get_db)
+):
+    summary_service = SummaryService(SummaryRepository(db), PaperRepository(db))
+    return await summary_service.list_summaries_by_paper(paper_id=paper_id, skip=skip, limit=limit)
 
 
 @router.put("/{summary_id}", response_model=SummaryRead)
@@ -43,15 +51,11 @@ async def update_summary(
     summary_id: int, payload: SummaryUpdate, db: AsyncSession = Depends(get_db)
 ):
     summary_service = SummaryService(SummaryRepository(db), PaperRepository(db))
-    try:
-        summary = await summary_service.update_summary(
-            summary_id=summary_id,
-            paper_id=payload.paper_id,
-            summary_type=payload.type,
-            content=payload.content,
-        )
-    except ValueError as exc:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
+    summary = await summary_service.update_summary(
+        summary_id=summary_id,
+        summary_type=payload.type,
+        content=payload.content,
+    )
     if not summary:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Summary not found")
     return summary
@@ -63,4 +67,3 @@ async def delete_summary(summary_id: int, db: AsyncSession = Depends(get_db)):
     deleted = await summary_service.delete_summary(summary_id)
     if not deleted:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Summary not found")
-
