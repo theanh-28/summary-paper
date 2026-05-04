@@ -9,4 +9,6 @@ PyMySQL
 email-validator
 cryptography
 python-jose[cryptography]
-python-multipart
+python-multipart
+pypdf
+aiofiles

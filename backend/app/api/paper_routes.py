@@ -1,7 +1,9 @@
 """Paper CRUD routes — tất cả đều yêu cầu xác thực JWT."""
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, HTTPException, status
+import os
+import aiofiles
+from fastapi import APIRouter, Depends, HTTPException, status, File, UploadFile, Form
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.deps import get_current_user
@@ -11,9 +13,59 @@ from app.repositories.paper_repository import PaperRepository
 from app.repositories.user_repository import UserRepository
 from app.schemas.paper import PaperCreate, PaperRead, PaperUpdate
 from app.services.paper_service import PaperService
+from app.utils.pdf_utils import extract_text_from_pdf
 
 router = APIRouter(prefix="/api/v1/papers", tags=["papers"])
 
+# Thư mục chứa file upload
+UPLOAD_DIR = "uploads"
+if not os.path.exists(UPLOAD_DIR):
+    os.makedirs(UPLOAD_DIR)
+
+
+@router.post("/upload", response_model=PaperRead, status_code=status.HTTP_201_CREATED)
+async def upload_and_create_paper(
+    title: str = Form(..., description="Tiêu đề của bài báo"),
+    file: UploadFile = File(...),
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """
+    Upload một file PDF lên server, tự động trích xuất nội dung và lưu vào database.
+    - File sẽ được lưu vào thư mục `uploads/`
+    - Nội dung text sẽ được trích xuất bằng thư viện pypdf
+    - Bài báo (Paper) mới sẽ được tự động tạo với nội dung vừa trích xuất
+    """
+    if not file.filename.lower().endswith(".pdf"):
+        raise HTTPException(status_code=400, detail="Chỉ hỗ trợ file định dạng PDF")
+        
+    # Đảm bảo thư mục tồn tại (phòng hờ)
+    os.makedirs(UPLOAD_DIR, exist_ok=True)
+    
+    # Tạo tên file độc nhất để tránh trùng lặp (có thể thêm timestamp hoặc user_id)
+    safe_filename = f"user_{current_user.id}_{file.filename}"
+    file_path = os.path.join(UPLOAD_DIR, safe_filename)
+    
+    try:
+        # Đọc và ghi file theo dạng bất đồng bộ
+        async with aiofiles.open(file_path, 'wb') as out_file:
+            content = await file.read()
+            await out_file.write(content)
+            
+        # Trích xuất text từ file PDF vừa lưu
+        extracted_text = extract_text_from_pdf(file_path)
+        
+        # Lưu vào database
+        paper_service = PaperService(PaperRepository(db), UserRepository(db))
+        paper = await paper_service.create_paper(
+            user_id=current_user.id,
+            title=title,
+            content=extracted_text,
+            file_path=file_path,
+        )
+        return paper
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Lỗi khi xử lý file: {str(e)}")
 
 @router.post("/", response_model=PaperRead, status_code=status.HTTP_201_CREATED)
 async def create_paper(
