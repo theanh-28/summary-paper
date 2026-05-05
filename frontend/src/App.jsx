@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import UploadSummary from './pages/UploadSummary';
 import History from './pages/History';
+import Dashboard from './pages/Dashboard';
 import Navbar from './components/Navbar';
 import './App.css';
 
@@ -34,6 +35,14 @@ function AppRoutes() {
                         element={
                             <PrivateRoute>
                                 <History />
+                            </PrivateRoute>
+                        } 
+                    />
+                    <Route 
+                        path="/dashboard" 
+                        element={
+                            <PrivateRoute>
+                                <Dashboard />
                             </PrivateRoute>
                         } 
                     />

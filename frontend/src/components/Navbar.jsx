@@ -13,6 +13,7 @@ function Navbar() {
             <div className="links">
                 <Link to="/">Tạo Tóm Tắt</Link>
                 <Link to="/history">Lịch Sử</Link>
+                <Link to="/dashboard">Dashboard</Link>
                 <button onClick={logout} className="logout-btn">Đăng xuất</button>
             </div>
         </nav>

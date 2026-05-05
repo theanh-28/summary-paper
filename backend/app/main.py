@@ -6,7 +6,6 @@ from app.api.paper_routes import router as paper_router
 from app.api.routes import router as health_router
 from app.api.summary_routes import router as summary_router
 from app.api.user_routes import router as user_router
-
 app = FastAPI(title="Summary Paper API", version="0.1.0")
 
 # ---------------------------------------------------------------------------

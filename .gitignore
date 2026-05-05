@@ -46,4 +46,6 @@ Thumbs.db
 
 # Alembic artifacts (keep versions tracked!)
 # Do NOT ignore: backend/alembic/versions/
->>>>>>> 0531dc3 (init project)
+
+# Docs
+claude.md
