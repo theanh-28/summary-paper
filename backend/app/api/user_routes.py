@@ -5,21 +5,10 @@ from app.core.deps import get_current_user
 from app.db.session import get_db
 from app.models.user import User
 from app.repositories.user_repository import UserRepository
-from app.schemas.user import UserCreate, UserRead, UserUpdate
+from app.schemas.user import UserRead, UserUpdate
 from app.services.user_service import UserService
 
 router = APIRouter(prefix="/api/v1/users", tags=["users"])
-
-
-@router.post("/", response_model=UserRead, status_code=status.HTTP_201_CREATED)
-async def create_user(payload: UserCreate, db: AsyncSession = Depends(get_db)):
-    user_service = UserService(UserRepository(db))
-    try:
-        return await user_service.create_user(email=payload.email, password=payload.password)
-    except ValueError as exc:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
-
-
 @router.get("/{user_id}", response_model=UserRead)
 async def get_user(
     user_id: int,
@@ -36,15 +25,6 @@ async def get_user(
     return user
 
 
-@router.get("/", response_model=list[UserRead])
-async def list_users(
-    skip: int = 0,
-    limit: int = 100,
-    db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_user),
-):
-    user_service = UserService(UserRepository(db))
-    return await user_service.list_users(skip=skip, limit=limit)
 
 
 @router.put("/{user_id}", response_model=UserRead)

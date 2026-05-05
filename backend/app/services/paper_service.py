@@ -1,4 +1,5 @@
 from __future__ import annotations
+import os
 
 from app.models.paper import Paper
 from app.repositories.paper_repository import PaperRepository
@@ -73,5 +74,17 @@ class PaperService:
         )
         if not paper:
             return False
+        
+        file_path = paper.file_path
+        
         await self.paper_repository.delete(paper)
+        
+        # Xóa file vật lý nếu có
+        if file_path and os.path.exists(file_path):
+            try:
+                os.remove(file_path)
+            except Exception as e:
+                # Log error if needed, but don't fail the deletion
+                pass
+                
         return True

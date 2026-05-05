@@ -9,7 +9,7 @@ from app.db.session import get_db
 from app.models.user import User
 from app.repositories.paper_repository import PaperRepository
 from app.repositories.summary_repository import SummaryRepository
-from app.schemas.summary import SummaryCreate, SummaryRead, SummaryUpdate
+from app.schemas.summary import SummaryCreate, SummaryGenerate, SummaryRead, SummaryUpdate
 from app.services.summary_service import SummaryService
 
 router = APIRouter(prefix="/api/v1/summaries", tags=["summaries"])
@@ -26,6 +26,7 @@ async def create_summary(
     try:
         return await summary_service.create_summary(
             paper_id=payload.paper_id,
+            owner_id=current_user.id,
             summary_type=payload.type,
             content=payload.content,
         )
@@ -35,17 +36,24 @@ async def create_summary(
         ) from exc
 
 
-# ⚠️ Route cụ thể phải đặt TRƯỚC route có path param /{summary_id}
-@router.get("/", response_model=list[SummaryRead])
-async def list_summaries(
-    skip: int = 0,
-    limit: int = 100,
+@router.post("/generate", response_model=SummaryRead, status_code=status.HTTP_201_CREATED)
+async def generate_summary(
+    payload: SummaryGenerate,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
-    """Lấy toàn bộ summaries (có phân trang)."""
+    """Tự động tạo bản tóm tắt cho một paper bằng AI."""
     summary_service = SummaryService(SummaryRepository(db), PaperRepository(db))
-    return await summary_service.list_summaries(skip=skip, limit=limit)
+    try:
+        return await summary_service.generate_and_save_summary(
+            paper_id=payload.paper_id,
+            owner_id=current_user.id,
+            summary_type=payload.type,
+        )
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)
+        ) from exc
 
 
 @router.get("/by-paper/{paper_id}", response_model=list[SummaryRead])
@@ -58,9 +66,14 @@ async def list_summaries_by_paper(
 ):
     """Lấy tất cả summaries của một paper cụ thể."""
     summary_service = SummaryService(SummaryRepository(db), PaperRepository(db))
-    return await summary_service.list_summaries_by_paper(
-        paper_id=paper_id, skip=skip, limit=limit
-    )
+    try:
+        return await summary_service.list_summaries_by_paper(
+            paper_id=paper_id, owner_id=current_user.id, skip=skip, limit=limit
+        )
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Paper not found or access denied"
+        ) from exc
 
 
 @router.get("/{summary_id}", response_model=SummaryRead)
@@ -71,10 +84,10 @@ async def get_summary(
 ):
     """Lấy chi tiết 1 summary."""
     summary_service = SummaryService(SummaryRepository(db), PaperRepository(db))
-    summary = await summary_service.get_summary_by_id(summary_id)
+    summary = await summary_service.get_summary_by_id(summary_id, current_user.id)
     if not summary:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Summary not found"
+            status_code=status.HTTP_404_NOT_FOUND, detail="Summary not found or access denied"
         )
     return summary
 
@@ -90,12 +103,13 @@ async def update_summary(
     summary_service = SummaryService(SummaryRepository(db), PaperRepository(db))
     summary = await summary_service.update_summary(
         summary_id=summary_id,
+        owner_id=current_user.id,
         summary_type=payload.type,
         content=payload.content,
     )
     if not summary:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Summary not found"
+            status_code=status.HTTP_404_NOT_FOUND, detail="Summary not found or access denied"
         )
     return summary
 
@@ -108,8 +122,9 @@ async def delete_summary(
 ):
     """Xóa summary."""
     summary_service = SummaryService(SummaryRepository(db), PaperRepository(db))
-    deleted = await summary_service.delete_summary(summary_id)
+    deleted = await summary_service.delete_summary(summary_id, current_user.id)
     if not deleted:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Summary not found"
+            status_code=status.HTTP_404_NOT_FOUND, detail="Summary not found or access denied"
         )
+

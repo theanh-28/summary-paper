@@ -10,6 +10,12 @@ class SummaryCreate(BaseModel):
     content: str
 
 
+class SummaryGenerate(BaseModel):
+    paper_id: int
+    type: Literal["short", "detailed"] = "short"
+
+
+
 class SummaryUpdate(BaseModel):
     type: Literal["short", "detailed"] | None = None
     content: str | None = None

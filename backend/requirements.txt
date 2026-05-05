@@ -11,4 +11,5 @@ cryptography
 python-jose[cryptography]
 python-multipart
 pypdf
-aiofiles
+aiofiles
+httpx
