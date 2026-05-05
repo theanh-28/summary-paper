@@ -28,5 +28,19 @@ services:
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     restart: unless-stopped
 
+  frontend:
+    build: ./frontend
+    container_name: summary_frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules # Tránh lỗi ghi đè thư mục node_modules từ máy thật vào docker
+    depends_on:
+      - backend
+    environment:
+      - VITE_API_URL=http://localhost:8000/api/v1
+    restart: unless-stopped
+
 volumes:
   db_data:
