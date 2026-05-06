@@ -33,7 +33,6 @@ SUMMARY-PAPER/
 │   ├── Dockerfile          # Cấu hình build container Frontend
 │   └── package.json        # Các thư viện Node.js cần thiết
 ├── docker-compose.yml      # Tệp cấu hình chạy đồng thời Frontend, Backend và Database
-└── claude.md               # Tài liệu chi tiết về kiến trúc hệ thống và quy tắc code
 ```
 
 ## 🚀 Hướng dẫn Cài đặt & Chạy dự án
@@ -67,7 +66,7 @@ Cách nhanh nhất và dễ nhất để khởi chạy hệ thống là sử d�
 4. **Truy cập ứng dụng:**
    - **Giao diện Frontend (UI):** `http://localhost:5173`
    - **Tài liệu API Backend (Swagger):** `http://localhost:8000/docs`
-   - **Cổng kết nối Database:** `3307` (đã map ra máy host)
+   - **Giao diện quản lý Database (phpMyAdmin):** `http://localhost:8080` (Cổng kết nối raw MySQL cho tool ngoài là `3307`)
 
 ### Hướng dẫn chạy Local (Không dùng Docker)
 

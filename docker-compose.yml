@@ -14,6 +14,8 @@ services:
       - "3307:3306"
     volumes:
       - db_data:/var/lib/mysql
+      # Nạp dữ liệu cứng từ file init.sql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     logging:
       driver: "json-file"
       options:
@@ -56,6 +58,19 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: summary_phpmyadmin
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: summary_user
+      PMA_PASSWORD: summary_pass
+    depends_on:
+      - db
 
 volumes:
   db_data:
