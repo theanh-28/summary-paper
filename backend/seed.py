@@ -6,6 +6,7 @@ python backend/seed.py
 This script is idempotent: it checks primary keys before inserting.
 """
 import asyncio
+import os
 from typing import List, Dict
 
 from app.db.session import AsyncSessionLocal
@@ -15,6 +16,8 @@ from app.models.summary import Summary
 
 
 USERS: List[Dict] = [
+    # Admin user to satisfy FK references to user_id=1
+    {"id": 1, "email": "admin@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
     {"id": 2, "email": "user1@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
     {"id": 3, "email": "user2@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
     {"id": 4, "email": "user3@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
@@ -88,6 +91,10 @@ async def seed() -> None:
 
 
 def main() -> None:
+    # Only seed when explicitly enabled via ENV variable. Default: false.
+    if os.getenv("SEED_DB", "false").lower() != "true":
+        print("SEED_DB != true — skipping seeding.")
+        return
     asyncio.run(seed())
 
 
