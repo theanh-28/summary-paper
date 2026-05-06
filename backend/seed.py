@@ -17,11 +17,22 @@ from app.models.summary import Summary
 
 USERS: List[Dict] = [
     # Admin user to satisfy FK references to user_id=1
+    # password: "123456"
     {"id": 1, "email": "admin@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
-    {"id": 2, "email": "user1@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
+    {"id": 2, "email": "user@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
     {"id": 3, "email": "user2@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
     {"id": 4, "email": "user3@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
     {"id": 5, "email": "user4@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
+    {"id": 6, "email": "user6@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
+    {"id": 7, "email": "user7@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
+    {"id": 8, "email": "user8@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
+    {"id": 9, "email": "user9@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
+    {"id": 10, "email": "user10@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
+    {"id": 11, "email": "user11@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
+    {"id": 12, "email": "user12@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
+    {"id": 13, "email": "user13@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
+    {"id": 14, "email": "user14@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
+    {"id": 15, "email": "user15@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
 ]
 
 PAPERS: List[Dict] = [
@@ -36,6 +47,26 @@ PAPERS: List[Dict] = [
     {"id": 10, "user_id": 1, "title": "Tổng quan về AI đạo đức", "content": "Nội dung ví dụ: Vấn đề đạo đức khi triển khai AI trong đời sống.", "file_path": None},
     {"id": 11, "user_id": 2, "title": "Tri thức biểu diễn và Semantic Web", "content": "Nội dung ví dụ: Semantic Web giúp kết nối dữ liệu ngữ nghĩa.", "file_path": None},
     {"id": 12, "user_id": 3, "title": "Tối ưu hóa và thuật toán", "content": "Nội dung ví dụ: Các thuật toán tối ưu hóa giúp tìm nghiệm tốt cho bài toán.", "file_path": None},
+    {"id": 13, "user_id": 6, "title": "Mô hình đồ thị và ứng dụng", "content": "Nội dung: Ứng dụng đồ thị trong mạng xã hội và tìm đường ngắn nhất.", "file_path": None},
+    {"id": 14, "user_id": 6, "title": "Xử lý tín hiệu số", "content": "Nội dung: Các phương pháp lọc và biến đổi tín hiệu.", "file_path": None},
+    {"id": 15, "user_id": 7, "title": "Hệ phân tán và consistency", "content": "Nội dung: CAP theorem và các mô hình consistency.", "file_path": None},
+    {"id": 16, "user_id": 7, "title": "Cơ sở dữ liệu NoSQL", "content": "Nội dung: Kiến trúc và trade-offs giữa SQL và NoSQL.", "file_path": None},
+    {"id": 17, "user_id": 8, "title": "Blockchain cơ bản", "content": "Nội dung: Nguyên lý chuỗi khối và bằng chứng công việc.", "file_path": None},
+    {"id": 18, "user_id": 8, "title": "Hệ thống khuyến nghị nâng cao", "content": "Nội dung: Collaborative filtering và matrix factorization.", "file_path": None},
+    {"id": 19, "user_id": 9, "title": "Thị trường chứng khoán và ML", "content": "Nội dung: Ứng dụng học máy trong dự đoán thị trường tài chính.", "file_path": None},
+    {"id": 20, "user_id": 9, "title": "Xử lý ảnh y tế", "content": "Nội dung: Mạng CNN cho chẩn đoán hình ảnh y tế.", "file_path": None},
+    {"id": 21, "user_id": 10, "title": "Tối ưu hóa hyperparameter", "content": "Nội dung: Grid search, random search, Bayesian optimization.", "file_path": None},
+    {"id": 22, "user_id": 10, "title": "Học tăng cường cơ bản", "content": "Nội dung: Mô hình agent, reward, môi trường.", "file_path": None},
+    {"id": 23, "user_id": 11, "title": "Tri thức nhân tạo thông minh", "content": "Nội dung: Hệ expert systems và luật sản xuất.", "file_path": None},
+    {"id": 24, "user_id": 11, "title": "Kiến trúc microservices", "content": "Nội dung: Thiết kế services, giao tiếp và triển khai.", "file_path": None},
+    {"id": 25, "user_id": 12, "title": "Phân tích ngôn ngữ cảm xúc", "content": "Nội dung: Sentiment analysis trên dữ liệu mạng xã hội.", "file_path": None},
+    {"id": 26, "user_id": 12, "title": "Compression algorithms", "content": "Nội dung: LZW, Huffman và các thuật toán nén dữ liệu.", "file_path": None},
+    {"id": 27, "user_id": 13, "title": "Hệ thống thời gian thực", "content": "Nội dung: Kiến trúc xử lý stream và latency thấp.", "file_path": None},
+    {"id": 28, "user_id": 13, "title": "An toàn ứng dụng web", "content": "Nội dung: OWASP top 10 và phòng chống XSS/CSRF.", "file_path": None},
+    {"id": 29, "user_id": 14, "title": "Tiếng nói và nhận dạng giọng nói", "content": "Nội dung: Speech-to-text và mô hình acoustic.", "file_path": None},
+    {"id": 30, "user_id": 14, "title": "Trí tuệ nhân tạo explainable", "content": "Nội dung: Lý giải quyết định mô hình ML (XAI).", "file_path": None},
+    {"id": 31, "user_id": 15, "title": "IoT và edge computing", "content": "Nội dung: Xử lý tại edge cho thiết bị IoT.", "file_path": None},
+    {"id": 32, "user_id": 15, "title": "Testing tự động cho ML", "content": "Nội dung: Validation pipelines và data drift detection.", "file_path": None},
 ]
 
 SUMMARIES: List[Dict] = [
@@ -50,6 +81,26 @@ SUMMARIES: List[Dict] = [
     {"id": 10, "paper_id": 10, "type": "short", "content": "Tóm tắt: Bàn về đạo đức khi triển khai hệ thống AI."},
     {"id": 11, "paper_id": 11, "type": "short", "content": "Tóm tắt: Semantic Web cho phép kết nối dữ liệu có ý nghĩa."},
     {"id": 12, "paper_id": 12, "type": "short", "content": "Tóm tắt: Thuật toán tối ưu hóa tìm nghiệm tốt cho bài toán."},
+    {"id": 13, "paper_id": 13, "type": "short", "content": "Tóm tắt: Mô hình đồ thị hỗ trợ phân tích mạng xã hội và tìm đường ngắn."},
+    {"id": 14, "paper_id": 14, "type": "short", "content": "Tóm tắt: Kỹ thuật xử lý tín hiệu để lọc và biến đổi dữ liệu thời gian."},
+    {"id": 15, "paper_id": 15, "type": "short", "content": "Tóm tắt: Hệ phân tán đối chiếu CAP và trade-offs consistency."},
+    {"id": 16, "paper_id": 16, "type": "short", "content": "Tóm tắt: NoSQL cung cấp khả năng mở rộng ở chi phí nhất định so với SQL."},
+    {"id": 17, "paper_id": 17, "type": "short", "content": "Tóm tắt: Blockchain là sổ cái phân tán với cơ chế đồng thuận."},
+    {"id": 18, "paper_id": 18, "type": "short", "content": "Tóm tắt: Các thuật toán recommendation bao gồm collaborative filtering."},
+    {"id": 19, "paper_id": 19, "type": "short", "content": "Tóm tắt: ML được dùng trong phân tích và dự đoán biến động tài chính."},
+    {"id": 20, "paper_id": 20, "type": "short", "content": "Tóm tắt: CNN ứng dụng trong phân tích ảnh y tế để hỗ trợ chẩn đoán."},
+    {"id": 21, "paper_id": 21, "type": "short", "content": "Tóm tắt: Các phương pháp tối ưu hóa hyperparameter cải thiện hiệu năng mô hình."},
+    {"id": 22, "paper_id": 22, "type": "short", "content": "Tóm tắt: Học tăng cường đào tạo agent qua tương tác và reward."},
+    {"id": 23, "paper_id": 23, "type": "short", "content": "Tóm tắt: Expert systems sử dụng luật để mô phỏng tri thức chuyên gia."},
+    {"id": 24, "paper_id": 24, "type": "short", "content": "Tóm tắt: Microservices tách ứng dụng thành services độc lập dễ vận hành."},
+    {"id": 25, "paper_id": 25, "type": "short", "content": "Tóm tắt: Sentiment analysis phân tích cảm xúc từ dữ liệu text."},
+    {"id": 26, "paper_id": 26, "type": "short", "content": "Tóm tắt: Thuật toán nén dữ liệu giúp giảm kích thước lưu trữ và băng thông."},
+    {"id": 27, "paper_id": 27, "type": "short", "content": "Tóm tắt: Hệ thống thời gian thực xử lý stream để phản hồi nhanh."},
+    {"id": 28, "paper_id": 28, "type": "short", "content": "Tóm tắt: Bảo mật web tập trung vào OWASP top 10 và biện pháp phòng vệ."},
+    {"id": 29, "paper_id": 29, "type": "short", "content": "Tóm tắt: Nhận dạng giọng nói chuyển speech sang text bằng mô hình acoustic."},
+    {"id": 30, "paper_id": 30, "type": "short", "content": "Tóm tắt: XAI giúp giải thích quyết định của mô hình ML cho người dùng."},
+    {"id": 31, "paper_id": 31, "type": "short", "content": "Tóm tắt: Edge computing xử lý dữ liệu gần nguồn để giảm latency."},
+    {"id": 32, "paper_id": 32, "type": "short", "content": "Tóm tắt: Testing ML cần pipelines và kiểm tra data drift."},
 ]
 
 
