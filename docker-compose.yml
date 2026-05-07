@@ -71,5 +71,24 @@ services:
     depends_on:
       - db
 
+  metabase:
+    image: metabase/metabase:latest
+    container_name: summary_metabase
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      MB_DB_TYPE: h2
+    volumes:
+      - metabase_data:/metabase-data
+    depends_on:
+      - db
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
 volumes:
   db_data:
+  metabase_data:
