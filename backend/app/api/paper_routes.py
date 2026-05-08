@@ -53,20 +53,31 @@ async def upload_and_create_paper(
     if file.content_type not in ALLOWED_CONTENT_TYPES:
         raise HTTPException(status_code=400, detail="File không đúng định dạng PDF")
 
-    # --- Read file content with size limit ---
-    content = await file.read()
-    if len(content) > MAX_FILE_SIZE:
-        raise HTTPException(status_code=400, detail="File quá lớn. Giới hạn 10MB.")
-
     # --- Generate safe filename (no path traversal) ---
     file_ext = ".pdf"
     safe_filename = f"user_{current_user.id}_{uuid.uuid4().hex}{file_ext}"
     file_path = os.path.join(UPLOAD_DIR, safe_filename)
 
+    # --- Cấu hình đọc theo Chunk (khối lượng nhỏ) ---
+    CHUNK_SIZE = 1024 * 1024  # Đọc 1MB mỗi lần
+    uploaded_size = 0
+
     try:
-        # Ghi file bất đồng bộ
+        # Mở file đích để ghi dần
         async with aiofiles.open(file_path, 'wb') as out_file:
-            await out_file.write(content)
+            # Đọc từng chunk của file upload thay vì đọc tất cả vào RAM
+            while chunk := await file.read(CHUNK_SIZE):
+                uploaded_size += len(chunk)
+                
+                # Kiểm tra dung lượng LIÊN TỤC trong lúc đang tải
+                if uploaded_size > MAX_FILE_SIZE:
+                    raise HTTPException(
+                        status_code=400, 
+                        detail="File quá lớn. Giới hạn 10MB."
+                    )
+                    
+                # Ghi ngay chunk vừa đọc xuống đĩa cứng
+                await out_file.write(chunk)
 
         # Trích xuất text từ PDF — chạy trong thread pool vì là blocking I/O
         extracted_text = await asyncio.to_thread(extract_text_from_pdf, file_path)
@@ -81,18 +92,22 @@ async def upload_and_create_paper(
         )
         logger.info("Paper uploaded: id=%s user=%s file=%s", paper.id, current_user.id, safe_filename)
         return paper
-    except HTTPException:
-        raise
+
     except Exception as e:
-        logger.error("Error processing uploaded file for user %s: %s", current_user.id, str(e))
-        # Cleanup file nếu DB insert thất bại
+        # Cleanup (Xóa) file ngay lập tức nếu có lỗi xảy ra (ví dụ lỗi vượt quá dung lượng)
         if os.path.exists(file_path):
             try:
                 os.remove(file_path)
             except OSError:
                 pass
+        
+        # Nếu lỗi là do chúng ta ném ra (HTTPException 400), thì đẩy tiếp lỗi đó về cho Frontend
+        if isinstance(e, HTTPException):
+            raise e
+            
+        # Các lỗi hệ thống khác
+        logger.error("Error processing uploaded file for user %s: %s", current_user.id, str(e))
         raise HTTPException(status_code=500, detail="Lỗi khi xử lý file. Vui lòng thử lại.")
-
 
 @router.post("/", response_model=PaperRead, status_code=status.HTTP_201_CREATED)
 async def create_paper(
