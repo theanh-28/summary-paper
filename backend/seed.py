@@ -1,7 +1,7 @@
-"""Seed script to insert sample data from init.sql for local testing.
+"""Seed script to insert sample data for local testing.
 
-Run with: python -m backend.seed  (from repository root) or
-python backend/seed.py
+Run with: python seed.py (from backend directory)
+           or via docker-compose command.
 
 This script is idempotent: it checks primary keys before inserting.
 """
@@ -16,23 +16,23 @@ from app.models.summary import Summary
 
 
 USERS: List[Dict] = [
-    # Admin user to satisfy FK references to user_id=1
-    # password: "123456"
-    {"id": 1, "email": "admin@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
-    {"id": 2, "email": "user@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
-    {"id": 3, "email": "user2@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
-    {"id": 4, "email": "user3@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
-    {"id": 5, "email": "user4@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
-    {"id": 6, "email": "user6@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
-    {"id": 7, "email": "user7@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
-    {"id": 8, "email": "user8@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
-    {"id": 9, "email": "user9@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
-    {"id": 10, "email": "user10@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
-    {"id": 11, "email": "user11@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
-    {"id": 12, "email": "user12@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
-    {"id": 13, "email": "user13@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
-    {"id": 14, "email": "user14@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
-    {"id": 15, "email": "user15@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo="},
+    # Admin user — password: "123456"
+    {"id": 1, "email": "admin@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "admin"},
+    # Regular users — password: "123456"
+    {"id": 2, "email": "user@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
+    {"id": 3, "email": "user2@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
+    {"id": 4, "email": "user3@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
+    {"id": 5, "email": "user4@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
+    {"id": 6, "email": "user6@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
+    {"id": 7, "email": "user7@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
+    {"id": 8, "email": "user8@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
+    {"id": 9, "email": "user9@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
+    {"id": 10, "email": "user10@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
+    {"id": 11, "email": "user11@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
+    {"id": 12, "email": "user12@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
+    {"id": 13, "email": "user13@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
+    {"id": 14, "email": "user14@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
+    {"id": 15, "email": "user15@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
 ]
 
 PAPERS: List[Dict] = [
@@ -110,7 +110,12 @@ async def seed() -> None:
         for u in USERS:
             existing = await session.get(User, u["id"])
             if not existing:
-                session.add(User(id=u["id"], email=u["email"], password=u["password"]))
+                session.add(User(
+                    id=u["id"],
+                    email=u["email"],
+                    password=u["password"],
+                    role=u["role"],
+                ))
 
         await session.commit()
 

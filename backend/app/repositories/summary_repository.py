@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.summary import Summary
@@ -35,6 +35,11 @@ class SummaryRepository:
             .limit(limit)
         )
         return list(result.scalars().all())
+
+    async def count(self) -> int:
+        """Đếm tổng số summaries."""
+        result = await self.db.execute(select(func.count(Summary.id)))
+        return result.scalar_one()
 
     async def update(
         self,

@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
@@ -18,5 +19,11 @@ class UserRead(BaseModel):
 
     id: int
     email: EmailStr
+    role: Literal["admin", "user"]
+    is_active: bool
     created_at: datetime
 
+
+class UserRoleUpdate(BaseModel):
+    """Schema cho admin thay đổi role user."""
+    role: Literal["admin", "user"]

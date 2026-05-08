@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.paper import Paper
@@ -44,6 +44,11 @@ class PaperRepository:
             select(Paper).where(Paper.user_id == user_id).order_by(Paper.id).offset(skip).limit(limit)
         )
         return list(result.scalars().all())
+
+    async def count(self) -> int:
+        """Đếm tổng số papers."""
+        result = await self.db.execute(select(func.count(Paper.id)))
+        return result.scalar_one()
 
     async def update(
         self,

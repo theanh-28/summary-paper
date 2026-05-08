@@ -1,3 +1,4 @@
+"""User routes — profile management cho user đang đăng nhập."""
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -9,22 +10,30 @@ from app.schemas.user import UserRead, UserUpdate
 from app.services.user_service import UserService
 
 router = APIRouter(prefix="/api/v1/users", tags=["users"])
+
+
+@router.get("/me", response_model=UserRead)
+async def get_me(current_user: User = Depends(get_current_user)):
+    """Lấy thông tin profile của user đang đăng nhập."""
+    return current_user
+
+
 @router.get("/{user_id}", response_model=UserRead)
 async def get_user(
     user_id: int,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    if current_user.id != user_id:
+    """Lấy thông tin user. User thường chỉ xem được chính mình, admin xem được mọi user."""
+    # Admin có thể xem bất kỳ user nào
+    if current_user.role != "admin" and current_user.id != user_id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions")
-        
+
     user_service = UserService(UserRepository(db))
     user = await user_service.get_user_by_id(user_id)
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
     return user
-
-
 
 
 @router.put("/{user_id}", response_model=UserRead)
@@ -34,9 +43,10 @@ async def update_user(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    if current_user.id != user_id:
+    """Cập nhật thông tin user. Chỉ chính user hoặc admin mới có quyền."""
+    if current_user.role != "admin" and current_user.id != user_id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions")
-        
+
     user_service = UserService(UserRepository(db))
     try:
         user = await user_service.update_user(
@@ -57,11 +67,11 @@ async def delete_user(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    if current_user.id != user_id:
+    """Xóa user. Chỉ chính user hoặc admin mới có quyền."""
+    if current_user.role != "admin" and current_user.id != user_id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions")
-        
+
     user_service = UserService(UserRepository(db))
     deleted = await user_service.delete_user(user_id)
     if not deleted:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
-

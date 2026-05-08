@@ -1,6 +1,8 @@
 """Auth endpoints: register và login."""
 from __future__ import annotations
 
+import logging
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -11,6 +13,8 @@ from app.repositories.user_repository import UserRepository
 from app.schemas.auth import Token
 from app.schemas.user import UserCreate, UserRead
 from app.services.user_service import UserService
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/v1/auth", tags=["auth"])
 
@@ -24,9 +28,11 @@ async def register(payload: UserCreate, db: AsyncSession = Depends(get_db)):
     """
     user_service = UserService(UserRepository(db))
     try:
-        return await user_service.create_user(
+        user = await user_service.create_user(
             email=payload.email, password=payload.password
         )
+        logger.info("New user registered: id=%s email=%s", user.id, user.email)
+        return user
     except ValueError as exc:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)
@@ -54,5 +60,14 @@ async def login(
             detail="Incorrect email or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    access_token = create_access_token(user_id=user.id)
-    return Token(access_token=access_token)
+
+    # Kiểm tra tài khoản có active không
+    if not user.is_active:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Account is deactivated. Contact admin.",
+        )
+
+    access_token = create_access_token(user_id=user.id, role=user.role)
+    logger.info("User logged in: id=%s role=%s", user.id, user.role)
+    return Token(access_token=access_token, role=user.role)

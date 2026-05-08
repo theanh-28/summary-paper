@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -11,8 +11,8 @@ class UserRepository:
     def __init__(self, db: AsyncSession):
         self.db = db
 
-    async def create(self, email: str, password: str) -> User:
-        user = User(email=email, password=password)
+    async def create(self, email: str, password: str, role: str = "user") -> User:
+        user = User(email=email, password=password, role=role)
         self.db.add(user)
         try:
             await self.db.commit()
@@ -34,6 +34,11 @@ class UserRepository:
         result = await self.db.execute(select(User).order_by(User.id).offset(skip).limit(limit))
         return list(result.scalars().all())
 
+    async def count(self) -> int:
+        """Đếm tổng số user."""
+        result = await self.db.execute(select(func.count(User.id)))
+        return result.scalar_one()
+
     async def update(self, user: User, email: str | None = None, password: str | None = None) -> User:
         if email is not None:
             user.email = email
@@ -47,7 +52,20 @@ class UserRepository:
         await self.db.refresh(user)
         return user
 
+    async def update_role(self, user: User, role: str) -> User:
+        """Cập nhật role của user. Dùng cho admin management."""
+        user.role = role
+        await self.db.commit()
+        await self.db.refresh(user)
+        return user
+
+    async def toggle_active(self, user: User) -> User:
+        """Đảo trạng thái active/inactive. Dùng cho admin management."""
+        user.is_active = not user.is_active
+        await self.db.commit()
+        await self.db.refresh(user)
+        return user
+
     async def delete(self, user: User) -> None:
         await self.db.delete(user)
         await self.db.commit()
-

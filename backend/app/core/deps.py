@@ -1,4 +1,4 @@
-"""FastAPI dependencies — reusable Depends() để inject current user."""
+"""FastAPI dependencies — reusable Depends() để inject current user và kiểm tra role."""
 from __future__ import annotations
 
 from fastapi import Depends, HTTPException, status
@@ -19,6 +19,16 @@ _CREDENTIALS_EXCEPTION = HTTPException(
     headers={"WWW-Authenticate": "Bearer"},
 )
 
+_INACTIVE_EXCEPTION = HTTPException(
+    status_code=status.HTTP_403_FORBIDDEN,
+    detail="Account is deactivated",
+)
+
+_ADMIN_EXCEPTION = HTTPException(
+    status_code=status.HTTP_403_FORBIDDEN,
+    detail="Admin privileges required",
+)
+
 
 async def get_current_user(
     token: str = Depends(oauth2_scheme),
@@ -26,14 +36,30 @@ async def get_current_user(
 ) -> User:
     """
     Dependency inject vào bất kỳ route nào cần xác thực.
-    Trả về User object nếu token hợp lệ, raise 401 nếu không.
+    Trả về User object nếu token hợp lệ và tài khoản active, raise 401/403 nếu không.
     """
-    user_id = decode_access_token(token)
-    if user_id is None:
+    token_data = decode_access_token(token)
+    if token_data is None:
         raise _CREDENTIALS_EXCEPTION
 
-    user = await UserRepository(db).get_by_id(user_id)
+    user = await UserRepository(db).get_by_id(token_data["user_id"])
     if user is None:
         raise _CREDENTIALS_EXCEPTION
 
+    # Kiểm tra tài khoản còn active không
+    if not user.is_active:
+        raise _INACTIVE_EXCEPTION
+
     return user
+
+
+async def get_current_admin_user(
+    current_user: User = Depends(get_current_user),
+) -> User:
+    """
+    Dependency cho các route chỉ dành cho admin.
+    Kế thừa get_current_user (đã verify JWT + active) rồi kiểm tra role.
+    """
+    if current_user.role != "admin":
+        raise _ADMIN_EXCEPTION
+    return current_user

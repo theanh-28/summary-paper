@@ -1,18 +1,15 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, AuthContext } from './context/AuthContext';
-import { useContext } from 'react';
+import { AuthProvider } from './context/AuthContext';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import UploadSummary from './pages/UploadSummary';
 import History from './pages/History';
 import Dashboard from './pages/Dashboard';
+import AdminDashboard from './pages/AdminDashboard';
 import Navbar from './components/Navbar';
+import PrivateRoute from './components/PrivateRoute';
+import AdminRoute from './components/AdminRoute';
 import './App.css';
-
-const PrivateRoute = ({ children }) => {
-    const { token } = useContext(AuthContext);
-    return token ? children : <Navigate to="/login" />;
-};
 
 function AppRoutes() {
     return (
@@ -22,30 +19,40 @@ function AppRoutes() {
                 <Routes>
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
-                    <Route 
-                        path="/" 
+                    <Route
+                        path="/"
                         element={
                             <PrivateRoute>
                                 <UploadSummary />
                             </PrivateRoute>
-                        } 
+                        }
                     />
-                    <Route 
-                        path="/history" 
+                    <Route
+                        path="/history"
                         element={
                             <PrivateRoute>
                                 <History />
                             </PrivateRoute>
-                        } 
+                        }
                     />
-                    <Route 
-                        path="/dashboard" 
+                    <Route
+                        path="/dashboard"
                         element={
                             <PrivateRoute>
                                 <Dashboard />
                             </PrivateRoute>
-                        } 
+                        }
                     />
+                    <Route
+                        path="/admin"
+                        element={
+                            <AdminRoute>
+                                <AdminDashboard />
+                            </AdminRoute>
+                        }
+                    />
+                    {/* Catch-all: redirect to home */}
+                    <Route path="*" element={<Navigate to="/" />} />
                 </Routes>
             </div>
         </>

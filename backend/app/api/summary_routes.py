@@ -1,7 +1,7 @@
 """Summary CRUD routes — POST/PUT/DELETE yêu cầu JWT."""
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.deps import get_current_user
@@ -59,8 +59,8 @@ async def generate_summary(
 @router.get("/by-paper/{paper_id}", response_model=list[SummaryRead])
 async def list_summaries_by_paper(
     paper_id: int,
-    skip: int = 0,
-    limit: int = 100,
+    skip: int = Query(default=0, ge=0),
+    limit: int = Query(default=20, ge=1, le=100),
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
@@ -127,4 +127,3 @@ async def delete_summary(
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Summary not found or access denied"
         )
-

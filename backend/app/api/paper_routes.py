@@ -1,9 +1,13 @@
 """Paper CRUD routes — tất cả đều yêu cầu xác thực JWT."""
 from __future__ import annotations
 
+import asyncio
+import logging
 import os
+import uuid
+
 import aiofiles
-from fastapi import APIRouter, Depends, HTTPException, status, File, UploadFile, Form
+from fastapi import APIRouter, Depends, HTTPException, status, File, UploadFile, Form, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.deps import get_current_user
@@ -15,46 +19,58 @@ from app.schemas.paper import PaperCreate, PaperRead, PaperUpdate
 from app.services.paper_service import PaperService
 from app.utils.pdf_utils import extract_text_from_pdf
 
+logger = logging.getLogger(__name__)
+
 router = APIRouter(prefix="/api/v1/papers", tags=["papers"])
 
 # Thư mục chứa file upload
 UPLOAD_DIR = "uploads"
-if not os.path.exists(UPLOAD_DIR):
-    os.makedirs(UPLOAD_DIR)
+os.makedirs(UPLOAD_DIR, exist_ok=True)
+
+# Giới hạn file upload: 10MB
+MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
+ALLOWED_CONTENT_TYPES = {"application/pdf"}
 
 
 @router.post("/upload", response_model=PaperRead, status_code=status.HTTP_201_CREATED)
 async def upload_and_create_paper(
-    title: str = Form(..., description="Tiêu đề của bài báo"),
+    title: str = Form(..., description="Tiêu đề của bài báo", max_length=500),
     file: UploadFile = File(...),
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
     """
     Upload một file PDF lên server, tự động trích xuất nội dung và lưu vào database.
-    - File sẽ được lưu vào thư mục `uploads/`
+    - File tối đa 10MB, chỉ hỗ trợ PDF
     - Nội dung text sẽ được trích xuất bằng thư viện pypdf
     - Bài báo (Paper) mới sẽ được tự động tạo với nội dung vừa trích xuất
     """
-    if not file.filename.lower().endswith(".pdf"):
+    # --- Validate file extension ---
+    if not file.filename or not file.filename.lower().endswith(".pdf"):
         raise HTTPException(status_code=400, detail="Chỉ hỗ trợ file định dạng PDF")
-        
-    # Đảm bảo thư mục tồn tại (phòng hờ)
-    os.makedirs(UPLOAD_DIR, exist_ok=True)
-    
-    # Tạo tên file độc nhất để tránh trùng lặp (có thể thêm timestamp hoặc user_id)
-    safe_filename = f"user_{current_user.id}_{file.filename}"
+
+    # --- Validate MIME type ---
+    if file.content_type not in ALLOWED_CONTENT_TYPES:
+        raise HTTPException(status_code=400, detail="File không đúng định dạng PDF")
+
+    # --- Read file content with size limit ---
+    content = await file.read()
+    if len(content) > MAX_FILE_SIZE:
+        raise HTTPException(status_code=400, detail="File quá lớn. Giới hạn 10MB.")
+
+    # --- Generate safe filename (no path traversal) ---
+    file_ext = ".pdf"
+    safe_filename = f"user_{current_user.id}_{uuid.uuid4().hex}{file_ext}"
     file_path = os.path.join(UPLOAD_DIR, safe_filename)
-    
+
     try:
-        # Đọc và ghi file theo dạng bất đồng bộ
+        # Ghi file bất đồng bộ
         async with aiofiles.open(file_path, 'wb') as out_file:
-            content = await file.read()
             await out_file.write(content)
-            
-        # Trích xuất text từ file PDF vừa lưu
-        extracted_text = extract_text_from_pdf(file_path)
-        
+
+        # Trích xuất text từ PDF — chạy trong thread pool vì là blocking I/O
+        extracted_text = await asyncio.to_thread(extract_text_from_pdf, file_path)
+
         # Lưu vào database
         paper_service = PaperService(PaperRepository(db), UserRepository(db))
         paper = await paper_service.create_paper(
@@ -63,9 +79,20 @@ async def upload_and_create_paper(
             content=extracted_text,
             file_path=file_path,
         )
+        logger.info("Paper uploaded: id=%s user=%s file=%s", paper.id, current_user.id, safe_filename)
         return paper
+    except HTTPException:
+        raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Lỗi khi xử lý file: {str(e)}")
+        logger.error("Error processing uploaded file for user %s: %s", current_user.id, str(e))
+        # Cleanup file nếu DB insert thất bại
+        if os.path.exists(file_path):
+            try:
+                os.remove(file_path)
+            except OSError:
+                pass
+        raise HTTPException(status_code=500, detail="Lỗi khi xử lý file. Vui lòng thử lại.")
+
 
 @router.post("/", response_model=PaperRead, status_code=status.HTTP_201_CREATED)
 async def create_paper(
@@ -85,8 +112,8 @@ async def create_paper(
 
 @router.get("/", response_model=list[PaperRead])
 async def list_papers(
-    skip: int = 0,
-    limit: int = 100,
+    skip: int = Query(default=0, ge=0),
+    limit: int = Query(default=20, ge=1, le=100),
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
