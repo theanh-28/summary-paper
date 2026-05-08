@@ -44,8 +44,8 @@ function UploadSummary() {
     };
 
     return (
-        <div className="upload-container">
-            <div className="glass-card" style={{maxWidth: '600px', margin: '0 auto'}}>
+        <div className="upload-container" style={{padding: '2rem'}}>
+            <div className="glass-card" style={{maxWidth: '1000px', margin: '0 auto', padding: '3rem'}}>
                 <h2 style={{marginBottom: '1rem'}}>Upload & Summarize</h2>
                 <p style={{marginBottom: '2rem', color: 'var(--text-muted)'}}>Tải lên file PDF để hệ thống AI tự động phân tích và tóm tắt</p>
                 

@@ -3,7 +3,7 @@ import { AuthProvider } from './context/AuthContext';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import UploadSummary from './pages/UploadSummary';
-import History from './pages/History';
+import PaperView from './pages/PaperView';
 import Dashboard from './pages/Dashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import Profile from './pages/Profile';
@@ -14,7 +14,7 @@ import './App.css';
 
 function AppRoutes() {
     return (
-        <>
+        <div className="app-layout">
             <Navbar />
             <div className="main-content">
                 <Routes>
@@ -29,10 +29,10 @@ function AppRoutes() {
                         }
                     />
                     <Route
-                        path="/history"
+                        path="/paper/:id"
                         element={
                             <PrivateRoute>
-                                <History />
+                                <PaperView />
                             </PrivateRoute>
                         }
                     />
@@ -72,7 +72,7 @@ function AppRoutes() {
                     <Route path="*" element={<Navigate to="/" />} />
                 </Routes>
             </div>
-        </>
+        </div>
     );
 }
 

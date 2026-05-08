@@ -1,11 +1,15 @@
 import { useContext, useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import api from '../services/api';
 
 function Navbar() {
     const { token, user, logout, isAdmin } = useContext(AuthContext);
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [historyExpanded, setHistoryExpanded] = useState(true);
+    const [papers, setPapers] = useState([]);
     const dropdownRef = useRef(null);
+    const location = useLocation();
 
     useEffect(() => {
         function handleClickOutside(event) {
@@ -14,8 +18,15 @@ function Navbar() {
             }
         }
         document.addEventListener('mousedown', handleClickOutside);
+        
+        if (token) {
+            api.get('/papers/')
+               .then(res => setPapers(res.data))
+               .catch(err => console.error(err));
+        }
+
         return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
+    }, [token, location.pathname]); // Refresh history if navigation happens
 
     if (!token) return null;
 
@@ -23,12 +34,44 @@ function Navbar() {
     const displayName = user?.full_name || user?.email?.split('@')[0] || 'User';
 
     return (
-        <nav className="navbar" id="main-navbar">
-            <h2>AI Summary Paper</h2>
-            <div className="links">
-                <Link to="/">Tạo Tóm Tắt</Link>
-                <Link to="/history">Lịch Sử</Link>
+        <aside className="sidebar" id="main-sidebar">
+            <div className="sidebar-header">
+                <h2>AI Summary</h2>
+            </div>
+            
+            <div className="sidebar-nav">
+                <Link to="/" className="sidebar-link">
+                    ✍️ Tạo Tóm Tắt
+                </Link>
                 
+                <div className="sidebar-section">
+                    <button 
+                        className="sidebar-section-title"
+                        onClick={() => setHistoryExpanded(!historyExpanded)}
+                    >
+                        <span>Gần đây</span>
+                        <span>{historyExpanded ? 'v' : '>'}</span>
+                    </button>
+                    {historyExpanded && (
+                        <div className="sidebar-history-list">
+                            {papers.length > 0 ? papers.map(p => (
+                                <Link 
+                                    key={p.id} 
+                                    to={`/paper/${p.id}`} 
+                                    className={`sidebar-history-item ${location.pathname === `/paper/${p.id}` ? 'active' : ''}`}
+                                    title={p.title}
+                                >
+                                    {p.title}
+                                </Link>
+                            )) : (
+                                <div className="sidebar-empty">Chưa có bài báo nào</div>
+                            )}
+                        </div>
+                    )}
+                </div>
+            </div>
+            
+            <div className="sidebar-footer">
                 <div className="account-menu" ref={dropdownRef}>
                     <button 
                         className="account-btn" 
@@ -36,11 +79,11 @@ function Navbar() {
                     >
                         <span className="account-avatar">{displayRoleIcon}</span>
                         <span className="account-name">{displayName}</span>
-                        <span className="account-arrow">▼</span>
+                        <span className="account-arrow">{dropdownOpen ? '▲' : '▼'}</span>
                     </button>
                     
                     {dropdownOpen && (
-                        <div className="account-dropdown">
+                        <div className="account-dropdown sidebar-dropdown">
                             <div className="dropdown-header">
                                 <strong>{displayName}</strong>
                                 <span>{user?.email}</span>
@@ -65,7 +108,7 @@ function Navbar() {
                     )}
                 </div>
             </div>
-        </nav>
+        </aside>
     );
 }
 
