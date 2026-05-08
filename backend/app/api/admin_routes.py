@@ -63,7 +63,7 @@ async def update_user_role(
     admin: User = Depends(get_current_admin_user),
     db: AsyncSession = Depends(get_db),
 ):
-    """Thay đổi role của user. Chỉ admin. Không tự đổi role chính mình."""
+    """Thay đổi role của user. Có kiểm tra cấp bậc."""
     if admin.id == user_id:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -74,6 +74,20 @@ async def update_user_role(
     user = await user_repo.get_by_id(user_id)
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    # Kiểm tra phân quyền: admin thường không được sửa role của admin khác hoặc root
+    if admin.role == "admin" and user.role in ("admin", "root"):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You do not have permission to modify this user's role",
+        )
+
+    # Admin thường cũng không được cấp quyền root cho người khác
+    if admin.role == "admin" and payload.role == "root":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Only ROOT can assign root privileges",
+        )
 
     user = await user_repo.update_role(user, payload.role)
     logger.info("Admin %s changed role of user %s to %s", admin.id, user_id, payload.role)
@@ -86,7 +100,7 @@ async def toggle_user_active(
     admin: User = Depends(get_current_admin_user),
     db: AsyncSession = Depends(get_db),
 ):
-    """Kích hoạt / vô hiệu hóa tài khoản user. Chỉ admin."""
+    """Kích hoạt / vô hiệu hóa tài khoản user. Có kiểm tra cấp bậc."""
     if admin.id == user_id:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -97,6 +111,13 @@ async def toggle_user_active(
     user = await user_repo.get_by_id(user_id)
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    # Kiểm tra phân quyền: admin thường không được khóa admin khác hoặc root
+    if admin.role == "admin" and user.role in ("admin", "root"):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You do not have permission to toggle this user's active status",
+        )
 
     user = await user_repo.toggle_active(user)
     logger.info("Admin %s toggled active status of user %s to %s", admin.id, user_id, user.is_active)
@@ -109,11 +130,23 @@ async def admin_delete_user(
     admin: User = Depends(get_current_admin_user),
     db: AsyncSession = Depends(get_db),
 ):
-    """Admin xóa user khỏi hệ thống."""
+    """Admin xóa user khỏi hệ thống. Có kiểm tra cấp bậc."""
     if admin.id == user_id:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Cannot delete your own account from admin panel",
+        )
+
+    user_repo = UserRepository(db)
+    user = await user_repo.get_by_id(user_id)
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    # Kiểm tra phân quyền: admin thường không được xóa admin khác hoặc root
+    if admin.role == "admin" and user.role in ("admin", "root"):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You do not have permission to delete this user",
         )
 
     user_service = UserService(UserRepository(db))

@@ -47,10 +47,10 @@ function Dashboard() {
         <div className="dashboard-container" id="dashboard-page">
             <div className="dashboard-header">
                 <h2 style={{ marginBottom: '0.5rem' }}>
-                    {user?.role === 'admin' ? '📊 Admin Dashboard' : '📈 Dashboard Cá Nhân'}
+                    {['admin', 'root'].includes(user?.role) ? '📊 Admin Dashboard' : '📈 Dashboard Cá Nhân'}
                 </h2>
                 <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem' }}>
-                    {user?.role === 'admin'
+                    {['admin', 'root'].includes(user?.role)
                         ? 'Tổng quan hệ thống — analytics toàn bộ dữ liệu'
                         : 'Dữ liệu và thống kê của bạn'}
                 </p>

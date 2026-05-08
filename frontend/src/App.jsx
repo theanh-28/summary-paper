@@ -6,6 +6,7 @@ import UploadSummary from './pages/UploadSummary';
 import History from './pages/History';
 import Dashboard from './pages/Dashboard';
 import AdminDashboard from './pages/AdminDashboard';
+import Profile from './pages/Profile';
 import Navbar from './components/Navbar';
 import PrivateRoute from './components/PrivateRoute';
 import AdminRoute from './components/AdminRoute';
@@ -40,6 +41,22 @@ function AppRoutes() {
                         element={
                             <PrivateRoute>
                                 <Dashboard />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/profile"
+                        element={
+                            <PrivateRoute>
+                                <Profile />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/profile"
+                        element={
+                            <PrivateRoute>
+                                <Profile />
                             </PrivateRoute>
                         }
                     />

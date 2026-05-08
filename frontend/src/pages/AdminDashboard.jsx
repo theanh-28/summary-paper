@@ -128,7 +128,7 @@ function AdminDashboard() {
                                     <td>{u.email}</td>
                                     <td>
                                         <span className={`role-badge role-${u.role}`}>
-                                            {u.role === 'admin' ? '👑 Admin' : '👤 User'}
+                                            {u.role === 'root' ? '💎 Root' : u.role === 'admin' ? '🛡️ Admin' : '👤 User'}
                                         </span>
                                     </td>
                                     <td>
@@ -149,10 +149,10 @@ function AdminDashboard() {
                                         <button
                                             className="btn-action btn-role"
                                             onClick={() => handleChangeRole(u.id, u.role === 'admin' ? 'user' : 'admin')}
-                                            disabled={actionLoading === u.id}
-                                            title={u.role === 'admin' ? 'Hạ quyền' : 'Nâng quyền Admin'}
+                                            disabled={actionLoading === u.id || u.role === 'root'}
+                                            title={u.role === 'root' ? 'Không thể đổi quyền Root' : u.role === 'admin' ? 'Hạ quyền' : 'Nâng quyền Admin'}
                                         >
-                                            {u.role === 'admin' ? '⬇️' : '⬆️'}
+                                            {u.role === 'root' ? '⛔' : u.role === 'admin' ? '⬇️' : '⬆️'}
                                         </button>
                                         <button
                                             className="btn-action btn-delete"

@@ -5,6 +5,7 @@ import api from '../services/api';
 function Register() {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
+    const [fullName, setFullName] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -14,7 +15,7 @@ function Register() {
         setError('');
         setLoading(true);
         try {
-            await api.post('/auth/register', { email, password });
+            await api.post('/auth/register', { email, password, full_name: fullName });
             // Đăng ký thành công thì chuyển về trang login
             navigate('/login');
         } catch (err) {
@@ -31,6 +32,14 @@ function Register() {
                 <p style={{textAlign: 'center', marginBottom: '2rem', color: 'var(--text-muted)'}}>Đăng ký để bắt đầu sử dụng AI</p>
                 {error && <p className="error">{error}</p>}
                 <form onSubmit={handleSubmit}>
+                    <input 
+                        type="text" 
+                        placeholder="Họ và tên hiển thị" 
+                        value={fullName} 
+                        onChange={e => setFullName(e.target.value)} 
+                        required 
+                        minLength={2}
+                    />
                     <input 
                         type="email" 
                         placeholder="Email" 

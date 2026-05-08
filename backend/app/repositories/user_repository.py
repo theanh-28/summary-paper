@@ -11,8 +11,8 @@ class UserRepository:
     def __init__(self, db: AsyncSession):
         self.db = db
 
-    async def create(self, email: str, password: str, role: str = "user") -> User:
-        user = User(email=email, password=password, role=role)
+    async def create(self, email: str, password: str, full_name: str | None = None, role: str = "user") -> User:
+        user = User(email=email, password=password, full_name=full_name, role=role)
         self.db.add(user)
         try:
             await self.db.commit()
@@ -39,11 +39,13 @@ class UserRepository:
         result = await self.db.execute(select(func.count(User.id)))
         return result.scalar_one()
 
-    async def update(self, user: User, email: str | None = None, password: str | None = None) -> User:
+    async def update(self, user: User, email: str | None = None, password: str | None = None, full_name: str | None = None) -> User:
         if email is not None:
             user.email = email
         if password is not None:
             user.password = password
+        if full_name is not None:
+            user.full_name = full_name
         try:
             await self.db.commit()
         except IntegrityError as exc:

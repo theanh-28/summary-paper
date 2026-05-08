@@ -57,9 +57,23 @@ async def get_current_admin_user(
     current_user: User = Depends(get_current_user),
 ) -> User:
     """
-    Dependency cho các route chỉ dành cho admin.
+    Dependency cho các route dành cho admin (và root).
     Kế thừa get_current_user (đã verify JWT + active) rồi kiểm tra role.
     """
-    if current_user.role != "admin":
+    if current_user.role not in ("admin", "root"):
         raise _ADMIN_EXCEPTION
+    return current_user
+
+
+async def get_current_root_user(
+    current_user: User = Depends(get_current_user),
+) -> User:
+    """
+    Dependency cho các route CHỈ dành cho root/owner.
+    """
+    if current_user.role != "root":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Root privileges required",
+        )
     return current_user

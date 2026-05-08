@@ -1,28 +1,37 @@
 services:
+  # ===========================================================================
+  # MySQL — Application DB + Metabase Metadata DB
+  # ===========================================================================
   db:
     image: mysql:8
     container_name: summary_mysql
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: summary_paper
+      MYSQL_DATABASE: summary_paper         # Application DB (tự tạo bởi Docker MySQL)
       MYSQL_USER: summary_user
       MYSQL_PASSWORD: summary_pass
     ports:
       - "3307:3306"
     volumes:
       - db_data:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro              # Tạo metabase_appdb
+      - ./database/metabase_restore.sql:/docker-entrypoint-initdb.d/02-restore.sql:ro  # Restore dashboards (nếu đã export)
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 10
+      start_period: 30s
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "3"
 
+  # ===========================================================================
+  # Backend — FastAPI + Alembic + Seed
+  # ===========================================================================
   backend:
     build: ./backend
     container_name: summary_backend
@@ -39,16 +48,20 @@ services:
     command: sh -c "alembic upgrade head && python seed.py && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/')"]
       interval: 30s
-      timeout: 5s
+      timeout: 10s
       retries: 3
+      start_period: 15s
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "3"
 
+  # ===========================================================================
+  # Frontend — React (Vite dev server)
+  # ===========================================================================
   frontend:
     build: ./frontend
     container_name: summary_frontend
@@ -56,7 +69,7 @@ services:
       - "5173:5173"
     volumes:
       - ./frontend:/app
-      - /app/node_modules # Tránh lỗi ghi đè thư mục node_modules từ máy thật vào docker
+      - /app/node_modules
     depends_on:
       - backend
     environment:
@@ -68,6 +81,9 @@ services:
         max-size: "10m"
         max-file: "3"
 
+  # ===========================================================================
+  # phpMyAdmin — Database management UI
+  # ===========================================================================
   phpmyadmin:
     image: phpmyadmin:latest
     container_name: summary_phpmyadmin
@@ -81,6 +97,13 @@ services:
     depends_on:
       - db
 
+  # ===========================================================================
+  # Metabase — Analytics & Dashboard Engine
+  #
+  # Dùng MySQL (metabase_appdb) thay vì H2 cho metadata storage.
+  # Lý do: H2 dễ corrupt khi container restart đột ngột.
+  #         MySQL đáng tin cậy hơn cho production.
+  # ===========================================================================
   metabase:
     image: metabase/metabase:latest
     container_name: summary_metabase
@@ -88,22 +111,31 @@ services:
     ports:
       - "3000:3000"
     environment:
-      # Metabase internal DB (H2) — cấu hình mặc định
-      MB_DB_TYPE: h2
-      MB_DB_FILE: /metabase-data/metabase.db
-      # Embedding secret — dùng để ký JWT cho embedded dashboards
-      MB_EMBEDDING_SECRET_KEY: "your-metabase-secret-key-change-in-production"
-    volumes:
-      - metabase_data:/metabase-data
+      # --- Metabase Application Database (metadata storage) ---
+      MB_DB_TYPE: mysql
+      MB_DB_DBNAME: metabase_appdb
+      MB_DB_PORT: 3306
+      MB_DB_USER: summary_user
+      MB_DB_PASS: summary_pass
+      MB_DB_HOST: db
+      # --- Embedding ---
+      MB_EMBEDDING_SECRET_KEY: "my-super-secret-metabase-embedding-key-32chars"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 20
+      start_period: 120s    # Metabase cần ~60-120s để khởi động lần đầu
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "3"
 
+
 volumes:
-  db_data:
-  metabase_data:
-  backend_uploads:
+  db_data:               # MySQL data — persist qua docker compose down
+  backend_uploads:       # Uploaded PDF files

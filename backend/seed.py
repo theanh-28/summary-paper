@@ -3,7 +3,7 @@
 Run with: python seed.py (from backend directory)
            or via docker-compose command.
 
-This script is idempotent: it checks primary keys before inserting.
+This script is idempotent: it checks primary keys before inserting, and updates existing records.
 """
 import asyncio
 import os
@@ -16,91 +16,140 @@ from app.models.summary import Summary
 
 
 USERS: List[Dict] = [
-    # Admin user — password: "123456"
-    {"id": 1, "email": "admin@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "admin"},
+    # ROOT user — password: "123456"
+    {"id": 1, "email": "admin@example.com", "full_name": "Quản trị viên Cấp cao", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "root"},
+    # ADMIN users — password: "123456"
+    {"id": 2, "email": "manager1@example.com", "full_name": "Quản lý Dự án", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "admin"},
+    {"id": 3, "email": "manager2@example.com", "full_name": "Quản lý Nội dung", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "admin"},
     # Regular users — password: "123456"
-    {"id": 2, "email": "user@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
-    {"id": 3, "email": "user2@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
-    {"id": 4, "email": "user3@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
-    {"id": 5, "email": "user4@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
-    {"id": 6, "email": "user6@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
-    {"id": 7, "email": "user7@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
-    {"id": 8, "email": "user8@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
-    {"id": 9, "email": "user9@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
-    {"id": 10, "email": "user10@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
-    {"id": 11, "email": "user11@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
-    {"id": 12, "email": "user12@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
-    {"id": 13, "email": "user13@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
-    {"id": 14, "email": "user14@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
-    {"id": 15, "email": "user15@example.com", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
+    {"id": 4, "email": "user1@example.com", "full_name": "Người dùng số 1", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
+    {"id": 5, "email": "user2@example.com", "full_name": "Người dùng số 2", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
+    {"id": 6, "email": "user3@example.com", "full_name": "Người dùng số 3", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
+    {"id": 7, "email": "user4@example.com", "full_name": "Người dùng số 4", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
+    {"id": 8, "email": "user5@example.com", "full_name": "Người dùng số 5", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
+    {"id": 9, "email": "user6@example.com", "full_name": "Người dùng số 6", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
+    {"id": 10, "email": "user7@example.com", "full_name": "Người dùng số 7", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
+    {"id": 11, "email": "user8@example.com", "full_name": "Người dùng số 8", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
+    {"id": 12, "email": "user9@example.com", "full_name": "Người dùng số 9", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
+    {"id": 13, "email": "user10@example.com", "full_name": "Người dùng số 10", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
+    {"id": 14, "email": "user11@example.com", "full_name": "Người dùng số 11", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
+    {"id": 15, "email": "user12@example.com", "full_name": "Người dùng số 12", "password": "Ap59QUkIqYuM9nS1Wm/C+w==$xw+nWY59tEfZUp1I3cGUy3UkwHVT8M1PGI97jJhTaeo=", "role": "user"},
 ]
 
 PAPERS: List[Dict] = [
-    {"id": 2, "user_id": 2, "title": "Nghiên cứu về Học máy", "content": "Nội dung ví dụ: Học máy là tập hợp thuật toán cho phép hệ thống học từ dữ liệu.", "file_path": None},
-    {"id": 3, "user_id": 2, "title": "Ứng dụng NLP trong y tế", "content": "Nội dung ví dụ: NLP giúp phân tích hồ sơ bệnh án và trích xuất thông tin.", "file_path": None},
-    {"id": 4, "user_id": 3, "title": "Mạng nơ-ron sâu", "content": "Nội dung ví dụ: Mạng sâu gồm nhiều lớp ẩn để học biểu diễn phức tạp.", "file_path": None},
-    {"id": 5, "user_id": 3, "title": "Thị giác máy tính", "content": "Nội dung ví dụ: Thị giác máy tính xử lý hình ảnh để nhận diện đối tượng.", "file_path": "uploads/cv_paper.pdf"},
-    {"id": 6, "user_id": 4, "title": "Hệ khuyến nghị", "content": "Nội dung ví dụ: Hệ khuyến nghị đề xuất sản phẩm dựa trên lịch sử người dùng.", "file_path": None},
-    {"id": 7, "user_id": 4, "title": "Robotics và điều khiển", "content": "Nội dung ví dụ: Robotics kết hợp phần mềm và phần cứng để tự động hóa nhiệm vụ.", "file_path": None},
-    {"id": 8, "user_id": 5, "title": "An ninh mạng cơ bản", "content": "Nội dung ví dụ: Tấn công và phòng thủ trong an ninh mạng.", "file_path": None},
-    {"id": 9, "user_id": 5, "title": "Khoa học dữ liệu cho doanh nghiệp", "content": "Nội dung ví dụ: Phân tích dữ liệu giúp ra quyết định kinh doanh.", "file_path": None},
-    {"id": 10, "user_id": 1, "title": "Tổng quan về AI đạo đức", "content": "Nội dung ví dụ: Vấn đề đạo đức khi triển khai AI trong đời sống.", "file_path": None},
-    {"id": 11, "user_id": 2, "title": "Tri thức biểu diễn và Semantic Web", "content": "Nội dung ví dụ: Semantic Web giúp kết nối dữ liệu ngữ nghĩa.", "file_path": None},
-    {"id": 12, "user_id": 3, "title": "Tối ưu hóa và thuật toán", "content": "Nội dung ví dụ: Các thuật toán tối ưu hóa giúp tìm nghiệm tốt cho bài toán.", "file_path": None},
-    {"id": 13, "user_id": 6, "title": "Mô hình đồ thị và ứng dụng", "content": "Nội dung: Ứng dụng đồ thị trong mạng xã hội và tìm đường ngắn nhất.", "file_path": None},
-    {"id": 14, "user_id": 6, "title": "Xử lý tín hiệu số", "content": "Nội dung: Các phương pháp lọc và biến đổi tín hiệu.", "file_path": None},
-    {"id": 15, "user_id": 7, "title": "Hệ phân tán và consistency", "content": "Nội dung: CAP theorem và các mô hình consistency.", "file_path": None},
-    {"id": 16, "user_id": 7, "title": "Cơ sở dữ liệu NoSQL", "content": "Nội dung: Kiến trúc và trade-offs giữa SQL và NoSQL.", "file_path": None},
-    {"id": 17, "user_id": 8, "title": "Blockchain cơ bản", "content": "Nội dung: Nguyên lý chuỗi khối và bằng chứng công việc.", "file_path": None},
-    {"id": 18, "user_id": 8, "title": "Hệ thống khuyến nghị nâng cao", "content": "Nội dung: Collaborative filtering và matrix factorization.", "file_path": None},
-    {"id": 19, "user_id": 9, "title": "Thị trường chứng khoán và ML", "content": "Nội dung: Ứng dụng học máy trong dự đoán thị trường tài chính.", "file_path": None},
-    {"id": 20, "user_id": 9, "title": "Xử lý ảnh y tế", "content": "Nội dung: Mạng CNN cho chẩn đoán hình ảnh y tế.", "file_path": None},
-    {"id": 21, "user_id": 10, "title": "Tối ưu hóa hyperparameter", "content": "Nội dung: Grid search, random search, Bayesian optimization.", "file_path": None},
-    {"id": 22, "user_id": 10, "title": "Học tăng cường cơ bản", "content": "Nội dung: Mô hình agent, reward, môi trường.", "file_path": None},
-    {"id": 23, "user_id": 11, "title": "Tri thức nhân tạo thông minh", "content": "Nội dung: Hệ expert systems và luật sản xuất.", "file_path": None},
-    {"id": 24, "user_id": 11, "title": "Kiến trúc microservices", "content": "Nội dung: Thiết kế services, giao tiếp và triển khai.", "file_path": None},
-    {"id": 25, "user_id": 12, "title": "Phân tích ngôn ngữ cảm xúc", "content": "Nội dung: Sentiment analysis trên dữ liệu mạng xã hội.", "file_path": None},
-    {"id": 26, "user_id": 12, "title": "Compression algorithms", "content": "Nội dung: LZW, Huffman và các thuật toán nén dữ liệu.", "file_path": None},
-    {"id": 27, "user_id": 13, "title": "Hệ thống thời gian thực", "content": "Nội dung: Kiến trúc xử lý stream và latency thấp.", "file_path": None},
-    {"id": 28, "user_id": 13, "title": "An toàn ứng dụng web", "content": "Nội dung: OWASP top 10 và phòng chống XSS/CSRF.", "file_path": None},
-    {"id": 29, "user_id": 14, "title": "Tiếng nói và nhận dạng giọng nói", "content": "Nội dung: Speech-to-text và mô hình acoustic.", "file_path": None},
-    {"id": 30, "user_id": 14, "title": "Trí tuệ nhân tạo explainable", "content": "Nội dung: Lý giải quyết định mô hình ML (XAI).", "file_path": None},
-    {"id": 31, "user_id": 15, "title": "IoT và edge computing", "content": "Nội dung: Xử lý tại edge cho thiết bị IoT.", "file_path": None},
-    {"id": 32, "user_id": 15, "title": "Testing tự động cho ML", "content": "Nội dung: Validation pipelines và data drift detection.", "file_path": None},
+    # Computer Science & AI
+    {"id": 1, "user_id": 2, "title": "Nghiên cứu về Học máy", "content": "Học máy là tập hợp thuật toán cho phép hệ thống học từ dữ liệu mà không cần lập trình rõ ràng.", "file_path": None},
+    {"id": 2, "user_id": 2, "title": "Ứng dụng NLP trong y tế", "content": "NLP giúp phân tích hồ sơ bệnh án, trích xuất thông tin lâm sàng và hỗ trợ chẩn đoán.", "file_path": None},
+    {"id": 3, "user_id": 3, "title": "Mạng nơ-ron sâu", "content": "Mạng sâu gồm nhiều lớp ẩn để học biểu diễn phức tạp của hình ảnh, âm thanh và văn bản.", "file_path": None},
+    {"id": 4, "user_id": 4, "title": "Blockchain cơ bản", "content": "Nguyên lý chuỗi khối, smart contracts và bằng chứng công việc trong mạng phi tập trung.", "file_path": None},
+    {"id": 5, "user_id": 5, "title": "Điện toán đám mây & Serverless", "content": "Sự tiến hóa của kiến trúc phần mềm sang mô hình Serverless giúp tối ưu chi phí và tự động mở rộng.", "file_path": None},
+    {"id": 6, "user_id": 6, "title": "Bảo mật Zero-Trust", "content": "Mô hình bảo mật không tin cậy bất kỳ ai kể cả trong mạng nội bộ, yêu cầu xác thực liên tục.", "file_path": None},
+    
+    # Y sinh & Sức khỏe (Biology & Medicine)
+    {"id": 7, "user_id": 7, "title": "Công nghệ mRNA trong Vaccine", "content": "Cơ chế hoạt động của vaccine mRNA trong việc kích hoạt hệ miễn dịch chống lại virus SARS-CoV-2.", "file_path": None},
+    {"id": 8, "user_id": 8, "title": "Chỉnh sửa gen CRISPR-Cas9", "content": "Tiềm năng của CRISPR trong việc điều trị các bệnh di truyền và những thách thức đạo đức.", "file_path": None},
+    {"id": 9, "user_id": 9, "title": "Phân tích hệ vi sinh vật đường ruột", "content": "Tác động của hệ vi sinh vật đường ruột đến sức khỏe tâm thần, tiêu hóa và bệnh lý béo phì.", "file_path": None},
+    {"id": 10, "user_id": 10, "title": "Ung thư học phân tử", "content": "Khám phá các đột biến gen gây ung thư và phương pháp điều trị đích (targeted therapy).", "file_path": None},
+    {"id": 11, "user_id": 11, "title": "Khoa học Giấc ngủ", "content": "Vai trò của giấc ngủ REM và Non-REM trong việc củng cố trí nhớ và phục hồi thể chất.", "file_path": None},
+
+    # Kinh tế & Tài chính (Economics & Finance)
+    {"id": 12, "user_id": 12, "title": "Tác động của Lạm phát toàn cầu", "content": "Phân tích nguyên nhân lạm phát sau đại dịch và các chính sách thắt chặt tiền tệ của FED.", "file_path": None},
+    {"id": 13, "user_id": 13, "title": "Tiền mã hóa và DeFi", "content": "Sự trỗi dậy của tài chính phi tập trung (DeFi) và rủi ro bong bóng trong thị trường Crypto.", "file_path": None},
+    {"id": 14, "user_id": 14, "title": "Kinh tế tuần hoàn", "content": "Mô hình phát triển bền vững, giảm thiểu rác thải thông qua tái chế và tối ưu hóa tài nguyên.", "file_path": None},
+    {"id": 15, "user_id": 15, "title": "Đầu tư giá trị & Phân tích cơ bản", "content": "Phương pháp định giá doanh nghiệp dựa trên dòng tiền tương lai và chỉ số tài chính.", "file_path": None},
+    {"id": 16, "user_id": 2, "title": "Hành vi người tiêu dùng Gen Z", "content": "Sự dịch chuyển thói quen mua sắm trực tuyến, sự ưa chuộng tính bền vững và xu hướng TikTok.", "file_path": None},
+
+    # Lịch sử & Văn hóa (History & Culture)
+    {"id": 17, "user_id": 3, "title": "Sự sụp đổ của Đế chế La Mã", "content": "Nguyên nhân chính trị, kinh tế và quân sự dẫn đến sự suy tàn của một đế chế vĩ đại.", "file_path": None},
+    {"id": 18, "user_id": 4, "title": "Cách mạng Công nghiệp lần thứ hai", "content": "Sự phát triển của điện lực, hóa học và sản xuất hàng loạt vào cuối thế kỷ 19.", "file_path": None},
+    {"id": 19, "user_id": 5, "title": "Chiến tranh Lạnh và Cuộc chạy đua Không gian", "content": "Sự ganh đua giữa Mỹ và Liên Xô thúc đẩy tiến bộ công nghệ nhảy vọt trong thế kỷ 20.", "file_path": None},
+    {"id": 20, "user_id": 6, "title": "Văn hóa Đại chúng và Toàn cầu hóa", "content": "Sự bành trướng của âm nhạc, phim ảnh Hollywood và K-Pop tới văn hóa bản địa.", "file_path": None},
+    {"id": 21, "user_id": 7, "title": "Phục hưng Ý (Renaissance)", "content": "Sự trỗi dậy của nghệ thuật, văn học và khoa học ở châu Âu sau Đêm trường Trung cổ.", "file_path": None},
+
+    # Kỹ thuật & Môi trường (Engineering & Environment)
+    {"id": 22, "user_id": 8, "title": "Năng lượng tái tạo: Lưu trữ điện năng", "content": "Công nghệ pin Lithium-ion, Solid-state battery và giải pháp lưu trữ năng lượng mặt trời.", "file_path": None},
+    {"id": 23, "user_id": 9, "title": "Khai phá không gian & Sao Hỏa", "content": "Tên lửa tái sử dụng và lộ trình đưa con người lên định cư Sao Hỏa của các tập đoàn tư nhân.", "file_path": None},
+    {"id": 24, "user_id": 10, "title": "Tác động của biến đổi khí hậu", "content": "Gia tăng mực nước biển đe dọa trực tiếp đến sinh kế của hàng triệu người tại các vùng ven biển.", "file_path": None},
+    {"id": 25, "user_id": 11, "title": "Kiến trúc xanh & Vật liệu thân thiện", "content": "Ứng dụng vật liệu tái chế và thiết kế tối ưu ánh sáng tự nhiên trong các tòa nhà cao tầng.", "file_path": None},
+    {"id": 26, "user_id": 12, "title": "Xe điện và Hạ tầng trạm sạc", "content": "Những thách thức trong việc phủ sóng hạ tầng sạc nhanh để thúc đẩy kỷ nguyên xe điện.", "file_path": None},
+
+    # Giáo dục, Xã hội & Luật (Education, Society & Law)
+    {"id": 27, "user_id": 13, "title": "Giáo dục trực tuyến thời kỳ hậu COVID", "content": "Sự chuyển dịch học tập, ưu và nhược điểm của E-learning đối với sự phát triển kỹ năng xã hội.", "file_path": None},
+    {"id": 28, "user_id": 14, "title": "Bản quyền trong thời đại AI tạo sinh", "content": "Các thách thức pháp lý khi AI học tập dựa trên tranh ảnh và văn bản có bản quyền của nghệ sĩ.", "file_path": None},
+    {"id": 29, "user_id": 15, "title": "Tác động của mạng xã hội tới giới trẻ", "content": "Hiệu ứng FOMO, trầm cảm và suy giảm khả năng tập trung do thuật toán gây nghiện.", "file_path": None},
+    {"id": 30, "user_id": 2, "title": "Bất bình đẳng thu nhập", "content": "Hố sâu ngăn cách giàu nghèo ngày càng gia tăng và tác động tiêu cực đến sự ổn định xã hội.", "file_path": None},
+    
+    # Tâm lý học & Triết học (Psychology & Philosophy)
+    {"id": 31, "user_id": 3, "title": "Liệu pháp nhận thức hành vi (CBT)", "content": "Cách CBT giúp bệnh nhân thay đổi suy nghĩ tiêu cực và khắc phục chứng rối loạn lo âu.", "file_path": None},
+    {"id": 32, "user_id": 4, "title": "Nghịch lý của sự lựa chọn", "content": "Vì sao quá nhiều lựa chọn lại khiến con người căng thẳng và khó thỏa mãn hơn.", "file_path": None},
+    {"id": 33, "user_id": 5, "title": "Trí tuệ cảm xúc (EQ) trong lãnh đạo", "content": "Tại sao EQ đóng vai trò quan trọng hơn IQ trong việc quản lý và truyền cảm hứng cho đội ngũ.", "file_path": None},
+    {"id": 34, "user_id": 6, "title": "Thuyết vị lợi (Utilitarianism)", "content": "Triết lý hành động mang lại hạnh phúc lớn nhất cho số đông lớn nhất và các tranh cãi đạo đức.", "file_path": None},
+    
+    # Khoa học tự nhiên (Natural Sciences)
+    {"id": 35, "user_id": 7, "title": "Điện toán Lượng tử", "content": "Nguyên lý Chồng chập và Vướng mắc lượng tử hứa hẹn thay đổi sức mạnh tính toán máy tính.", "file_path": None},
+    {"id": 36, "user_id": 8, "title": "Lỗ đen và Thuyết tương đối rộng", "content": "Sự bẻ cong không thời gian và những hiểu biết mới nhất về sự hình thành của siêu lỗ đen.", "file_path": None},
+    {"id": 37, "user_id": 9, "title": "Sự tuyệt chủng kỷ Creta-Paleogen", "content": "Giả thuyết thiên thạch và quá trình diệt vong của loài khủng long cách đây 66 triệu năm.", "file_path": None},
+    {"id": 38, "user_id": 10, "title": "Hạt Higgs Boson", "content": "Khám phá về Hạt của Chúa và vai trò của nó trong việc tạo ra khối lượng cho các hạt cơ bản.", "file_path": None},
+    {"id": 39, "user_id": 11, "title": "Biến đổi gen ở cây trồng", "content": "Sử dụng công nghệ sinh học tạo ra giống cây chịu hạn, kháng sâu bệnh giải quyết nạn đói.", "file_path": None},
+    {"id": 40, "user_id": 12, "title": "Thuyết Đa vũ trụ (Multiverse)", "content": "Giả thuyết về sự tồn tại của vô số vũ trụ song song và giới hạn của vật lý lý thuyết.", "file_path": None},
 ]
 
 SUMMARIES: List[Dict] = [
-    {"id": 2, "paper_id": 2, "type": "short", "content": "Tóm tắt: Học máy học từ dữ liệu để tạo mô hình dự đoán."},
-    {"id": 3, "paper_id": 3, "type": "short", "content": "Tóm tắt: NLP hỗ trợ xử lý ngôn ngữ tự nhiên trong y tế."},
-    {"id": 4, "paper_id": 4, "type": "short", "content": "Tóm tắt: Mạng nơ-ron sâu học biểu diễn dữ liệu phức tạp."},
-    {"id": 5, "paper_id": 5, "type": "short", "content": "Tóm tắt: Thị giác máy tính nhận diện đối tượng trong ảnh."},
-    {"id": 6, "paper_id": 6, "type": "short", "content": "Tóm tắt: Hệ khuyến nghị đề xuất dựa trên lịch sử và tương tự."},
-    {"id": 7, "paper_id": 7, "type": "short", "content": "Tóm tắt: Robotics kết hợp phần mềm và phần cứng để tự động hóa."},
-    {"id": 8, "paper_id": 8, "type": "short", "content": "Tóm tắt: An ninh mạng liên quan tới phòng thủ và tấn công."},
-    {"id": 9, "paper_id": 9, "type": "short", "content": "Tóm tắt: Khoa học dữ liệu hỗ trợ quyết định doanh nghiệp."},
-    {"id": 10, "paper_id": 10, "type": "short", "content": "Tóm tắt: Bàn về đạo đức khi triển khai hệ thống AI."},
-    {"id": 11, "paper_id": 11, "type": "short", "content": "Tóm tắt: Semantic Web cho phép kết nối dữ liệu có ý nghĩa."},
-    {"id": 12, "paper_id": 12, "type": "short", "content": "Tóm tắt: Thuật toán tối ưu hóa tìm nghiệm tốt cho bài toán."},
-    {"id": 13, "paper_id": 13, "type": "short", "content": "Tóm tắt: Mô hình đồ thị hỗ trợ phân tích mạng xã hội và tìm đường ngắn."},
-    {"id": 14, "paper_id": 14, "type": "short", "content": "Tóm tắt: Kỹ thuật xử lý tín hiệu để lọc và biến đổi dữ liệu thời gian."},
-    {"id": 15, "paper_id": 15, "type": "short", "content": "Tóm tắt: Hệ phân tán đối chiếu CAP và trade-offs consistency."},
-    {"id": 16, "paper_id": 16, "type": "short", "content": "Tóm tắt: NoSQL cung cấp khả năng mở rộng ở chi phí nhất định so với SQL."},
-    {"id": 17, "paper_id": 17, "type": "short", "content": "Tóm tắt: Blockchain là sổ cái phân tán với cơ chế đồng thuận."},
-    {"id": 18, "paper_id": 18, "type": "short", "content": "Tóm tắt: Các thuật toán recommendation bao gồm collaborative filtering."},
-    {"id": 19, "paper_id": 19, "type": "short", "content": "Tóm tắt: ML được dùng trong phân tích và dự đoán biến động tài chính."},
-    {"id": 20, "paper_id": 20, "type": "short", "content": "Tóm tắt: CNN ứng dụng trong phân tích ảnh y tế để hỗ trợ chẩn đoán."},
-    {"id": 21, "paper_id": 21, "type": "short", "content": "Tóm tắt: Các phương pháp tối ưu hóa hyperparameter cải thiện hiệu năng mô hình."},
-    {"id": 22, "paper_id": 22, "type": "short", "content": "Tóm tắt: Học tăng cường đào tạo agent qua tương tác và reward."},
-    {"id": 23, "paper_id": 23, "type": "short", "content": "Tóm tắt: Expert systems sử dụng luật để mô phỏng tri thức chuyên gia."},
-    {"id": 24, "paper_id": 24, "type": "short", "content": "Tóm tắt: Microservices tách ứng dụng thành services độc lập dễ vận hành."},
-    {"id": 25, "paper_id": 25, "type": "short", "content": "Tóm tắt: Sentiment analysis phân tích cảm xúc từ dữ liệu text."},
-    {"id": 26, "paper_id": 26, "type": "short", "content": "Tóm tắt: Thuật toán nén dữ liệu giúp giảm kích thước lưu trữ và băng thông."},
-    {"id": 27, "paper_id": 27, "type": "short", "content": "Tóm tắt: Hệ thống thời gian thực xử lý stream để phản hồi nhanh."},
-    {"id": 28, "paper_id": 28, "type": "short", "content": "Tóm tắt: Bảo mật web tập trung vào OWASP top 10 và biện pháp phòng vệ."},
-    {"id": 29, "paper_id": 29, "type": "short", "content": "Tóm tắt: Nhận dạng giọng nói chuyển speech sang text bằng mô hình acoustic."},
-    {"id": 30, "paper_id": 30, "type": "short", "content": "Tóm tắt: XAI giúp giải thích quyết định của mô hình ML cho người dùng."},
-    {"id": 31, "paper_id": 31, "type": "short", "content": "Tóm tắt: Edge computing xử lý dữ liệu gần nguồn để giảm latency."},
-    {"id": 32, "paper_id": 32, "type": "short", "content": "Tóm tắt: Testing ML cần pipelines và kiểm tra data drift."},
+    # CS & AI
+    {"id": 1, "paper_id": 1, "type": "short", "content": "Tóm tắt: Học máy cho phép tạo mô hình dự đoán từ dữ liệu quá khứ."},
+    {"id": 2, "paper_id": 2, "type": "short", "content": "Tóm tắt: NLP hỗ trợ trích xuất thông tin y tế tự động từ hồ sơ lâm sàng."},
+    {"id": 3, "paper_id": 3, "type": "short", "content": "Tóm tắt: Deep Learning sử dụng mạng nhiều lớp cho dữ liệu phi cấu trúc."},
+    {"id": 4, "paper_id": 4, "type": "short", "content": "Tóm tắt: Blockchain đảm bảo tính toàn vẹn và minh bạch dữ liệu nhờ mạng phi tập trung."},
+    {"id": 5, "paper_id": 5, "type": "short", "content": "Tóm tắt: Serverless loại bỏ gánh nặng quản lý hạ tầng, tính tiền theo thời gian chạy."},
+    {"id": 6, "paper_id": 6, "type": "short", "content": "Tóm tắt: Zero-Trust giả định mọi kết nối đều có nguy cơ, yêu cầu xác thực liên tục."},
+    
+    # Y sinh
+    {"id": 7, "paper_id": 7, "type": "short", "content": "Tóm tắt: mRNA kích hoạt miễn dịch tế bào nhanh và an toàn hơn vaccine truyền thống."},
+    {"id": 8, "paper_id": 8, "type": "short", "content": "Tóm tắt: CRISPR giúp cắt dán gen, mở cơ hội chữa bệnh di truyền nhưng vướng rào cản đạo đức."},
+    {"id": 9, "paper_id": 9, "type": "short", "content": "Tóm tắt: Hệ vi sinh đường ruột đóng vai trò như một bộ não thứ hai điều hòa cơ thể."},
+    {"id": 10, "paper_id": 10, "type": "short", "content": "Tóm tắt: Phân tích gen ung thư giúp điều trị đích hiệu quả và giảm tác dụng phụ."},
+    {"id": 11, "paper_id": 11, "type": "short", "content": "Tóm tắt: Ngủ không đủ giấc dẫn đến suy giảm nhận thức và tăng rủi ro bệnh chuyển hóa."},
+
+    # Kinh tế
+    {"id": 12, "paper_id": 12, "type": "short", "content": "Tóm tắt: Lạm phát gia tăng do đứt gãy chuỗi cung ứng và chính sách bơm tiền quá mức."},
+    {"id": 13, "paper_id": 13, "type": "short", "content": "Tóm tắt: DeFi loại bỏ ngân hàng trung gian nhưng tiềm ẩn nguy cơ hack smart contract."},
+    {"id": 14, "paper_id": 14, "type": "short", "content": "Tóm tắt: Kinh tế tuần hoàn biến rác thải thành nguyên liệu đầu vào cho chu trình mới."},
+    {"id": 15, "paper_id": 15, "type": "short", "content": "Tóm tắt: Đầu tư giá trị tập trung vào nội tại doanh nghiệp thay vì biến động thị trường."},
+    {"id": 16, "paper_id": 16, "type": "short", "content": "Tóm tắt: Gen Z ưu tiên các thương hiệu xanh và mua sắm chịu ảnh hưởng mạnh bởi MXH."},
+
+    # Lịch sử
+    {"id": 17, "paper_id": 17, "type": "short", "content": "Tóm tắt: La Mã suy tàn do khủng hoảng kinh tế, tham nhũng và áp lực từ ngoại bang."},
+    {"id": 18, "paper_id": 18, "type": "short", "content": "Tóm tắt: Động cơ đốt trong và điện khí hóa đã thay đổi hoàn toàn cục diện sản xuất kỷ 19."},
+    {"id": 19, "paper_id": 19, "type": "short", "content": "Tóm tắt: Chạy đua không gian là thành tựu vĩ đại được thúc đẩy bởi đối đầu chính trị Mỹ-Xô."},
+    {"id": 20, "paper_id": 20, "type": "short", "content": "Tóm tắt: Toàn cầu hóa giúp văn hóa đại chúng lan tỏa nhưng đe dọa bản sắc địa phương."},
+    {"id": 21, "paper_id": 21, "type": "short", "content": "Tóm tắt: Phục hưng khơi mào cho tư duy nhân văn và sự bùng nổ của nghệ thuật châu Âu."},
+
+    # Kỹ thuật
+    {"id": 22, "paper_id": 22, "type": "short", "content": "Tóm tắt: Lưu trữ điện năng quy mô lớn là chìa khóa để chuyển đổi 100% năng lượng sạch."},
+    {"id": 23, "paper_id": 23, "type": "short", "content": "Tóm tắt: Tên lửa tái sử dụng giảm thiểu 90% chi phí vận chuyển hàng hóa lên quỹ đạo."},
+    {"id": 24, "paper_id": 24, "type": "short", "content": "Tóm tắt: Mực nước biển dâng do băng tan đe dọa sinh kế hàng triệu người vùng ven biển."},
+    {"id": 25, "paper_id": 25, "type": "short", "content": "Tóm tắt: Tòa nhà xanh giúp giảm khí nhà kính và tiết kiệm 30-50% điện năng."},
+    {"id": 26, "paper_id": 26, "type": "short", "content": "Tóm tắt: Thiếu trạm sạc là rào cản lớn nhất ngăn cản sự phổ cập nhanh chóng của xe điện."},
+
+    # Xã hội & Luật
+    {"id": 27, "paper_id": 27, "type": "short", "content": "Tóm tắt: EdTech lên ngôi, nhưng thiếu tương tác xã hội là điểm yếu của học online."},
+    {"id": 28, "paper_id": 28, "type": "short", "content": "Tóm tắt: Luật bản quyền hiện hành gặp lúng túng trước dữ liệu huấn luyện của các mô hình AI."},
+    {"id": 29, "paper_id": 29, "type": "short", "content": "Tóm tắt: Thuật toán gây nghiện của MXH làm tăng tỷ lệ trầm cảm và thiếu tập trung ở thanh thiếu niên."},
+    {"id": 30, "paper_id": 30, "type": "short", "content": "Tóm tắt: Bất bình đẳng thu nhập tạo ra phân hóa giai cấp sâu sắc và bất ổn chính trị."},
+
+    # Tâm lý học
+    {"id": 31, "paper_id": 31, "type": "short", "content": "Tóm tắt: CBT hiệu quả cao nhờ tập trung sửa đổi các niềm tin cốt lõi sai lệch."},
+    {"id": 32, "paper_id": 32, "type": "short", "content": "Tóm tắt: Ít lựa chọn giúp con người ra quyết định nhanh và cảm thấy hạnh phúc hơn."},
+    {"id": 33, "paper_id": 33, "type": "short", "content": "Tóm tắt: EQ cao giúp lãnh đạo thấu cảm và giải quyết xung đột nội bộ tốt hơn IQ."},
+    {"id": 34, "paper_id": 34, "type": "short", "content": "Tóm tắt: Thuyết vị lợi đôi khi phải hi sinh thiểu số để bảo vệ lợi ích của đa số."},
+
+    # Khoa học tự nhiên
+    {"id": 35, "paper_id": 35, "type": "short", "content": "Tóm tắt: Máy tính lượng tử sẽ bẻ khóa mọi hệ thống mã hóa mật mã học truyền thống."},
+    {"id": 36, "paper_id": 36, "type": "short", "content": "Tóm tắt: Lỗ đen có lực hấp dẫn mạnh đến mức ánh sáng cũng không thể thoát ra."},
+    {"id": 37, "paper_id": 37, "type": "short", "content": "Tóm tắt: Thiên thạch va chạm gây ra biến đổi khí hậu đột ngột, xóa sổ loài khủng long."},
+    {"id": 38, "paper_id": 38, "type": "short", "content": "Tóm tắt: Hạt Higgs giúp hoàn thiện Mô hình Chuẩn của vật lý hạt vi mô."},
+    {"id": 39, "paper_id": 39, "type": "short", "content": "Tóm tắt: Cây trồng GMO cho năng suất cao nhưng đối mặt với sự e ngại của người tiêu dùng."},
+    {"id": 40, "paper_id": 40, "type": "short", "content": "Tóm tắt: Đa vũ trụ lý giải sự tinh chỉnh hoàn hảo của vật lý để có sự sống."},
 ]
 
 
@@ -110,12 +159,10 @@ async def seed() -> None:
         for u in USERS:
             existing = await session.get(User, u["id"])
             if not existing:
-                session.add(User(
-                    id=u["id"],
-                    email=u["email"],
-                    password=u["password"],
-                    role=u["role"],
-                ))
+                session.add(User(**u))
+            else:
+                for key, value in u.items():
+                    setattr(existing, key, value)
 
         await session.commit()
 
@@ -123,15 +170,10 @@ async def seed() -> None:
         for p in PAPERS:
             existing = await session.get(Paper, p["id"])
             if not existing:
-                session.add(
-                    Paper(
-                        id=p["id"],
-                        user_id=p["user_id"],
-                        title=p["title"],
-                        content=p["content"],
-                        file_path=p["file_path"],
-                    )
-                )
+                session.add(Paper(**p))
+            else:
+                for key, value in p.items():
+                    setattr(existing, key, value)
 
         await session.commit()
 
@@ -139,9 +181,10 @@ async def seed() -> None:
         for s in SUMMARIES:
             existing = await session.get(Summary, s["id"])
             if not existing:
-                session.add(
-                    Summary(id=s["id"], paper_id=s["paper_id"], type=s["type"], content=s["content"])
-                )
+                session.add(Summary(**s))
+            else:
+                for key, value in s.items():
+                    setattr(existing, key, value)
 
         await session.commit()
 

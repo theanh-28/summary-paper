@@ -9,12 +9,12 @@ class UserService:
     def __init__(self, user_repository: UserRepository):
         self.user_repository = user_repository
 
-    async def create_user(self, email: str, password: str) -> User:
+    async def create_user(self, email: str, password: str, full_name: str | None = None) -> User:
         existing_user = await self.user_repository.get_by_email(email)
         if existing_user:
             raise ValueError("Email already exists")
         hashed_password = hash_password(password)
-        return await self.user_repository.create(email=email, password=hashed_password)
+        return await self.user_repository.create(email=email, password=hashed_password, full_name=full_name)
 
     async def authenticate_user(self, email: str, password: str) -> User | None:
         """Xác thực email + password. Trả về User nếu đúng, None nếu sai."""
@@ -35,7 +35,7 @@ class UserService:
         return await self.user_repository.list(skip=skip, limit=limit)
 
     async def update_user(
-        self, user_id: int, email: str | None = None, password: str | None = None
+        self, user_id: int, email: str | None = None, password: str | None = None, full_name: str | None = None
     ) -> User | None:
         user = await self.user_repository.get_by_id(user_id)
         if not user:
@@ -47,7 +47,17 @@ class UserService:
                 raise ValueError("Email already exists")
 
         hashed_password = hash_password(password) if password is not None else None
-        return await self.user_repository.update(user=user, email=email, password=hashed_password)
+        return await self.user_repository.update(user=user, email=email, password=hashed_password, full_name=full_name)
+
+    async def change_password(self, user_id: int, current_password: str, new_password: str) -> bool:
+        user = await self.user_repository.get_by_id(user_id)
+        if not user:
+            return False
+        if not verify_password(current_password, user.password):
+            raise ValueError("Mật khẩu hiện tại không chính xác")
+        hashed_password = hash_password(new_password)
+        await self.user_repository.update(user=user, password=hashed_password)
+        return True
 
     async def delete_user(self, user_id: int) -> bool:
         user = await self.user_repository.get_by_id(user_id)

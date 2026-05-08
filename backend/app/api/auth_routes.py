@@ -29,9 +29,11 @@ async def register(payload: UserCreate, db: AsyncSession = Depends(get_db)):
     user_service = UserService(UserRepository(db))
     try:
         user = await user_service.create_user(
-            email=payload.email, password=payload.password
+            email=payload.email,
+            password=payload.password,
+            full_name=payload.full_name
         )
-        logger.info("New user registered: id=%s email=%s", user.id, user.email)
+        logger.info("New user registered: id=%s email=%s full_name=%s", user.id, user.email, user.full_name)
         return user
     except ValueError as exc:
         raise HTTPException(

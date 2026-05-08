@@ -11,8 +11,9 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String(255), unique=True, index=True, nullable=False)
     password = Column(String(255), nullable=False)
+    full_name = Column(String(255), nullable=True)
     role = Column(
-        Enum("admin", "user", name="user_role"),
+        Enum("root", "admin", "user", name="user_role"),
         nullable=False,
         default="user",
         server_default="user",

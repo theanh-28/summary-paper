@@ -24,6 +24,8 @@ class Settings(BaseSettings):
     cors_origins: str = "http://localhost:5173"
 
     # --- Metabase Embedding ---
+    # METABASE_SITE_URL phải là URL mà BROWSER truy cập được (không phải Docker internal)
+    # vì embed URL sẽ được load trong iframe bởi trình duyệt của user.
     metabase_site_url: str = "http://localhost:3000"
     metabase_secret_key: str = ""  # Set via env var METABASE_SECRET_KEY
     metabase_admin_dashboard_id: int = 1  # ID of admin dashboard in Metabase

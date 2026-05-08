@@ -1,0 +1,15 @@
+-- =============================================================================
+-- Metabase Full Backup (Tự động phục hồi khi chạy Docker)
+-- =============================================================================
+-- File này sẽ tự động được nạp vào MySQL khi hệ thống chạy lần đầu tiên.
+-- Nó sẽ khôi phục MỌI THỨ: Tài khoản Admin, Cấu hình DB, và Dashboards!
+--
+-- CÁCH HOẠT ĐỘNG:
+-- 1. Bạn mở http://localhost:3000
+-- 2. Tự thiết lập bằng tay: Tạo tài khoản, Kết nối Database (summary_paper),
+--    vẽ Dashboard, và Bật tính năng Embedding.
+-- 3. Sau khi ưng ý, chạy file: metabase\export.cmd
+-- 4. File này sẽ được ghi đè bằng toàn bộ cấu hình Metabase của bạn!
+-- 5. Push file này lên GitHub. Khi người khác clone về và chạy, họ sẽ
+--    nhận được một bản sao chính xác 100% Metabase của bạn!
+-- =============================================================================
