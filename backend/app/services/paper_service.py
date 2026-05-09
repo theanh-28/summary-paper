@@ -17,6 +17,7 @@ class PaperService:
         title: str,
         content: str | None = None,
         file_path: str | None = None,
+        page_count: int | None = None,
     ) -> Paper:
         # user_id đã được verify bởi JWT dependency ở route layer,
         # không cần query DB thêm lần nữa
@@ -25,6 +26,7 @@ class PaperService:
             title=title,
             content=content,
             file_path=file_path,
+            page_count=page_count,
         )
 
     async def get_paper_by_id(self, paper_id: int) -> Paper | None:

@@ -80,7 +80,7 @@ async def upload_and_create_paper(
                 await out_file.write(chunk)
 
         # Trích xuất text từ PDF — chạy trong thread pool vì là blocking I/O
-        extracted_text = await asyncio.to_thread(extract_text_from_pdf, file_path)
+        extracted_text, page_count = await asyncio.to_thread(extract_text_from_pdf, file_path)
 
         # Lưu vào database
         paper_service = PaperService(PaperRepository(db), UserRepository(db))
@@ -89,6 +89,7 @@ async def upload_and_create_paper(
             title=title,
             content=extracted_text,
             file_path=file_path,
+            page_count=page_count,
         )
         logger.info("Paper uploaded: id=%s user=%s file=%s", paper.id, current_user.id, safe_filename)
         return paper

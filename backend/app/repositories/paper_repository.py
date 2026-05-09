@@ -16,8 +16,13 @@ class PaperRepository:
         title: str,
         content: str | None = None,
         file_path: str | None = None,
+        page_count: int | None = None,
+        status: str = "uploaded",
     ) -> Paper:
-        paper = Paper(user_id=user_id, title=title, content=content, file_path=file_path)
+        paper = Paper(
+            user_id=user_id, title=title, content=content, 
+            file_path=file_path, page_count=page_count, status=status
+        )
         self.db.add(paper)
         await self.db.commit()
         await self.db.refresh(paper)
@@ -56,6 +61,10 @@ class PaperRepository:
         title: str | None = None,
         content: str | None = None,
         file_path: str | None = None,
+        page_count: int | None = None,
+        status: str | None = None,
+        processing_time_seconds: int | None = None,
+        error_message: str | None = None,
     ) -> Paper:
         if title is not None:
             paper.title = title
@@ -63,6 +72,14 @@ class PaperRepository:
             paper.content = content
         if file_path is not None:
             paper.file_path = file_path
+        if page_count is not None:
+            paper.page_count = page_count
+        if status is not None:
+            paper.status = status
+        if processing_time_seconds is not None:
+            paper.processing_time_seconds = processing_time_seconds
+        if error_message is not None:
+            paper.error_message = error_message
         await self.db.commit()
         await self.db.refresh(paper)
         return paper

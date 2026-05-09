@@ -25,6 +25,7 @@ class UserRead(BaseModel):
     role: Literal["root", "admin", "user"]
     is_active: bool
     created_at: datetime
+    last_login: datetime | None = None
 
 
 class UserRoleUpdate(BaseModel):

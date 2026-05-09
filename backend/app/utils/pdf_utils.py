@@ -4,7 +4,7 @@ from pypdf import PdfReader
 
 logger = logging.getLogger(__name__)
 
-def extract_text_from_pdf(file_path: str) -> str:
+def extract_text_from_pdf(file_path: str) -> tuple[str, int]:
     """
     Trích xuất toàn bộ văn bản từ một file PDF.
     
@@ -12,7 +12,7 @@ def extract_text_from_pdf(file_path: str) -> str:
         file_path (str): Đường dẫn tới file PDF.
         
     Returns:
-        str: Nội dung text trích xuất được.
+        tuple[str, int]: Nội dung text trích xuất được và số trang.
         
     Raises:
         FileNotFoundError: Nếu file không tồn tại.
@@ -34,7 +34,8 @@ def extract_text_from_pdf(file_path: str) -> str:
             if text:
                 text_content.append(text)
                 
-        return "\n".join(text_content)
+        page_count = len(reader.pages)
+        return "\n".join(text_content), page_count
     except Exception as e:
         logger.error(f"Lỗi khi đọc file PDF {file_path}: {str(e)}")
         raise ValueError(f"Không thể trích xuất văn bản từ PDF: {str(e)}")

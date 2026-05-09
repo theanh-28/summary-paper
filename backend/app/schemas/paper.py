@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Literal
 
 from pydantic import BaseModel, ConfigDict
 
@@ -23,5 +24,10 @@ class PaperRead(BaseModel):
     title: str
     content: str | None
     file_path: str | None
+    page_count: int | None = None
+    status: Literal["uploaded", "processing", "completed", "failed"]
+    processing_time_seconds: int | None = None
+    error_message: str | None = None
     created_at: datetime
+    updated_at: datetime
 
