@@ -55,6 +55,9 @@ class PaperService:
         title: str | None = None,
         content: str | None = None,
         file_path: str | None = None,
+        status: str | None = None,
+        processing_time_seconds: int | None = None,
+        error_message: str | None = None,
     ) -> Paper | None:
         # Kiểm tra tồn tại VÀ quyền sở hữu cùng lúc
         paper = await self.paper_repository.get_by_id_and_owner(
@@ -67,6 +70,9 @@ class PaperService:
             title=title,
             content=content,
             file_path=file_path,
+            status=status,
+            processing_time_seconds=processing_time_seconds,
+            error_message=error_message,
         )
 
     async def delete_paper(self, paper_id: int, owner_id: int) -> bool:
