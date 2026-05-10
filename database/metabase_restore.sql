@@ -31,20 +31,20 @@ DROP TABLE IF EXISTS `DATABASECHANGELOG`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `DATABASECHANGELOG` (
-  `ID` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `AUTHOR` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `FILENAME` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ID` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `AUTHOR` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `FILENAME` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `DATEEXECUTED` datetime NOT NULL,
   `ORDEREXECUTED` int NOT NULL,
-  `EXECTYPE` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `MD5SUM` varchar(35) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `DESCRIPTION` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `COMMENTS` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `TAG` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `LIQUIBASE` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `CONTEXTS` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `LABELS` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `DEPLOYMENT_ID` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `EXECTYPE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `MD5SUM` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `DESCRIPTION` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `COMMENTS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `TAG` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `LIQUIBASE` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `CONTEXTS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `LABELS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `DEPLOYMENT_ID` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   UNIQUE KEY `idx_databasechangelog_id_author_filename` (`ID`,`AUTHOR`,`FILENAME`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -133,7 +133,7 @@ CREATE TABLE `QRTZ_CRON_TRIGGERS` (
 
 LOCK TABLES `QRTZ_CRON_TRIGGERS` WRITE;
 /*!40000 ALTER TABLE `QRTZ_CRON_TRIGGERS` DISABLE KEYS */;
-INSERT INTO `QRTZ_CRON_TRIGGERS` VALUES ('MetabaseScheduler','metabase.task.anonymous-stats.trigger','DEFAULT','0 3 8 * * ? *','GMT'),('MetabaseScheduler','metabase.task.creator-sentiment-emails.trigger','DEFAULT','0 0 2 ? * 7','GMT'),('MetabaseScheduler','metabase.task.follow-up-emails.trigger','DEFAULT','0 0 12 * * ? *','GMT'),('MetabaseScheduler','metabase.task.oauth-server.cleanup-expired-tokens.trigger','DEFAULT','0 0 0 * * ? *','GMT'),('MetabaseScheduler','metabase.task.refresh-channel-cache.trigger','DEFAULT','0 34 0/4 1/1 * ? *','GMT'),('MetabaseScheduler','metabase.task.session-cleanup.trigger','DEFAULT','0 0 2 * * ? *','GMT'),('MetabaseScheduler','metabase.task.sync-and-analyze.trigger.1','DEFAULT','0 48 * * * ? *','GMT'),('MetabaseScheduler','metabase.task.sync-and-analyze.trigger.2','DEFAULT','0 20 * * * ? *','GMT'),('MetabaseScheduler','metabase.task.task-history-cleanup.trigger','DEFAULT','0 0 0 * * ? *','GMT'),('MetabaseScheduler','metabase.task.task-run-heartbeat.trigger','DEFAULT','0 */10 * * * ? *','GMT'),('MetabaseScheduler','metabase.task.transforms.trigger.1','DEFAULT','0 0 * * * ? *','GMT'),('MetabaseScheduler','metabase.task.transforms.trigger.2','DEFAULT','0 0 0 * * ? *','GMT'),('MetabaseScheduler','metabase.task.transforms.trigger.3','DEFAULT','0 0 0 ? * 1 *','GMT'),('MetabaseScheduler','metabase.task.transforms.trigger.4','DEFAULT','0 0 0 1 * ? *','GMT'),('MetabaseScheduler','metabase.task.truncate-audit-tables.trigger','DEFAULT','0 0 */12 * * ? *','GMT'),('MetabaseScheduler','metabase.task.update-field-values.trigger.1','DEFAULT','0 0 19 * * ? *','GMT'),('MetabaseScheduler','metabase.task.update-field-values.trigger.2','DEFAULT','0 0 16 * * ? *','GMT'),('MetabaseScheduler','metabase.task.upgrade-checks.trigger','DEFAULT','0 35 23,11 * * ? *','GMT');
+INSERT INTO `QRTZ_CRON_TRIGGERS` VALUES ('MetabaseScheduler','metabase.task.anonymous-stats.trigger','DEFAULT','0 39 8 * * ? *','GMT'),('MetabaseScheduler','metabase.task.creator-sentiment-emails.trigger','DEFAULT','0 0 2 ? * 7','GMT'),('MetabaseScheduler','metabase.task.follow-up-emails.trigger','DEFAULT','0 0 12 * * ? *','GMT'),('MetabaseScheduler','metabase.task.oauth-server.cleanup-expired-tokens.trigger','DEFAULT','0 0 0 * * ? *','GMT'),('MetabaseScheduler','metabase.task.refresh-channel-cache.trigger','DEFAULT','0 34 0/4 1/1 * ? *','GMT'),('MetabaseScheduler','metabase.task.session-cleanup.trigger','DEFAULT','0 0 2 * * ? *','GMT'),('MetabaseScheduler','metabase.task.sync-and-analyze.trigger.1','DEFAULT','0 48 * * * ? *','GMT'),('MetabaseScheduler','metabase.task.sync-and-analyze.trigger.2','DEFAULT','0 20 * * * ? *','GMT'),('MetabaseScheduler','metabase.task.task-history-cleanup.trigger','DEFAULT','0 0 0 * * ? *','GMT'),('MetabaseScheduler','metabase.task.task-run-heartbeat.trigger','DEFAULT','0 */10 * * * ? *','GMT'),('MetabaseScheduler','metabase.task.transforms.trigger.1','DEFAULT','0 0 * * * ? *','GMT'),('MetabaseScheduler','metabase.task.transforms.trigger.2','DEFAULT','0 0 0 * * ? *','GMT'),('MetabaseScheduler','metabase.task.transforms.trigger.3','DEFAULT','0 0 0 ? * 1 *','GMT'),('MetabaseScheduler','metabase.task.transforms.trigger.4','DEFAULT','0 0 0 1 * ? *','GMT'),('MetabaseScheduler','metabase.task.truncate-audit-tables.trigger','DEFAULT','0 0 */12 * * ? *','GMT'),('MetabaseScheduler','metabase.task.update-field-values.trigger.1','DEFAULT','0 0 19 * * ? *','GMT'),('MetabaseScheduler','metabase.task.update-field-values.trigger.2','DEFAULT','0 0 16 * * ? *','GMT'),('MetabaseScheduler','metabase.task.upgrade-checks.trigger','DEFAULT','0 43 15,3 * * ? *','GMT');
 /*!40000 ALTER TABLE `QRTZ_CRON_TRIGGERS` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -280,7 +280,7 @@ CREATE TABLE `QRTZ_SCHEDULER_STATE` (
 
 LOCK TABLES `QRTZ_SCHEDULER_STATE` WRITE;
 /*!40000 ALTER TABLE `QRTZ_SCHEDULER_STATE` DISABLE KEYS */;
-INSERT INTO `QRTZ_SCHEDULER_STATE` VALUES ('MetabaseScheduler','77c86232bae01778385658849',1778386879179,20000);
+INSERT INTO `QRTZ_SCHEDULER_STATE` VALUES ('MetabaseScheduler','b14ad2fefc531778437906758',1778438068587,20000);
 /*!40000 ALTER TABLE `QRTZ_SCHEDULER_STATE` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -309,7 +309,7 @@ CREATE TABLE `QRTZ_SIMPLE_TRIGGERS` (
 
 LOCK TABLES `QRTZ_SIMPLE_TRIGGERS` WRITE;
 /*!40000 ALTER TABLE `QRTZ_SIMPLE_TRIGGERS` DISABLE KEYS */;
-INSERT INTO `QRTZ_SIMPLE_TRIGGERS` VALUES ('MetabaseScheduler','metabase.task.search-index.reindex.trigger','DEFAULT',-1,3600000,0),('MetabaseScheduler','metabase.task.send-metering.trigger','DEFAULT',-1,900000,2);
+INSERT INTO `QRTZ_SIMPLE_TRIGGERS` VALUES ('MetabaseScheduler','metabase.task.search-index.reindex.trigger','DEFAULT',-1,3600000,0),('MetabaseScheduler','metabase.task.send-metering.trigger','DEFAULT',-1,900000,1);
 /*!40000 ALTER TABLE `QRTZ_SIMPLE_TRIGGERS` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -397,7 +397,7 @@ CREATE TABLE `QRTZ_TRIGGERS` (
 
 LOCK TABLES `QRTZ_TRIGGERS` WRITE;
 /*!40000 ALTER TABLE `QRTZ_TRIGGERS` DISABLE KEYS */;
-INSERT INTO `QRTZ_TRIGGERS` VALUES ('MetabaseScheduler','metabase.task.anonymous-stats.trigger','DEFAULT','metabase.task.anonymous-stats.job','DEFAULT',NULL,1778400180000,-1,5,'WAITING','CRON',1778385659000,0,NULL,0,''),('MetabaseScheduler','metabase.task.creator-sentiment-emails.trigger','DEFAULT','metabase.task.creator-sentiment-emails.job','DEFAULT',NULL,1778896800000,-1,5,'WAITING','CRON',1778385659000,0,NULL,0,''),('MetabaseScheduler','metabase.task.follow-up-emails.trigger','DEFAULT','metabase.task.follow-up-emails.job','DEFAULT',NULL,1778414400000,-1,5,'WAITING','CRON',1778385659000,0,NULL,0,''),('MetabaseScheduler','metabase.task.oauth-server.cleanup-expired-tokens.trigger','DEFAULT','metabase.task.oauth-server.cleanup-expired-tokens.job','DEFAULT',NULL,1778457600000,-1,5,'WAITING','CRON',1778385659000,0,NULL,0,''),('MetabaseScheduler','metabase.task.refresh-channel-cache.trigger','DEFAULT','metabase.task.refresh-channel-cache.job','DEFAULT',NULL,1778387640000,-1,5,'WAITING','CRON',1778385659000,0,NULL,2,''),('MetabaseScheduler','metabase.task.search-index.reindex.trigger','DEFAULT','metabase.task.search-index.reindex.job','DEFAULT',NULL,1778389259346,-1,5,'WAITING','SIMPLE',1778389259346,0,NULL,0,''),('MetabaseScheduler','metabase.task.send-metering.trigger','DEFAULT','metabase.task.send-metering.job','DEFAULT',NULL,1778387459302,1778386559302,5,'WAITING','SIMPLE',1778385659302,0,NULL,0,''),('MetabaseScheduler','metabase.task.session-cleanup.trigger','DEFAULT','metabase.task.session-cleanup.job','DEFAULT',NULL,1778464800000,-1,5,'WAITING','CRON',1778385659000,0,NULL,0,''),('MetabaseScheduler','metabase.task.sync-and-analyze.trigger.1','DEFAULT','metabase.task.sync-and-analyze.job','DEFAULT','sync-and-analyze Database 1',1778388480000,1778352480000,5,'WAITING','CRON',1778334387000,0,NULL,2,_binary '¨\Ì\0sr\0org.quartz.JobDataMapü∞ÉËø©∞\À\0\0xr\0&org.quartz.utils.StringKeyDirtyFlagMapÇ\Ë\√˚\≈](\0Z\0allowsTransientDataxr\0org.quartz.utils.DirtyFlagMap\Ê.≠(v\n\Œ\0Z\0dirtyL\0mapt\0Ljava/util/Map;xp\0sr\0java.util.HashMap\⁄¡\√`\—\0F\0\nloadFactorI\0	thresholdxp?@\0\0\0\0\0w\0\0\0\0\0\0t\0db-idsr\0java.lang.Integer‚†§\˜Åá8\0I\0valuexr\0java.lang.NumberÜ¨ïî\‡ã\0\0xp\0\0\0x\0'),('MetabaseScheduler','metabase.task.sync-and-analyze.trigger.2','DEFAULT','metabase.task.sync-and-analyze.job','DEFAULT','sync-and-analyze Database 2',1778390400000,1778386800000,5,'WAITING','CRON',1778336384000,0,NULL,2,_binary '¨\Ì\0sr\0org.quartz.JobDataMapü∞ÉËø©∞\À\0\0xr\0&org.quartz.utils.StringKeyDirtyFlagMapÇ\Ë\√˚\≈](\0Z\0allowsTransientDataxr\0org.quartz.utils.DirtyFlagMap\Ê.≠(v\n\Œ\0Z\0dirtyL\0mapt\0Ljava/util/Map;xp\0sr\0java.util.HashMap\⁄¡\√`\—\0F\0\nloadFactorI\0	thresholdxp?@\0\0\0\0\0w\0\0\0\0\0\0t\0db-idsr\0java.lang.Integer‚†§\˜Åá8\0I\0valuexr\0java.lang.NumberÜ¨ïî\‡ã\0\0xp\0\0\0x\0'),('MetabaseScheduler','metabase.task.task-history-cleanup.trigger','DEFAULT','metabase.task.task-history-cleanup.job','DEFAULT',NULL,1778457600000,-1,5,'WAITING','CRON',1778385659000,0,NULL,0,''),('MetabaseScheduler','metabase.task.task-run-heartbeat.trigger','DEFAULT','metabase.task.task-run-heartbeat.job','DEFAULT',NULL,1778387400000,1778386800000,5,'WAITING','CRON',1778385659000,0,NULL,0,''),('MetabaseScheduler','metabase.task.transforms.trigger.1','DEFAULT','metabase.task.transforms.schedule.1','DEFAULT','Transform Job Schedule 1',1778389200000,-1,6,'WAITING','CRON',1778385659000,0,NULL,1,''),('MetabaseScheduler','metabase.task.transforms.trigger.2','DEFAULT','metabase.task.transforms.schedule.2','DEFAULT','Transform Job Schedule 2',1778457600000,-1,6,'WAITING','CRON',1778385659000,0,NULL,1,''),('MetabaseScheduler','metabase.task.transforms.trigger.3','DEFAULT','metabase.task.transforms.schedule.3','DEFAULT','Transform Job Schedule 3',1778976000000,-1,6,'WAITING','CRON',1778385659000,0,NULL,1,''),('MetabaseScheduler','metabase.task.transforms.trigger.4','DEFAULT','metabase.task.transforms.schedule.4','DEFAULT','Transform Job Schedule 4',1780272000000,-1,6,'WAITING','CRON',1778385659000,0,NULL,1,''),('MetabaseScheduler','metabase.task.truncate-audit-tables.trigger','DEFAULT','metabase.task.truncate-audit-tables.job','DEFAULT',NULL,1778414400000,-1,5,'WAITING','CRON',1778385659000,0,NULL,2,''),('MetabaseScheduler','metabase.task.update-field-values.trigger.1','DEFAULT','metabase.task.update-field-values.job','DEFAULT','update-field-values Database 1',1778439600000,1778353200000,5,'WAITING','CRON',1778334387000,0,NULL,2,_binary '¨\Ì\0sr\0org.quartz.JobDataMapü∞ÉËø©∞\À\0\0xr\0&org.quartz.utils.StringKeyDirtyFlagMapÇ\Ë\√˚\≈](\0Z\0allowsTransientDataxr\0org.quartz.utils.DirtyFlagMap\Ê.≠(v\n\Œ\0Z\0dirtyL\0mapt\0Ljava/util/Map;xp\0sr\0java.util.HashMap\⁄¡\√`\—\0F\0\nloadFactorI\0	thresholdxp?@\0\0\0\0\0w\0\0\0\0\0\0t\0db-idsr\0java.lang.Integer‚†§\˜Åá8\0I\0valuexr\0java.lang.NumberÜ¨ïî\‡ã\0\0xp\0\0\0x\0'),('MetabaseScheduler','metabase.task.update-field-values.trigger.2','DEFAULT','metabase.task.update-field-values.job','DEFAULT','update-field-values Database 2',1778428800000,1778342400000,5,'WAITING','CRON',1778336384000,0,NULL,2,_binary '¨\Ì\0sr\0org.quartz.JobDataMapü∞ÉËø©∞\À\0\0xr\0&org.quartz.utils.StringKeyDirtyFlagMapÇ\Ë\√˚\≈](\0Z\0allowsTransientDataxr\0org.quartz.utils.DirtyFlagMap\Ê.≠(v\n\Œ\0Z\0dirtyL\0mapt\0Ljava/util/Map;xp\0sr\0java.util.HashMap\⁄¡\√`\—\0F\0\nloadFactorI\0	thresholdxp?@\0\0\0\0\0w\0\0\0\0\0\0t\0db-idsr\0java.lang.Integer‚†§\˜Åá8\0I\0valuexr\0java.lang.NumberÜ¨ïî\‡ã\0\0xp\0\0\0x\0'),('MetabaseScheduler','metabase.task.upgrade-checks.trigger','DEFAULT','metabase.task.upgrade-checks.job','DEFAULT',NULL,1778412900000,-1,5,'WAITING','CRON',1778385659000,0,NULL,0,''),('MetabaseScheduler','metabase.transforms.canceling','DEFAULT','metabase.transforms.canceling','DEFAULT',NULL,1778387186740,1778386586740,5,'WAITING','CAL_INT',1778334386740,0,NULL,2,''),('MetabaseScheduler','metabase.transforms.jobs.timeout-job','DEFAULT','metabase.transforms.jobs.timeout-job','DEFAULT',NULL,1778387187285,1778386587285,5,'WAITING','CAL_INT',1778334387285,0,NULL,2,''),('MetabaseScheduler','metabase.transforms.timeout','DEFAULT','metabase.transforms.timeout','DEFAULT',NULL,1778387186845,1778386586845,5,'WAITING','CAL_INT',1778334386845,0,NULL,2,'');
+INSERT INTO `QRTZ_TRIGGERS` VALUES ('MetabaseScheduler','metabase.task.anonymous-stats.trigger','DEFAULT','metabase.task.anonymous-stats.job','DEFAULT',NULL,1778488740000,-1,5,'WAITING','CRON',1778437907000,0,NULL,0,''),('MetabaseScheduler','metabase.task.creator-sentiment-emails.trigger','DEFAULT','metabase.task.creator-sentiment-emails.job','DEFAULT',NULL,1778896800000,-1,5,'WAITING','CRON',1778437907000,0,NULL,0,''),('MetabaseScheduler','metabase.task.follow-up-emails.trigger','DEFAULT','metabase.task.follow-up-emails.job','DEFAULT',NULL,1778500800000,-1,5,'WAITING','CRON',1778437907000,0,NULL,0,''),('MetabaseScheduler','metabase.task.oauth-server.cleanup-expired-tokens.trigger','DEFAULT','metabase.task.oauth-server.cleanup-expired-tokens.job','DEFAULT',NULL,1778457600000,-1,5,'WAITING','CRON',1778437907000,0,NULL,0,''),('MetabaseScheduler','metabase.task.refresh-channel-cache.trigger','DEFAULT','metabase.task.refresh-channel-cache.job','DEFAULT',NULL,1778445240000,-1,5,'WAITING','CRON',1778437907000,0,NULL,2,''),('MetabaseScheduler','metabase.task.search-index.reindex.trigger','DEFAULT','metabase.task.search-index.reindex.job','DEFAULT',NULL,1778441507248,-1,5,'WAITING','SIMPLE',1778441507248,0,NULL,0,''),('MetabaseScheduler','metabase.task.send-metering.trigger','DEFAULT','metabase.task.send-metering.job','DEFAULT',NULL,1778438807201,1778437907201,5,'WAITING','SIMPLE',1778437907201,0,NULL,0,''),('MetabaseScheduler','metabase.task.session-cleanup.trigger','DEFAULT','metabase.task.session-cleanup.job','DEFAULT',NULL,1778464800000,-1,5,'WAITING','CRON',1778437907000,0,NULL,0,''),('MetabaseScheduler','metabase.task.sync-and-analyze.trigger.1','DEFAULT','metabase.task.sync-and-analyze.job','DEFAULT','sync-and-analyze Database 1',1778438880000,1778352480000,5,'WAITING','CRON',1778334387000,0,NULL,2,_binary '¨\Ì\0sr\0org.quartz.JobDataMapü∞ÉËø©∞\À\0\0xr\0&org.quartz.utils.StringKeyDirtyFlagMapÇ\Ë\√˚\≈](\0Z\0allowsTransientDataxr\0org.quartz.utils.DirtyFlagMap\Ê.≠(v\n\Œ\0Z\0dirtyL\0mapt\0Ljava/util/Map;xp\0sr\0java.util.HashMap\⁄¡\√`\—\0F\0\nloadFactorI\0	thresholdxp?@\0\0\0\0\0w\0\0\0\0\0\0t\0db-idsr\0java.lang.Integer‚†§\˜Åá8\0I\0valuexr\0java.lang.NumberÜ¨ïî\‡ã\0\0xp\0\0\0x\0'),('MetabaseScheduler','metabase.task.sync-and-analyze.trigger.2','DEFAULT','metabase.task.sync-and-analyze.job','DEFAULT','sync-and-analyze Database 2',1778440800000,1778386800000,5,'WAITING','CRON',1778336384000,0,NULL,2,_binary '¨\Ì\0sr\0org.quartz.JobDataMapü∞ÉËø©∞\À\0\0xr\0&org.quartz.utils.StringKeyDirtyFlagMapÇ\Ë\√˚\≈](\0Z\0allowsTransientDataxr\0org.quartz.utils.DirtyFlagMap\Ê.≠(v\n\Œ\0Z\0dirtyL\0mapt\0Ljava/util/Map;xp\0sr\0java.util.HashMap\⁄¡\√`\—\0F\0\nloadFactorI\0	thresholdxp?@\0\0\0\0\0w\0\0\0\0\0\0t\0db-idsr\0java.lang.Integer‚†§\˜Åá8\0I\0valuexr\0java.lang.NumberÜ¨ïî\‡ã\0\0xp\0\0\0x\0'),('MetabaseScheduler','metabase.task.task-history-cleanup.trigger','DEFAULT','metabase.task.task-history-cleanup.job','DEFAULT',NULL,1778457600000,-1,5,'WAITING','CRON',1778437907000,0,NULL,0,''),('MetabaseScheduler','metabase.task.task-run-heartbeat.trigger','DEFAULT','metabase.task.task-run-heartbeat.job','DEFAULT',NULL,1778438400000,-1,5,'WAITING','CRON',1778437907000,0,NULL,0,''),('MetabaseScheduler','metabase.task.transforms.trigger.1','DEFAULT','metabase.task.transforms.schedule.1','DEFAULT','Transform Job Schedule 1',1778439600000,-1,6,'WAITING','CRON',1778437907000,0,NULL,1,''),('MetabaseScheduler','metabase.task.transforms.trigger.2','DEFAULT','metabase.task.transforms.schedule.2','DEFAULT','Transform Job Schedule 2',1778457600000,-1,6,'WAITING','CRON',1778437907000,0,NULL,1,''),('MetabaseScheduler','metabase.task.transforms.trigger.3','DEFAULT','metabase.task.transforms.schedule.3','DEFAULT','Transform Job Schedule 3',1778976000000,-1,6,'WAITING','CRON',1778437907000,0,NULL,1,''),('MetabaseScheduler','metabase.task.transforms.trigger.4','DEFAULT','metabase.task.transforms.schedule.4','DEFAULT','Transform Job Schedule 4',1780272000000,-1,6,'WAITING','CRON',1778437907000,0,NULL,1,''),('MetabaseScheduler','metabase.task.truncate-audit-tables.trigger','DEFAULT','metabase.task.truncate-audit-tables.job','DEFAULT',NULL,1778457600000,-1,5,'WAITING','CRON',1778437907000,0,NULL,2,''),('MetabaseScheduler','metabase.task.update-field-values.trigger.1','DEFAULT','metabase.task.update-field-values.job','DEFAULT','update-field-values Database 1',1778439600000,1778353200000,5,'WAITING','CRON',1778334387000,0,NULL,2,_binary '¨\Ì\0sr\0org.quartz.JobDataMapü∞ÉËø©∞\À\0\0xr\0&org.quartz.utils.StringKeyDirtyFlagMapÇ\Ë\√˚\≈](\0Z\0allowsTransientDataxr\0org.quartz.utils.DirtyFlagMap\Ê.≠(v\n\Œ\0Z\0dirtyL\0mapt\0Ljava/util/Map;xp\0sr\0java.util.HashMap\⁄¡\√`\—\0F\0\nloadFactorI\0	thresholdxp?@\0\0\0\0\0w\0\0\0\0\0\0t\0db-idsr\0java.lang.Integer‚†§\˜Åá8\0I\0valuexr\0java.lang.NumberÜ¨ïî\‡ã\0\0xp\0\0\0x\0'),('MetabaseScheduler','metabase.task.update-field-values.trigger.2','DEFAULT','metabase.task.update-field-values.job','DEFAULT','update-field-values Database 2',1778515200000,1778342400000,5,'WAITING','CRON',1778336384000,0,NULL,2,_binary '¨\Ì\0sr\0org.quartz.JobDataMapü∞ÉËø©∞\À\0\0xr\0&org.quartz.utils.StringKeyDirtyFlagMapÇ\Ë\√˚\≈](\0Z\0allowsTransientDataxr\0org.quartz.utils.DirtyFlagMap\Ê.≠(v\n\Œ\0Z\0dirtyL\0mapt\0Ljava/util/Map;xp\0sr\0java.util.HashMap\⁄¡\√`\—\0F\0\nloadFactorI\0	thresholdxp?@\0\0\0\0\0w\0\0\0\0\0\0t\0db-idsr\0java.lang.Integer‚†§\˜Åá8\0I\0valuexr\0java.lang.NumberÜ¨ïî\‡ã\0\0xp\0\0\0x\0'),('MetabaseScheduler','metabase.task.upgrade-checks.trigger','DEFAULT','metabase.task.upgrade-checks.job','DEFAULT',NULL,1778470980000,-1,5,'WAITING','CRON',1778437907000,0,NULL,0,''),('MetabaseScheduler','metabase.transforms.canceling','DEFAULT','metabase.transforms.canceling','DEFAULT',NULL,1778438186740,1778386586740,5,'WAITING','CAL_INT',1778334386740,0,NULL,2,''),('MetabaseScheduler','metabase.transforms.jobs.timeout-job','DEFAULT','metabase.transforms.jobs.timeout-job','DEFAULT',NULL,1778438187285,1778386587285,5,'WAITING','CAL_INT',1778334387285,0,NULL,2,''),('MetabaseScheduler','metabase.transforms.timeout','DEFAULT','metabase.transforms.timeout','DEFAULT',NULL,1778438186845,1778386586845,5,'WAITING','CAL_INT',1778334386845,0,NULL,2,'');
 /*!40000 ALTER TABLE `QRTZ_TRIGGERS` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -412,18 +412,18 @@ CREATE TABLE `action` (
   `id` int NOT NULL AUTO_INCREMENT,
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'The timestamp of when the action was created',
   `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'The timestamp of when the action was updated',
-  `type` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Type of action',
+  `type` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Type of action',
   `model_id` int NOT NULL,
-  `name` varchar(254) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` longtext COLLATE utf8mb4_unicode_ci COMMENT 'The description of the action',
-  `parameters` longtext COLLATE utf8mb4_unicode_ci COMMENT 'The saved parameters for this action',
-  `parameter_mappings` longtext COLLATE utf8mb4_unicode_ci COMMENT 'The saved parameter mappings for this action',
-  `visualization_settings` longtext COLLATE utf8mb4_unicode_ci COMMENT 'The UI visualization_settings for this action',
-  `public_uuid` char(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Unique UUID used to in publically-accessible links to this Action.',
+  `name` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'The description of the action',
+  `parameters` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'The saved parameters for this action',
+  `parameter_mappings` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'The saved parameter mappings for this action',
+  `visualization_settings` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'The UI visualization_settings for this action',
+  `public_uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Unique UUID used to in publically-accessible links to this Action.',
   `made_public_by_id` int DEFAULT NULL COMMENT 'The ID of the User who first publically shared this Action.',
   `creator_id` int DEFAULT NULL COMMENT 'The user who created the action',
   `archived` bit(1) NOT NULL DEFAULT b'0',
-  `entity_id` char(21) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Random NanoID tag for unique identity.',
+  `entity_id` char(21) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Random NanoID tag for unique identity.',
   PRIMARY KEY (`id`),
   UNIQUE KEY `public_uuid` (`public_uuid`),
   UNIQUE KEY `entity_id` (`entity_id`),
@@ -456,16 +456,16 @@ DROP TABLE IF EXISTS `ai_usage_log`;
 CREATE TABLE `ai_usage_log` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'When the LLM call was made',
-  `source` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Origin of the LLM call, e.g. agent, slackbot, document-gen, intent-classification, example-question-gen, oss-sql-gen, semantic-search-embedding',
-  `model` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Full model identifier, e.g. anthropic/claude-sonnet-4-20250514',
+  `source` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Origin of the LLM call, e.g. agent, slackbot, document-gen, intent-classification, example-question-gen, oss-sql-gen, semantic-search-embedding',
+  `model` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Full model identifier, e.g. anthropic/claude-sonnet-4-20250514',
   `prompt_tokens` int NOT NULL COMMENT 'Number of input/prompt tokens',
   `completion_tokens` int NOT NULL COMMENT 'Number of output/completion tokens',
   `total_tokens` int NOT NULL COMMENT 'Sum of prompt_tokens + completion_tokens',
   `user_id` int DEFAULT NULL COMMENT 'Metabase user who triggered the call. NULL for system/background calls.',
   `tenant_id` int DEFAULT NULL COMMENT 'Snapshot of user tenant at request time. NULL for non-tenant users.',
-  `conversation_id` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Reference to metabot_conversation. NULL for non-conversational calls.',
-  `profile_id` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'AI profile used, e.g. nlq, sql, slackbot',
-  `request_id` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'UUID for correlating with Snowplow events',
+  `conversation_id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Reference to metabot_conversation. NULL for non-conversational calls.',
+  `profile_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'AI profile used, e.g. nlq, sql, slackbot',
+  `request_id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'UUID for correlating with Snowplow events',
   `ai_proxied` bit(1) DEFAULT NULL COMMENT 'Whether this call was routed through the Metabase Cloud AI proxy (true) or directly via BYOK keys (false). Null for rows created before this migration.',
   PRIMARY KEY (`id`),
   KEY `idx_ai_usage_log_user_id` (`user_id`)
@@ -490,7 +490,7 @@ DROP TABLE IF EXISTS `analysis_finding`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `analysis_finding` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
-  `analyzed_entity_type` varchar(254) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The type of the analyzed entity',
+  `analyzed_entity_type` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The type of the analyzed entity',
   `analyzed_entity_id` int NOT NULL COMMENT 'The ID of the analyzed entity',
   `analysis_version` int NOT NULL COMMENT 'The version of the analysis that was performed',
   `analyzed_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'The timestamp of when the analysis was performed',
@@ -522,11 +522,11 @@ DROP TABLE IF EXISTS `analysis_finding_error`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `analysis_finding_error` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `analyzed_entity_type` varchar(254) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The type of the analyzed entity (card, transform, segment, etc.)',
+  `analyzed_entity_type` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The type of the analyzed entity (card, transform, segment, etc.)',
   `analyzed_entity_id` int NOT NULL COMMENT 'The ID of the analyzed entity',
-  `error_type` varchar(254) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The type of error (missing-column, missing-table-alias, duplicate-column, syntax-error, validation-exception-error)',
-  `error_detail` varchar(254) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Additional error details (e.g., column name, alias name, error message)',
-  `source_entity_type` varchar(254) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The type of the source entity causing the error (table, card, etc.)',
+  `error_type` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The type of error (missing-column, missing-table-alias, duplicate-column, syntax-error, validation-exception-error)',
+  `error_detail` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Additional error details (e.g., column name, alias name, error message)',
+  `source_entity_type` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The type of the source entity causing the error (table, card, etc.)',
   `source_entity_id` int DEFAULT NULL COMMENT 'The ID of the source entity causing the error',
   PRIMARY KEY (`id`),
   KEY `idx_analysis_finding_error_source` (`source_entity_type`,`source_entity_id`),
@@ -554,14 +554,14 @@ DROP TABLE IF EXISTS `api_key`;
 CREATE TABLE `api_key` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'The ID of the API Key itself',
   `user_id` int DEFAULT NULL,
-  `key` varchar(254) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The hashed API key',
-  `key_prefix` varchar(7) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The first 7 characters of the unhashed key',
+  `key` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The hashed API key',
+  `key_prefix` varchar(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The first 7 characters of the unhashed key',
   `creator_id` int DEFAULT NULL,
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'The timestamp when the key was created',
   `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'The timestamp when the key was last updated',
-  `name` varchar(254) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The user-defined name of the API key.',
+  `name` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The user-defined name of the API key.',
   `updated_by_id` int NOT NULL COMMENT 'The ID of the user that last updated this API key',
-  `scope` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The scope of the API key, if applicable',
+  `scope` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The scope of the API key, if applicable',
   PRIMARY KEY (`id`),
   UNIQUE KEY `key_prefix` (`key_prefix`),
   UNIQUE KEY `name` (`name`),
@@ -621,13 +621,13 @@ DROP TABLE IF EXISTS `audit_log`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `audit_log` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `topic` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The topic of a given audit event',
+  `topic` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The topic of a given audit event',
   `timestamp` timestamp(6) NOT NULL COMMENT 'The time an event was recorded',
   `end_timestamp` timestamp(6) NULL DEFAULT NULL COMMENT 'The time an event ended, if applicable',
   `user_id` int DEFAULT NULL COMMENT 'The user who performed an action or triggered an event',
-  `model` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The name of the model this event applies to (e.g. Card, Dashboard), if applicable',
+  `model` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The name of the model this event applies to (e.g. Card, Dashboard), if applicable',
   `model_id` int DEFAULT NULL COMMENT 'The ID of the model this event applies to, if applicable',
-  `details` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'A JSON map with metadata about the event',
+  `details` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'A JSON map with metadata about the event',
   PRIMARY KEY (`id`),
   KEY `idx_audit_log_entity_qualified_id` (((case when (`model` = _utf8mb4'Dataset') then concat(_utf8mb4'card_',`model_id`) when (`model_id` is null) then NULL else concat(lower(`model`),_utf8mb4'_',`model_id`) end)))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Used to store application events for auditing use cases';
@@ -652,10 +652,10 @@ DROP TABLE IF EXISTS `auth_identity`;
 CREATE TABLE `auth_identity` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Integer primary key',
   `user_id` int NOT NULL COMMENT 'Foreign key to core_user',
-  `provider` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Authentication provider type (password, google, ldap, saml, jwt, support)',
-  `credentials` longtext COLLATE utf8mb4_unicode_ci COMMENT 'JSON object containing provider-specific credentials',
-  `metadata` longtext COLLATE utf8mb4_unicode_ci COMMENT 'JSON object containing provider-specific metadata',
-  `provider_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Provider-specific identifier (email for password/Google, DN for LDAP, subject for SAML/JWT)',
+  `provider` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Authentication provider type (password, google, ldap, saml, jwt, support)',
+  `credentials` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'JSON object containing provider-specific credentials',
+  `metadata` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'JSON object containing provider-specific metadata',
+  `provider_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Provider-specific identifier (email for password/Google, DN for LDAP, subject for SAML/JWT)',
   `last_used_at` timestamp(6) NULL DEFAULT NULL COMMENT 'Timestamp of last successful authentication',
   `expires_at` timestamp(6) NULL DEFAULT NULL COMMENT 'Timestamp when this authentication method expires (null = never expires)',
   `created_at` timestamp(6) NOT NULL COMMENT 'Timestamp when this identity was created',
@@ -719,13 +719,13 @@ DROP TABLE IF EXISTS `cache_config`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cache_config` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
-  `model` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Name of an entity model',
+  `model` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Name of an entity model',
   `model_id` int NOT NULL COMMENT 'ID of the said entity',
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'Timestamp when the config was inserted',
   `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'Timestamp when the config was updated',
-  `strategy` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'caching strategy name',
-  `config` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'caching strategy configuration',
-  `state` longtext COLLATE utf8mb4_unicode_ci COMMENT 'state for strategies needing to keep some data between runs',
+  `strategy` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'caching strategy name',
+  `config` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'caching strategy configuration',
+  `state` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'state for strategies needing to keep some data between runs',
   `invalidated_at` timestamp(6) NULL DEFAULT NULL COMMENT 'indicates when a cache was invalidated last time for schedule-based strategies',
   `next_run_at` timestamp(6) NULL DEFAULT NULL COMMENT 'keeps next time to run for schedule-based strategies',
   `refresh_automatically` bit(1) DEFAULT NULL,
@@ -811,10 +811,10 @@ DROP TABLE IF EXISTS `channel`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `channel` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
-  `name` varchar(254) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'channel name',
-  `description` longtext COLLATE utf8mb4_unicode_ci COMMENT 'channel description',
-  `type` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Channel type',
-  `details` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Channel details, used to store authentication information or channel-specific settings',
+  `name` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'channel name',
+  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'channel description',
+  `type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Channel type',
+  `details` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Channel details, used to store authentication information or channel-specific settings',
   `active` bit(1) NOT NULL DEFAULT b'1' COMMENT 'whether the channel is active',
   `created_at` timestamp(6) NOT NULL COMMENT 'Timestamp when the channel was inserted',
   `updated_at` timestamp(6) NOT NULL COMMENT 'Timestamp when the channel was updated',
@@ -841,9 +841,9 @@ DROP TABLE IF EXISTS `channel_template`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `channel_template` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'the name of the template',
-  `channel_type` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'the channel type of the template',
-  `details` longtext COLLATE utf8mb4_unicode_ci COMMENT 'the details of the template',
+  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'the name of the template',
+  `channel_type` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'the channel type of the template',
+  `details` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'the details of the template',
   `created_at` timestamp(6) NOT NULL COMMENT 'The timestamp of when the template was created',
   `updated_at` timestamp(6) NOT NULL COMMENT 'The timestamp of when the template was last updated',
   PRIMARY KEY (`id`)
@@ -869,9 +869,9 @@ DROP TABLE IF EXISTS `cloud_migration`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cloud_migration` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
-  `external_id` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Matching ID in Cloud for this migration',
-  `upload_url` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'URL where the backup will be uploaded to',
-  `state` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'init' COMMENT 'Current state of the migration: init, setup, dump, upload, done, error, cancelled',
+  `external_id` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Matching ID in Cloud for this migration',
+  `upload_url` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'URL where the backup will be uploaded to',
+  `state` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'init' COMMENT 'Current state of the migration: init, setup, dump, upload, done, error, cancelled',
   `progress` int NOT NULL DEFAULT '0' COMMENT 'Number between 0 to 100 representing progress as a percentage',
   `created_at` timestamp(6) NOT NULL COMMENT 'Timestamp when the config was inserted',
   `updated_at` timestamp(6) NOT NULL COMMENT 'Timestamp when the config was updated',
@@ -902,14 +902,14 @@ CREATE TABLE `collection` (
   `archived` bit(1) NOT NULL DEFAULT b'0' COMMENT 'Whether this Collection has been archived and should be hidden from users.',
   `location` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '/' COMMENT 'Directory-structure path of ancestor Collections. e.g. "/1/2/" means our Parent is Collection 2, and their parent is Collection 1.',
   `personal_owner_id` int DEFAULT NULL COMMENT 'If set, this Collection is a personal Collection, for exclusive use of the User with this ID.',
-  `slug` varchar(510) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `slug` varchar(510) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `namespace` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The namespace (hierachy) this Collection belongs to. NULL means the Collection is in the default namespace.',
   `authority_level` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Nullable column to incidate collection''s authority level. Initially values are "official" and nil.',
   `entity_id` char(21) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Random NanoID tag for unique identity.',
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'Timestamp of when this Collection was created.',
-  `type` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'This is used to differentiate instance-analytics collections from all other collections.',
+  `type` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'This is used to differentiate instance-analytics collections from all other collections.',
   `is_sample` bit(1) NOT NULL DEFAULT b'0' COMMENT 'Is the collection part of the sample content?',
-  `archive_operation_id` char(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The UUID of the trash operation. Each time you trash a collection subtree, you get a unique ID.',
+  `archive_operation_id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The UUID of the trash operation. Each time you trash a collection subtree, you get a unique ID.',
   `archived_directly` bit(1) DEFAULT NULL COMMENT 'Whether the item was trashed independently or as a subcollection',
   `is_remote_synced` bit(1) DEFAULT b'0' COMMENT 'Indicates if this collection is synced from a remote source',
   `workspace_id` int DEFAULT NULL COMMENT 'Workspace containing this collection',
@@ -974,11 +974,11 @@ DROP TABLE IF EXISTS `collection_permission_graph_revision`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `collection_permission_graph_revision` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `before` longtext COLLATE utf8mb4_unicode_ci,
-  `after` longtext COLLATE utf8mb4_unicode_ci,
+  `before` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `after` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `user_id` int NOT NULL COMMENT 'The ID of the admin who made this set of changes.',
   `created_at` timestamp(6) NOT NULL,
-  `remark` longtext COLLATE utf8mb4_unicode_ci,
+  `remark` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`id`),
   KEY `fk_collection_revision_user_id` (`user_id`),
   CONSTRAINT `fk_collection_revision_user_id` FOREIGN KEY (`user_id`) REFERENCES `core_user` (`id`) ON DELETE CASCADE
@@ -1005,16 +1005,16 @@ DROP TABLE IF EXISTS `comment`;
 CREATE TABLE `comment` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Primary key for comment table',
   `parent_comment_id` int DEFAULT NULL COMMENT 'ID of the parent comment for threading (null for root comments)',
-  `target_type` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'document' COMMENT 'Type of entity being commented on',
+  `target_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'document' COMMENT 'Type of entity being commented on',
   `target_id` int NOT NULL COMMENT 'ID of the entity being commented on',
-  `child_target_id` longtext COLLATE utf8mb4_unicode_ci COMMENT 'Sub-entity ID (e.g., document block node ID)',
+  `child_target_id` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Sub-entity ID (e.g., document block node ID)',
   `creator_id` int NOT NULL COMMENT 'User who created this comment',
-  `content` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The comment content',
+  `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The comment content',
   `is_resolved` bit(1) NOT NULL DEFAULT b'0' COMMENT 'Whether this comment thread is resolved',
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'Timestamp when comment was created',
   `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'Timestamp when comment was last updated',
   `deleted_at` timestamp(6) NULL DEFAULT NULL COMMENT 'Soft delete timestamp (null if not deleted)',
-  `content_html` longtext COLLATE utf8mb4_unicode_ci COMMENT 'HTML-rendered version of the comment content',
+  `content_html` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'HTML-rendered version of the comment content',
   PRIMARY KEY (`id`),
   KEY `idx_comment_entity` (`target_type`,`target_id`),
   KEY `idx_comment_creator_id` (`creator_id`),
@@ -1044,7 +1044,7 @@ CREATE TABLE `comment_reaction` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Primary key for comment_reaction table',
   `comment_id` int NOT NULL COMMENT 'ID of the comment being reacted to',
   `user_id` int NOT NULL COMMENT 'User who added this reaction',
-  `emoji` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Unicode emoji (supports compound emojis)',
+  `emoji` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Unicode emoji (supports compound emojis)',
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'Timestamp when reaction was added',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_user_comment_emoji` (`comment_id`,`user_id`,`emoji`),
@@ -1075,7 +1075,7 @@ CREATE TABLE `connection_impersonations` (
   `id` int NOT NULL AUTO_INCREMENT,
   `db_id` int NOT NULL COMMENT 'ID of the database this connection impersonation policy affects',
   `group_id` int NOT NULL COMMENT 'ID of the permissions group this connection impersonation policy affects',
-  `attribute` longtext COLLATE utf8mb4_unicode_ci COMMENT 'User attribute associated with the database role to use for this connection impersonation policy',
+  `attribute` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'User attribute associated with the database role to use for this connection impersonation policy',
   PRIMARY KEY (`id`),
   UNIQUE KEY `conn_impersonation_unique_group_id_db_id` (`group_id`,`db_id`),
   KEY `idx_conn_impersonations_db_id` (`db_id`),
@@ -1103,9 +1103,9 @@ DROP TABLE IF EXISTS `content_translation`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `content_translation` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
-  `locale` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Locale',
-  `msgid` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The raw string',
-  `msgstr` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The translation',
+  `locale` varchar(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Locale',
+  `msgid` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The raw string',
+  `msgstr` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The translation',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Content translations';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1131,7 +1131,7 @@ CREATE TABLE `core_session` (
   `user_id` int NOT NULL,
   `created_at` timestamp(6) NOT NULL,
   `anti_csrf_token` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `key_hashed` varchar(254) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `key_hashed` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `auth_identity_id` int DEFAULT NULL COMMENT 'Foreign key to auth_identity - tracks which auth method was used for login',
   `expires_at` timestamp(6) NULL DEFAULT NULL COMMENT 'Timestamp when this session expires (from auth_identity or calculated)',
   `last_active_at` timestamp(6) NULL DEFAULT NULL COMMENT 'Tracks when the session was last used, for inactivity timeout enforcement',
@@ -1181,11 +1181,11 @@ CREATE TABLE `core_user` (
   `locale` varchar(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Preferred ISO locale (language/country) code, e.g "en" or "en-US", for this User. Overrides site default.',
   `is_datasetnewb` bit(1) NOT NULL DEFAULT b'1',
   `settings` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Serialized JSON containing User-local Settings for this User',
-  `type` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'personal' COMMENT 'The type of user',
-  `entity_id` char(21) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'NanoID tag for each user',
+  `type` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'personal' COMMENT 'The type of user',
+  `entity_id` char(21) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'NanoID tag for each user',
   `deactivated_at` timestamp(6) NULL DEFAULT NULL COMMENT 'The timestamp at which a user was deactivated',
   `tenant_id` int DEFAULT NULL COMMENT 'The ID of the tenant for this user',
-  `jwt_attributes` longtext COLLATE utf8mb4_unicode_ci COMMENT 'JSON object containing attributes set through jwt',
+  `jwt_attributes` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'JSON object containing attributes set through jwt',
   `deactivated_with_tenant` bit(1) DEFAULT NULL COMMENT 'if this user and its tenant are both deactivated, represents whether the user was deactivated\n*with* the tenant (in which case it should be reactivated when the tenant is reactivated)\nor was deactivated independently.',
   `is_data_analyst` bit(1) NOT NULL DEFAULT b'0' COMMENT 'Indicates if the user has data analyst privileges for Data Studio',
   PRIMARY KEY (`id`),
@@ -1276,9 +1276,9 @@ DROP TABLE IF EXISTS `dashboard_tab`;
 CREATE TABLE `dashboard_tab` (
   `id` int NOT NULL AUTO_INCREMENT,
   `dashboard_id` int NOT NULL COMMENT 'The dashboard that a tab is on',
-  `name` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Displayed name of the tab',
+  `name` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Displayed name of the tab',
   `position` int NOT NULL COMMENT 'Position of the tab with respect to others tabs in dashboard',
-  `entity_id` char(21) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `entity_id` char(21) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'The timestamp at which the tab was created',
   `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'The timestamp at which the tab was last updated',
   PRIMARY KEY (`id`),
@@ -1338,12 +1338,12 @@ CREATE TABLE `data_edit_undo_chain` (
   `id` int NOT NULL AUTO_INCREMENT,
   `batch_num` int NOT NULL COMMENT 'Batch number for grouped changes (global increment)',
   `table_id` int NOT NULL COMMENT 'Reference to the table being modified',
-  `row_pk` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'PK of the row being modified, potentially composite. Stored as a sorted JSON map.',
+  `row_pk` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'PK of the row being modified, potentially composite. Stored as a sorted JSON map.',
   `user_id` int NOT NULL COMMENT 'ID of the user who made the change',
-  `scope` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Identifies where the changes were made from',
+  `scope` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Identifies where the changes were made from',
   `undoable` bit(1) NOT NULL DEFAULT b'1' COMMENT 'Identifies whether a change can be undo',
-  `raw_before` longtext COLLATE utf8mb4_unicode_ci COMMENT 'Value of the field before the change',
-  `raw_after` longtext COLLATE utf8mb4_unicode_ci COMMENT 'Value of the field after the change',
+  `raw_before` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Value of the field before the change',
+  `raw_after` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Value of the field after the change',
   `undone` bit(1) NOT NULL DEFAULT b'0' COMMENT 'Whether this change has been undone',
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'The timestamp of when the change was created',
   `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'The timestamp of when the change was updated',
@@ -1370,11 +1370,11 @@ DROP TABLE IF EXISTS `data_permissions`;
 CREATE TABLE `data_permissions` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'The ID of the permission',
   `group_id` int NOT NULL COMMENT 'The ID of the associated permission group',
-  `perm_type` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The type of the permission (e.g. "data", "collection", "download"...)',
+  `perm_type` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The type of the permission (e.g. "data", "collection", "download"...)',
   `db_id` int NOT NULL COMMENT 'A database ID, for DB and table-level permissions',
-  `schema_name` varchar(254) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'A schema name, for table-level permissions',
+  `schema_name` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'A schema name, for table-level permissions',
   `table_id` int DEFAULT NULL COMMENT 'A table ID',
-  `perm_value` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The value this permission is set to.',
+  `perm_value` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The value this permission is set to.',
   PRIMARY KEY (`id`),
   KEY `idx_data_permissions_table_id` (`table_id`),
   KEY `idx_data_permissions_db_id` (`db_id`),
@@ -1407,7 +1407,7 @@ DROP TABLE IF EXISTS `db_router`;
 CREATE TABLE `db_router` (
   `id` int NOT NULL AUTO_INCREMENT,
   `database_id` int NOT NULL COMMENT 'The ID of the database this is for.',
-  `user_attribute` varchar(254) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The user attribute used to redirect users to a different database.',
+  `user_attribute` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The user attribute used to redirect users to a different database.',
   PRIMARY KEY (`id`),
   UNIQUE KEY `database_id` (`database_id`),
   CONSTRAINT `fk_db_router_database_id` FOREIGN KEY (`database_id`) REFERENCES `metabase_database` (`id`)
@@ -1432,9 +1432,9 @@ DROP TABLE IF EXISTS `dependency`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `dependency` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `from_entity_type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The type of the dependent entity',
+  `from_entity_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The type of the dependent entity',
   `from_entity_id` int NOT NULL COMMENT 'The ID of the dependent entity',
-  `to_entity_type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The type of the entity depended on',
+  `to_entity_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The type of the entity depended on',
   `to_entity_id` int NOT NULL COMMENT 'The ID of the entity depended on',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_unique_dependency` (`from_entity_type`,`from_entity_id`,`to_entity_type`,`to_entity_id`),
@@ -1461,7 +1461,7 @@ DROP TABLE IF EXISTS `dependency_status`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `dependency_status` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `entity_type` varchar(254) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The type of the entity (card, transform, snippet, etc.)',
+  `entity_type` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The type of the entity (card, transform, snippet, etc.)',
   `entity_id` int NOT NULL COMMENT 'The ID of the entity',
   `dependency_analysis_version` smallint NOT NULL DEFAULT '0' COMMENT 'Version of the dependency analysis that was performed',
   `stale` bit(1) NOT NULL DEFAULT b'0' COMMENT 'True when the entity needs dependency recalculation',
@@ -1529,20 +1529,20 @@ DROP TABLE IF EXISTS `document`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `document` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
-  `name` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Document name',
+  `name` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Document name',
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'The timestamp of when the document was created',
-  `document` longtext COLLATE utf8mb4_unicode_ci COMMENT 'content of the document',
-  `content_type` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'the content_type of the document column',
+  `document` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'content of the document',
+  `content_type` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'the content_type of the document column',
   `creator_id` int NOT NULL COMMENT 'User who created this document',
   `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'The timestamp of when the document was updated',
   `collection_id` int DEFAULT NULL COMMENT 'What collection I live in. Null if it''s Our Analytics.',
   `archived` bit(1) NOT NULL DEFAULT b'0' COMMENT 'Has this document been archived?',
   `archived_directly` bit(1) DEFAULT b'0' COMMENT 'Was this thing trashed directly',
-  `entity_id` char(21) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Random NanoID tag for unique identity',
+  `entity_id` char(21) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Random NanoID tag for unique identity',
   `last_viewed_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'Timestamp of when this document was last viewed',
   `view_count` int NOT NULL DEFAULT '0' COMMENT 'Keeps a running count of document views',
   `collection_position` int DEFAULT NULL COMMENT 'Collection position used for pinning documents. Higher numbers = pinned, null = not pinned.',
-  `public_uuid` char(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'UUID for publicly-accessible version of this document',
+  `public_uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'UUID for publicly-accessible version of this document',
   `made_public_by_id` int DEFAULT NULL COMMENT 'ID of the user who made this document public',
   PRIMARY KEY (`id`),
   UNIQUE KEY `entity_id` (`entity_id`),
@@ -1606,11 +1606,11 @@ CREATE TABLE `field_usage` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
   `field_id` int NOT NULL COMMENT 'ID of the field',
   `query_execution_id` int NOT NULL COMMENT 'referenced query execution',
-  `used_in` varchar(25) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'which part of the query the field was used in',
-  `filter_op` varchar(25) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'filter''s operator that applied to the field',
-  `aggregation_function` varchar(25) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'the aggregation function that field applied to',
-  `breakout_temporal_unit` varchar(25) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'temporal unit options of the breakout',
-  `breakout_binning_strategy` varchar(25) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'the strategy of breakout',
+  `used_in` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'which part of the query the field was used in',
+  `filter_op` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'filter''s operator that applied to the field',
+  `aggregation_function` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'the aggregation function that field applied to',
+  `breakout_temporal_unit` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'temporal unit options of the breakout',
+  `breakout_binning_strategy` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'the strategy of breakout',
   `breakout_binning_num_bins` int DEFAULT NULL COMMENT 'The numbin option of breakout',
   `breakout_binning_bin_width` int DEFAULT NULL COMMENT 'The numbin option of breakout',
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'The time a field usage was recorded',
@@ -1640,8 +1640,8 @@ DROP TABLE IF EXISTS `glossary`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `glossary` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Primary key identifier for glossary entries',
-  `term` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The glossary term or phrase being defined',
-  `definition` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The detailed definition or explanation of the term',
+  `term` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The glossary term or phrase being defined',
+  `definition` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The detailed definition or explanation of the term',
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'Timestamp when comment was created',
   `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'Timestamp when comment was last updated',
   `creator_id` int NOT NULL DEFAULT '13371338' COMMENT 'User who created this glossary entry',
@@ -1670,9 +1670,9 @@ DROP TABLE IF EXISTS `http_action`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `http_action` (
   `action_id` int NOT NULL COMMENT 'The related action',
-  `template` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'A template that defines method,url,body,headers required to make an api call',
-  `response_handle` longtext COLLATE utf8mb4_unicode_ci COMMENT 'A program to take an api response and transform to an appropriate response for emitters',
-  `error_handle` longtext COLLATE utf8mb4_unicode_ci COMMENT 'A program to take an api response to determine if an error occurred',
+  `template` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'A template that defines method,url,body,headers required to make an api call',
+  `response_handle` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'A program to take an api response and transform to an appropriate response for emitters',
+  `error_handle` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'A program to take an api response to determine if an error occurred',
   PRIMARY KEY (`action_id`),
   CONSTRAINT `fk_http_action_ref_action_id` FOREIGN KEY (`action_id`) REFERENCES `action` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='An http api call type of action';
@@ -1696,7 +1696,7 @@ DROP TABLE IF EXISTS `implicit_action`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `implicit_action` (
   `action_id` int NOT NULL COMMENT 'The associated action',
-  `kind` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The kind of implicit action create/update/delete',
+  `kind` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The kind of implicit action create/update/delete',
   PRIMARY KEY (`action_id`),
   CONSTRAINT `fk_implicit_action_action_id` FOREIGN KEY (`action_id`) REFERENCES `action` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='An action with dynamic parameters based on the underlying model';
@@ -1785,15 +1785,15 @@ CREATE TABLE `measure` (
   `id` int NOT NULL AUTO_INCREMENT,
   `table_id` int NOT NULL COMMENT 'Foreign key to metabase_table',
   `creator_id` int NOT NULL COMMENT 'Foreign key to core_user who created this measure',
-  `name` varchar(254) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Name of the measure',
-  `description` longtext COLLATE utf8mb4_unicode_ci COMMENT 'Optional description of the measure',
+  `name` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Name of the measure',
+  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Optional description of the measure',
   `archived` bit(1) NOT NULL DEFAULT b'0' COMMENT 'Whether the measure has been archived',
-  `definition` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'JSON MBQL query containing the aggregation definition',
+  `definition` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'JSON MBQL query containing the aggregation definition',
   `created_at` timestamp(6) NOT NULL COMMENT 'Timestamp when this measure was created',
   `updated_at` timestamp(6) NOT NULL COMMENT 'Timestamp when this measure was last updated',
-  `entity_id` char(21) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Random NanoID tag for unique identity',
-  `dimensions` longtext COLLATE utf8mb4_unicode_ci COMMENT 'JSON array of persisted dimension definitions (id, display-name, types)',
-  `dimension_mappings` longtext COLLATE utf8mb4_unicode_ci COMMENT 'JSON array of dimension-to-field mappings (dimension-id, target, table-id)',
+  `entity_id` char(21) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Random NanoID tag for unique identity',
+  `dimensions` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'JSON array of persisted dimension definitions (id, display-name, types)',
+  `dimension_mappings` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'JSON array of dimension-to-field mappings (dimension-id, target, table-id)',
   PRIMARY KEY (`id`),
   UNIQUE KEY `entity_id` (`entity_id`),
   KEY `idx_measure_table_id` (`table_id`),
@@ -1820,7 +1820,7 @@ DROP TABLE IF EXISTS `metabase_cluster_lock`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `metabase_cluster_lock` (
-  `lock_name` varchar(254) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'a single column that can be used to a lock across a cluster',
+  `lock_name` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'a single column that can be used to a lock across a cluster',
   PRIMARY KEY (`lock_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='A table to allow metabase instances to take locks across a cluster';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1848,14 +1848,14 @@ CREATE TABLE `metabase_database` (
   `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
   `name` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `details` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `details` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `engine` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `is_sample` bit(1) NOT NULL DEFAULT b'0',
   `is_full_sync` bit(1) NOT NULL DEFAULT b'1',
   `points_of_interest` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `caveats` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `metadata_sync_schedule` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0 50 * * * ? *' COMMENT 'The cron schedule string for when this database should undergo the metadata sync process (and analysis for new fields).',
-  `cache_field_values_schedule` varchar(254) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cache_field_values_schedule` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `timezone` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Timezone identifier for the database, set by the sync process',
   `is_on_demand` bit(1) NOT NULL DEFAULT b'0' COMMENT 'Whether we should do On-Demand caching of FieldValues for this DB. This means FieldValues are updated when their Field is used in a Dashboard or Card param.',
   `auto_run_queries` bit(1) NOT NULL DEFAULT b'1' COMMENT 'Whether to automatically run queries when doing simple filtering and summarizing in the Query Builder.',
@@ -1864,16 +1864,16 @@ CREATE TABLE `metabase_database` (
   `initial_sync_status` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'complete' COMMENT 'String indicating whether a database has completed its initial sync and is ready to use',
   `creator_id` int DEFAULT NULL COMMENT 'ID of the admin who added the database',
   `settings` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Serialized JSON containing Database-local Settings for this Database',
-  `dbms_version` longtext COLLATE utf8mb4_unicode_ci COMMENT 'A JSON object describing the flavor and version of the DBMS.',
+  `dbms_version` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'A JSON object describing the flavor and version of the DBMS.',
   `is_audit` bit(1) NOT NULL DEFAULT b'0',
   `uploads_enabled` bit(1) NOT NULL DEFAULT b'0' COMMENT 'Whether uploads are enabled for this database',
-  `uploads_schema_name` longtext COLLATE utf8mb4_unicode_ci COMMENT 'The schema name for uploads',
-  `uploads_table_prefix` longtext COLLATE utf8mb4_unicode_ci COMMENT 'The prefix for upload table names',
+  `uploads_schema_name` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'The schema name for uploads',
+  `uploads_table_prefix` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'The prefix for upload table names',
   `is_attached_dwh` bit(1) NOT NULL DEFAULT b'0' COMMENT 'This is an attached data warehouse, do not serialize it and hide its details from the UI',
   `router_database_id` int DEFAULT NULL COMMENT 'The ID of the primary database for this mirror database.',
-  `provider_name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The name of the hosting provider for the database (e.g., AWS RDS, Azure).',
-  `workspace_permissions_status` longtext COLLATE utf8mb4_unicode_ci COMMENT 'Status of workspace isolation permission check (JSON)',
-  `write_data_details` longtext COLLATE utf8mb4_unicode_ci COMMENT 'Encrypted JSON containing connection details for write operations (transforms, etc.)',
+  `provider_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The name of the hosting provider for the database (e.g., AWS RDS, Azure).',
+  `workspace_permissions_status` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Status of workspace isolation permission check (JSON)',
+  `write_data_details` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Encrypted JSON containing connection details for write operations (transforms, etc.)',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_unique_metabase_database_router_database_id_name` (`router_database_id`,`name`),
   KEY `fk_database_creator_id` (`creator_id`),
@@ -1938,7 +1938,7 @@ CREATE TABLE `metabase_field` (
   `database_is_pk` bit(1) DEFAULT NULL COMMENT 'Whether or not the field is part of the primary key (not user editable like semantic_type)',
   `database_is_nullable` bit(1) DEFAULT NULL COMMENT 'Whether or not the field will accept nulls',
   `database_is_generated` bit(1) DEFAULT NULL COMMENT 'Whether or not the column is computed and will not accept writes',
-  `database_default` longtext COLLATE utf8mb4_unicode_ci COMMENT 'The dialect specific column default expression',
+  `database_default` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'The dialect specific column default expression',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_unique_field` (`name`,`table_id`,`unique_field_helper`),
   KEY `idx_field_table_id` (`table_id`),
@@ -1969,19 +1969,19 @@ CREATE TABLE `metabase_field_user_settings` (
   `field_id` int NOT NULL COMMENT 'The related Field',
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'The timestamp of when the user setting was created',
   `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'The timestamp of when the user setting was updated',
-  `semantic_type` varchar(254) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'User-set semantic_type for the Field',
-  `description` longtext COLLATE utf8mb4_unicode_ci COMMENT 'User-set description for the Field',
-  `display_name` varchar(254) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'User-set display_name for the Field',
-  `visibility_type` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'User-set visibility_type for the Field',
+  `semantic_type` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'User-set semantic_type for the Field',
+  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'User-set description for the Field',
+  `display_name` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'User-set display_name for the Field',
+  `visibility_type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'User-set visibility_type for the Field',
   `fk_target_field_id` int DEFAULT NULL COMMENT 'User-set fk_target_field_id for the Field',
-  `has_field_values` longtext COLLATE utf8mb4_unicode_ci COMMENT 'User-set has_field_values for the Field',
-  `effective_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'User-set effective_type for the Field',
-  `coercion_strategy` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'User-set coercion_strategy for the Field',
-  `caveats` longtext COLLATE utf8mb4_unicode_ci COMMENT 'User-set caveats for the Field',
-  `points_of_interest` longtext COLLATE utf8mb4_unicode_ci COMMENT 'User-set points_of_interest for the Field',
-  `nfc_path` varchar(254) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'User-set nfc_path for the Field',
+  `has_field_values` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'User-set has_field_values for the Field',
+  `effective_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'User-set effective_type for the Field',
+  `coercion_strategy` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'User-set coercion_strategy for the Field',
+  `caveats` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'User-set caveats for the Field',
+  `points_of_interest` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'User-set points_of_interest for the Field',
+  `nfc_path` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'User-set nfc_path for the Field',
   `json_unfolding` bit(1) DEFAULT NULL COMMENT 'User-set json_unfolding for the Field',
-  `settings` longtext COLLATE utf8mb4_unicode_ci COMMENT 'User-set settings for the Field',
+  `settings` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'User-set settings for the Field',
   PRIMARY KEY (`field_id`),
   CONSTRAINT `fk_field_user_setting_field_id` FOREIGN KEY (`field_id`) REFERENCES `metabase_field` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Mirror table of metabase_field to keep track of user-set values (only settable fields are mirrored)';
@@ -2046,7 +2046,7 @@ CREATE TABLE `metabase_table` (
   `entity_type` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `active` bit(1) NOT NULL,
   `db_id` int NOT NULL,
-  `display_name` varchar(256) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `display_name` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `visibility_type` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `schema` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `points_of_interest` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
@@ -2059,14 +2059,14 @@ CREATE TABLE `metabase_table` (
   `estimated_row_count` bigint DEFAULT NULL COMMENT 'The estimated row count',
   `view_count` int NOT NULL DEFAULT '0' COMMENT 'Keeps a running count of card views',
   `is_defective_duplicate` bit(1) NOT NULL DEFAULT b'0' COMMENT 'Indicates whether the table is a defective duplicate that should never have been created.',
-  `unique_table_helper` varchar(254) COLLATE utf8mb4_unicode_ci GENERATED ALWAYS AS ((case when (`is_defective_duplicate` = true) then NULL else coalesce(`schema`,_utf8mb4'') end)) STORED,
+  `unique_table_helper` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci GENERATED ALWAYS AS ((case when (`is_defective_duplicate` = true) then NULL else coalesce(`schema`,_utf8mb4'') end)) STORED,
   `deactivated_at` timestamp(6) NULL DEFAULT NULL COMMENT 'The timestamp when the table was deactivated (active changed from true to false)',
   `archived_at` timestamp(6) NULL DEFAULT NULL COMMENT 'The timestamp when the table was marked for archiving',
   `is_writable` bit(1) DEFAULT NULL COMMENT 'true if current connection can insert, update and delete rows from this table',
-  `data_authority` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'unconfigured' COMMENT 'Indicates the data authority status - unconfigured, authoritative, computed, or ingested',
-  `data_source` varchar(254) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The origin type of the data (e.g. metabase-transform)',
-  `data_layer` varchar(254) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The (new) enum for visibility class',
-  `owner_email` longtext COLLATE utf8mb4_unicode_ci COMMENT 'An optional email address of the ''owner'' of this table, exclusive with owner_user_id.',
+  `data_authority` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'unconfigured' COMMENT 'Indicates the data authority status - unconfigured, authoritative, computed, or ingested',
+  `data_source` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The origin type of the data (e.g. metabase-transform)',
+  `data_layer` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The (new) enum for visibility class',
+  `owner_email` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'An optional email address of the ''owner'' of this table, exclusive with owner_user_id.',
   `owner_user_id` int DEFAULT NULL COMMENT 'An (metabase) user id of the ''owner'' of this table, exclusive with owner_email.',
   `collection_id` int DEFAULT NULL COMMENT 'The collection this table is published to (null if not published or published to root)',
   `is_published` bit(1) NOT NULL DEFAULT b'0' COMMENT 'Whether this table is published',
@@ -2105,9 +2105,9 @@ DROP TABLE IF EXISTS `metabot`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `metabot` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(254) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The name of the metabot',
-  `description` longtext COLLATE utf8mb4_unicode_ci COMMENT 'Description of the metabot',
-  `entity_id` char(21) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Random NanoID tag for unique identity',
+  `name` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The name of the metabot',
+  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Description of the metabot',
+  `entity_id` char(21) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Random NanoID tag for unique identity',
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'The timestamp of when the metabot was created',
   `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'The timestamp of when the metabot was updated',
   `use_verified_content` bit(1) DEFAULT b'0' COMMENT 'Whether this metabot should only use verified content',
@@ -2135,11 +2135,11 @@ DROP TABLE IF EXISTS `metabot_conversation`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `metabot_conversation` (
-  `id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Conversation UUID',
+  `id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Conversation UUID',
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'created_at',
   `user_id` int NOT NULL COMMENT 'Reference to user having the conversation',
-  `summary` longtext COLLATE utf8mb4_unicode_ci COMMENT 'Auto-generated summary for the conversation',
-  `state` longtext COLLATE utf8mb4_unicode_ci COMMENT 'Metabot conversation state',
+  `summary` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Auto-generated summary for the conversation',
+  `state` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Metabot conversation state',
   PRIMARY KEY (`id`),
   KEY `idx_metabot_conversation_user_id` (`user_id`),
   CONSTRAINT `fk_metabot_conversation_user_id` FOREIGN KEY (`user_id`) REFERENCES `core_user` (`id`)
@@ -2165,14 +2165,14 @@ DROP TABLE IF EXISTS `metabot_message`;
 CREATE TABLE `metabot_message` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Autoincrement PK',
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'created_at',
-  `profile_id` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'ai-service profile used to perform the conversation',
-  `role` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Role of the sender',
-  `data` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Full message content',
-  `usage` longtext COLLATE utf8mb4_unicode_ci COMMENT 'Can be null for user messages; {"<model-name>": {"prompt": 1, "completion": 2}}',
+  `profile_id` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'ai-service profile used to perform the conversation',
+  `role` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Role of the sender',
+  `data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Full message content',
+  `usage` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Can be null for user messages; {"<model-name>": {"prompt": 1, "completion": 2}}',
   `total_tokens` int NOT NULL COMMENT 'A sum of all prompt+completion from `usage`',
-  `conversation_id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Reference to a conversation',
-  `slack_msg_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Slack message ID (ts) for correlating with Slack thread history',
-  `channel_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Slack channel ID for correlating Slack responses',
+  `conversation_id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Reference to a conversation',
+  `slack_msg_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Slack message ID (ts) for correlating with Slack thread history',
+  `channel_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Slack channel ID for correlating Slack responses',
   `deleted_at` timestamp(6) NULL DEFAULT NULL COMMENT 'Soft delete timestamp for removed Slack metabot responses',
   `deleted_by_user_id` int DEFAULT NULL COMMENT 'Metabase user ID who removed the Slack metabot response',
   `user_id` int DEFAULT NULL COMMENT 'Metabase user ID associated with this message',
@@ -2202,10 +2202,10 @@ DROP TABLE IF EXISTS `metabot_prompt`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `metabot_prompt` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `model` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The type of the entity this prompt is about',
+  `model` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The type of the entity this prompt is about',
   `card_id` int NOT NULL COMMENT 'The ID of the model or metric this prompt is about',
-  `entity_id` char(21) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Random NanoID tag for unique identity',
-  `prompt` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The text of the prompt',
+  `entity_id` char(21) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Random NanoID tag for unique identity',
+  `prompt` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The text of the prompt',
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'The timestamp of when the prompt was created',
   `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'The timestamp of when the prompt was updated',
   `metabot_id` int NOT NULL,
@@ -2307,12 +2307,12 @@ DROP TABLE IF EXISTS `model_index`;
 CREATE TABLE `model_index` (
   `id` int NOT NULL AUTO_INCREMENT,
   `model_id` int DEFAULT NULL COMMENT 'The ID of the indexed model.',
-  `pk_ref` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Serialized JSON of the primary key field ref.',
-  `value_ref` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Serialized JSON of the label field ref.',
-  `schedule` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The cron schedule for when value syncing should happen.',
-  `state` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The status of the index: initializing, indexed, error, overflow.',
+  `pk_ref` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Serialized JSON of the primary key field ref.',
+  `value_ref` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Serialized JSON of the label field ref.',
+  `schedule` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The cron schedule for when value syncing should happen.',
+  `state` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The status of the index: initializing, indexed, error, overflow.',
   `indexed_at` timestamp(6) NULL DEFAULT NULL COMMENT 'When the status changed',
-  `error` longtext COLLATE utf8mb4_unicode_ci COMMENT 'The error message if the status is error.',
+  `error` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'The error message if the status is error.',
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'The timestamp of when these changes were made.',
   `creator_id` int NOT NULL COMMENT 'ID of the user who created the event',
   PRIMARY KEY (`id`),
@@ -2342,7 +2342,7 @@ DROP TABLE IF EXISTS `model_index_value`;
 CREATE TABLE `model_index_value` (
   `model_index_id` int DEFAULT NULL COMMENT 'The ID of the indexed model.',
   `model_pk` bigint DEFAULT NULL,
-  `name` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The label to display identifying the indexed value.',
+  `name` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The label to display identifying the indexed value.',
   UNIQUE KEY `unique_model_index_value_model_index_id_model_pk` (`model_index_id`,`model_pk`),
   CONSTRAINT `fk_model_index_value_model_id` FOREIGN KEY (`model_index_id`) REFERENCES `model_index` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Used to keep track of the values indexed in a model';
@@ -2406,7 +2406,7 @@ CREATE TABLE `native_query_snippet` (
   `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
   `collection_id` int DEFAULT NULL COMMENT 'ID of the Snippet Folder (Collection) this Snippet is in, if any',
   `entity_id` char(21) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Random NanoID tag for unique identity.',
-  `template_tags` longtext COLLATE utf8mb4_unicode_ci COMMENT 'Template tags for the snippet',
+  `template_tags` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Template tags for the snippet',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
   UNIQUE KEY `entity_id` (`entity_id`),
@@ -2436,11 +2436,11 @@ DROP TABLE IF EXISTS `notification`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `notification` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `payload_type` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'the type of the payload',
+  `payload_type` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'the type of the payload',
   `active` bit(1) NOT NULL DEFAULT b'1' COMMENT 'whether the notification is active',
   `created_at` timestamp(6) NOT NULL COMMENT 'The timestamp of when the notification was created',
   `updated_at` timestamp(6) NOT NULL COMMENT 'The timestamp of when the notification was updated',
-  `internal_id` varchar(254) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'the internal id of the notification',
+  `internal_id` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'the internal id of the notification',
   `payload_id` int DEFAULT NULL COMMENT 'the internal id of the notification',
   `creator_id` int DEFAULT NULL COMMENT 'the id of the creator',
   PRIMARY KEY (`id`),
@@ -2471,7 +2471,7 @@ CREATE TABLE `notification_card` (
   `id` int NOT NULL AUTO_INCREMENT,
   `card_id` int DEFAULT NULL COMMENT 'the card that the alert is connected to',
   `send_once` bit(1) NOT NULL DEFAULT b'0' COMMENT 'whether the alert should only run once',
-  `send_condition` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'the condition of the alert',
+  `send_condition` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'the condition of the alert',
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'The timestamp of when the recipient was created',
   `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'The timestamp of when the recipient was updated',
   `disable_links` bit(1) DEFAULT b'0' COMMENT 'Whether to disable alert email links',
@@ -2499,7 +2499,7 @@ DROP TABLE IF EXISTS `notification_handler`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `notification_handler` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `channel_type` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'the type of the channel, like :channel/email, :channel/slack',
+  `channel_type` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'the type of the channel, like :channel/email, :channel/slack',
   `notification_id` int NOT NULL COMMENT 'the notification that the handler is connected to',
   `channel_id` int DEFAULT NULL COMMENT 'the channel that the handler is connected to',
   `template_id` int DEFAULT NULL COMMENT 'the template that the handler is connected to',
@@ -2536,10 +2536,10 @@ DROP TABLE IF EXISTS `notification_recipient`;
 CREATE TABLE `notification_recipient` (
   `id` int NOT NULL AUTO_INCREMENT,
   `notification_handler_id` int NOT NULL COMMENT 'the handler that the recipient is connected to',
-  `type` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'the type of the recipient',
+  `type` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'the type of the recipient',
   `user_id` int DEFAULT NULL COMMENT 'a user if the recipient has type user',
   `permissions_group_id` int DEFAULT NULL COMMENT 'a permissions group if the recipient has type permissions_group',
-  `details` longtext COLLATE utf8mb4_unicode_ci COMMENT 'custom details for the recipient',
+  `details` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'custom details for the recipient',
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'The timestamp of when the recipient was created',
   `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'The timestamp of when the recipient was updated',
   PRIMARY KEY (`id`),
@@ -2572,11 +2572,11 @@ DROP TABLE IF EXISTS `notification_subscription`;
 CREATE TABLE `notification_subscription` (
   `id` int NOT NULL AUTO_INCREMENT,
   `notification_id` int NOT NULL COMMENT 'the notification that the subscription is connected to',
-  `type` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'the type of the subscription',
-  `event_name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'the event name of subscriptions with type :notification-subscription/system-event',
+  `type` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'the type of the subscription',
+  `event_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'the event name of subscriptions with type :notification-subscription/system-event',
   `created_at` timestamp(6) NOT NULL COMMENT 'The timestamp of when the subscription was created',
-  `cron_schedule` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'the cron schedule for the subscription',
-  `ui_display_type` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'the display of the subscription, used for the UI only',
+  `cron_schedule` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'the cron schedule for the subscription',
+  `ui_display_type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'the display of the subscription, used for the UI only',
   PRIMARY KEY (`id`),
   KEY `idx_notification_subscription_notification_id` (`notification_id`),
   CONSTRAINT `fk_notification_subscription_notification_id` FOREIGN KEY (`notification_id`) REFERENCES `notification` (`id`) ON DELETE CASCADE
@@ -2602,12 +2602,12 @@ DROP TABLE IF EXISTS `oauth_access_token`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `oauth_access_token` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Auto-incrementing primary key',
-  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The access token string',
+  `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The access token string',
   `user_id` int DEFAULT NULL COMMENT 'FK to core_user.id (null for client_credentials)',
-  `client_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The OAuth client_id',
-  `scope` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'JSON array of scopes',
+  `client_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The OAuth client_id',
+  `scope` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'JSON array of scopes',
   `expiry` bigint NOT NULL COMMENT 'Milliseconds since epoch',
-  `resource` longtext COLLATE utf8mb4_unicode_ci COMMENT 'JSON array of resource URIs',
+  `resource` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'JSON array of resource URIs',
   `revoked_at` timestamp(6) NULL DEFAULT NULL COMMENT 'Null if active',
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'Timestamp of token creation',
   PRIMARY KEY (`id`),
@@ -2636,16 +2636,16 @@ DROP TABLE IF EXISTS `oauth_authorization_code`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `oauth_authorization_code` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Auto-incrementing primary key',
-  `code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The authorization code string',
+  `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The authorization code string',
   `user_id` int NOT NULL COMMENT 'FK to core_user.id',
-  `client_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The OAuth client_id',
-  `redirect_uri` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Redirect URI for this authorization',
-  `scope` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'JSON array of scope strings',
-  `nonce` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'OIDC nonce value',
+  `client_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The OAuth client_id',
+  `redirect_uri` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Redirect URI for this authorization',
+  `scope` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'JSON array of scope strings',
+  `nonce` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'OIDC nonce value',
   `expiry` bigint NOT NULL COMMENT 'Milliseconds since epoch',
-  `code_challenge` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'PKCE code challenge',
-  `code_challenge_method` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'PKCE code challenge method',
-  `resource` longtext COLLATE utf8mb4_unicode_ci COMMENT 'JSON array of resource URIs (RFC 8707)',
+  `code_challenge` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'PKCE code challenge',
+  `code_challenge_method` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'PKCE code challenge method',
+  `resource` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'JSON array of resource URIs (RFC 8707)',
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'Timestamp of code creation',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_oauth_authorization_code_code` (`code`),
@@ -2673,21 +2673,21 @@ DROP TABLE IF EXISTS `oauth_client`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `oauth_client` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Auto-incrementing primary key',
-  `client_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'OAuth client_id (UUID)',
-  `client_secret_hash` longtext COLLATE utf8mb4_unicode_ci COMMENT 'PBKDF2 hash of client secret',
-  `redirect_uris` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'JSON array of redirect URIs',
-  `grant_types` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'JSON array of grant types',
-  `response_types` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'JSON array of response types',
-  `scopes` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'JSON array of scopes',
-  `token_endpoint_auth_method` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'OAuth token endpoint auth method (e.g. client_secret_basic)',
-  `client_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Human-readable client name',
-  `client_uri` longtext COLLATE utf8mb4_unicode_ci COMMENT 'URL of the client home page',
-  `logo_uri` longtext COLLATE utf8mb4_unicode_ci COMMENT 'URL of the client logo image',
-  `contacts` longtext COLLATE utf8mb4_unicode_ci COMMENT 'JSON array of contact strings',
-  `registration_type` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'static or dynamic',
-  `client_type` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'confidential' COMMENT 'confidential or public',
-  `application_type` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT 'web' COMMENT 'OAuth application type (web or native), defaults to web',
-  `registration_access_token_hash` longtext COLLATE utf8mb4_unicode_ci COMMENT 'Hashed RFC 7592 registration access token',
+  `client_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'OAuth client_id (UUID)',
+  `client_secret_hash` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'PBKDF2 hash of client secret',
+  `redirect_uris` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'JSON array of redirect URIs',
+  `grant_types` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'JSON array of grant types',
+  `response_types` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'JSON array of response types',
+  `scopes` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'JSON array of scopes',
+  `token_endpoint_auth_method` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'OAuth token endpoint auth method (e.g. client_secret_basic)',
+  `client_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Human-readable client name',
+  `client_uri` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'URL of the client home page',
+  `logo_uri` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'URL of the client logo image',
+  `contacts` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'JSON array of contact strings',
+  `registration_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'static or dynamic',
+  `client_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'confidential' COMMENT 'confidential or public',
+  `application_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'web' COMMENT 'OAuth application type (web or native), defaults to web',
+  `registration_access_token_hash` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Hashed RFC 7592 registration access token',
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'Timestamp of client registration',
   `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'Timestamp of last client update',
   PRIMARY KEY (`id`),
@@ -2713,11 +2713,11 @@ DROP TABLE IF EXISTS `oauth_refresh_token`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `oauth_refresh_token` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Auto-incrementing primary key',
-  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The refresh token string',
+  `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The refresh token string',
   `user_id` int DEFAULT NULL COMMENT 'FK to core_user.id',
-  `client_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The OAuth client_id',
-  `scope` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'JSON array of scopes',
-  `resource` longtext COLLATE utf8mb4_unicode_ci COMMENT 'JSON array of resource URIs',
+  `client_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The OAuth client_id',
+  `scope` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'JSON array of scopes',
+  `resource` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'JSON array of resource URIs',
   `expiry` bigint DEFAULT NULL COMMENT 'Milliseconds since epoch (null means no expiry)',
   `revoked_at` timestamp(6) NULL DEFAULT NULL COMMENT 'Null if active',
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'Timestamp of token creation',
@@ -2747,9 +2747,9 @@ CREATE TABLE `parameter_card` (
   `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'most recent modification time',
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'creation time',
   `card_id` int NOT NULL COMMENT 'ID of the card generating the values',
-  `parameterized_object_type` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Type of the entity consuming the values (dashboard, card, etc.)',
+  `parameterized_object_type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Type of the entity consuming the values (dashboard, card, etc.)',
   `parameterized_object_id` int NOT NULL COMMENT 'ID of the entity consuming the values',
-  `parameter_id` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `parameter_id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_parameterized_object_card_parameter` (`parameterized_object_id`,`parameterized_object_type`,`parameter_id`),
   KEY `idx_parameter_card_parameterized_object_id` (`parameterized_object_id`),
@@ -2778,8 +2778,8 @@ CREATE TABLE `permissions` (
   `id` int NOT NULL AUTO_INCREMENT,
   `object` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `group_id` int NOT NULL,
-  `perm_value` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The value of the permission',
-  `perm_type` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The type of the permission',
+  `perm_value` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The value of the permission',
+  `perm_type` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The type of the permission',
   `collection_id` int DEFAULT NULL COMMENT 'The linked collection, if applicable',
   PRIMARY KEY (`id`),
   UNIQUE KEY `group_id` (`group_id`,`object`),
@@ -2814,8 +2814,8 @@ DROP TABLE IF EXISTS `permissions_group`;
 CREATE TABLE `permissions_group` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `entity_id` char(21) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'NanoID tag for each user',
-  `magic_group_type` varchar(254) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The magic_group_type of the permissions_group',
+  `entity_id` char(21) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'NanoID tag for each user',
+  `magic_group_type` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The magic_group_type of the permissions_group',
   `is_tenant_group` bit(1) NOT NULL DEFAULT b'0' COMMENT 'true iff this is a Tenant Group',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_permissions_group_name` (`name`),
@@ -2876,11 +2876,11 @@ DROP TABLE IF EXISTS `permissions_revision`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `permissions_revision` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `before` longtext COLLATE utf8mb4_unicode_ci,
-  `after` longtext COLLATE utf8mb4_unicode_ci,
+  `before` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `after` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `user_id` int NOT NULL COMMENT 'The ID of the admin who made this set of changes.',
   `created_at` timestamp(6) NOT NULL,
-  `remark` longtext COLLATE utf8mb4_unicode_ci,
+  `remark` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`id`),
   KEY `fk_permissions_revision_user_id` (`user_id`),
   CONSTRAINT `fk_permissions_revision_user_id` FOREIGN KEY (`user_id`) REFERENCES `core_user` (`id`) ON DELETE CASCADE
@@ -2946,8 +2946,8 @@ DROP TABLE IF EXISTS `premium_features_token_cache`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `premium_features_token_cache` (
-  `token_hash` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'SHA-256 hex hash of the premium token',
-  `token_status_hash` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'SHA-256 hex hash of the JSON-encoded token status',
+  `token_hash` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'SHA-256 hex hash of the premium token',
+  `token_status_hash` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'SHA-256 hex hash of the JSON-encoded token status',
   `updated_at` timestamp(6) NOT NULL COMMENT 'When this cache entry was last refreshed',
   PRIMARY KEY (`token_hash`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Caches premium features token check results, shared across instances';
@@ -3121,11 +3121,11 @@ DROP TABLE IF EXISTS `python_library`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `python_library` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Primary key for python_library',
-  `path` varchar(254) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Path identifier for the library',
-  `source` longtext COLLATE utf8mb4_unicode_ci COMMENT 'Python source code for user modules',
+  `path` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Path identifier for the library',
+  `source` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Python source code for user modules',
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'When the record was created',
   `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'When the record was last updated',
-  `entity_id` char(21) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Random NanoID tag for unique identity',
+  `entity_id` char(21) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Random NanoID tag for unique identity',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_python_library_path` (`path`),
   UNIQUE KEY `unique_python_library_entity_id` (`entity_id`),
@@ -3178,8 +3178,8 @@ DROP TABLE IF EXISTS `query_action`;
 CREATE TABLE `query_action` (
   `action_id` int NOT NULL COMMENT 'The related action',
   `database_id` int NOT NULL,
-  `dataset_query` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `legacy_query` longtext COLLATE utf8mb4_unicode_ci COMMENT 'Legacy MBQL version of the query (serialized as JSON) for existing Query Actions created before v57, to support rollbacks to v56. This column should be removed in v58.',
+  `dataset_query` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `legacy_query` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Legacy MBQL version of the query (serialized as JSON) for existing Query Actions created before v57, to support rollbacks to v56. This column should be removed in v58.',
   PRIMARY KEY (`action_id`),
   KEY `fk_query_action_database_id` (`database_id`),
   CONSTRAINT `fk_query_action_database_id` FOREIGN KEY (`database_id`) REFERENCES `metabase_database` (`id`) ON DELETE CASCADE,
@@ -3246,12 +3246,12 @@ CREATE TABLE `query_execution` (
   `action_id` int DEFAULT NULL COMMENT 'The ID of the action associated with this query execution, if any.',
   `is_sandboxed` bit(1) DEFAULT NULL,
   `cache_hash` blob COMMENT 'Hash of normalized query, calculated in middleware.cache',
-  `embedding_client` varchar(254) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Used by the embedding team to track SDK usage',
-  `embedding_version` varchar(254) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Used by the embedding team to track SDK version usage',
+  `embedding_client` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Used by the embedding team to track SDK usage',
+  `embedding_version` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Used by the embedding team to track SDK version usage',
   `parameterized` bit(1) DEFAULT NULL COMMENT 'Whether or not the query has parameters with non-nil values',
   `transform_id` int DEFAULT NULL COMMENT 'The ID of the Transform associated with this query execution, if any.',
-  `lens_id` varchar(254) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The ID of the inspector lens associated with this query execution, if any.',
-  `lens_params` longtext COLLATE utf8mb4_unicode_ci COMMENT 'JSON-encoded parameters of the inspector lens associated with this query execution, if any.',
+  `lens_id` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The ID of the inspector lens associated with this query execution, if any.',
+  `lens_params` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'JSON-encoded parameters of the inspector lens associated with this query execution, if any.',
   PRIMARY KEY (`id`),
   KEY `idx_query_execution_started_at` (`started_at`),
   KEY `idx_query_execution_query_hash_started_at` (`hash`,`started_at`),
@@ -3287,10 +3287,10 @@ CREATE TABLE `query_field` (
   `card_id` int NOT NULL COMMENT 'referenced card',
   `field_id` int DEFAULT NULL,
   `explicit_reference` bit(1) DEFAULT b'1',
-  `column` varchar(254) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'name of the table or card being referenced',
-  `table` varchar(254) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `column` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'name of the table or card being referenced',
+  `table` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `table_id` int DEFAULT NULL COMMENT 'track the table directly, in case the field does not exist',
-  `schema` varchar(254) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'name of the schema of the table being referenced',
+  `schema` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'name of the schema of the table being referenced',
   PRIMARY KEY (`id`),
   KEY `idx_query_field_card_id` (`card_id`),
   KEY `idx_query_field_field_id` (`field_id`),
@@ -3319,8 +3319,8 @@ CREATE TABLE `query_table` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'PK',
   `card_id` int NOT NULL COMMENT 'referenced card',
   `table_id` int DEFAULT NULL COMMENT 'referenced field',
-  `schema` varchar(254) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'name of the schema of the table being referenced',
-  `table` varchar(254) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'name of the table or card being referenced',
+  `schema` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'name of the schema of the table being referenced',
+  `table` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'name of the table or card being referenced',
   PRIMARY KEY (`id`),
   KEY `idx_query_table_card_id` (`card_id`),
   KEY `idx_query_table_table_id` (`table_id`),
@@ -3348,10 +3348,10 @@ DROP TABLE IF EXISTS `recent_views`;
 CREATE TABLE `recent_views` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL COMMENT 'The user associated with this view',
-  `model` varchar(16) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The name of the model that was viewed',
+  `model` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The name of the model that was viewed',
   `model_id` int NOT NULL COMMENT 'The ID of the model that was viewed',
   `timestamp` timestamp(6) NOT NULL,
-  `context` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'view' COMMENT 'The contextual action that netted a recent view.',
+  `context` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'view' COMMENT 'The contextual action that netted a recent view.',
   PRIMARY KEY (`id`),
   KEY `idx_recent_views_user_id` (`user_id`),
   CONSTRAINT `fk_recent_views_ref_user_id` FOREIGN KEY (`user_id`) REFERENCES `core_user` (`id`) ON DELETE CASCADE
@@ -3377,15 +3377,15 @@ DROP TABLE IF EXISTS `remote_sync_object`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `remote_sync_object` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Primary key identifier for remote-sync objects',
-  `model_type` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Type of model',
+  `model_type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Type of model',
   `model_id` int NOT NULL COMMENT 'ID of the model',
-  `status` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Status of the object',
+  `status` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Status of the object',
   `status_changed_at` timestamp(6) NOT NULL COMMENT 'When the status changed',
-  `model_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `model_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `model_collection_id` int DEFAULT NULL COMMENT 'Copy of the collection from the object being sync''ed',
-  `model_display` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Copy of the display field from the object being sync''ed',
+  `model_display` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Copy of the display field from the object being sync''ed',
   `model_table_id` int DEFAULT NULL COMMENT 'Parent table ID for Field/Segment/Table models',
-  `model_table_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Parent table name for Field/Segment/Table models',
+  `model_table_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Parent table name for Field/Segment/Table models',
   PRIMARY KEY (`id`),
   KEY `idx_remote_sync_object_model_lookup` (`model_type`,`model_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Track remote sync objects';
@@ -3409,16 +3409,16 @@ DROP TABLE IF EXISTS `remote_sync_task`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `remote_sync_task` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `sync_task_type` varchar(24) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Type of the sync task',
+  `sync_task_type` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Type of the sync task',
   `progress` float DEFAULT NULL COMMENT 'Progress percentage of the sync task (0.0 to 1.0)',
   `cancelled` bit(1) NOT NULL DEFAULT b'0' COMMENT 'Whether the sync task was cancelled',
   `started_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'Timestamp when the sync task started',
   `ended_at` timestamp(6) NULL DEFAULT NULL COMMENT 'Timestamp when the sync task ended',
   `last_progress_report_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'Timestamp of the last progress update',
   `initiated_by` int DEFAULT NULL COMMENT 'ID of the user who initiated the sync task',
-  `error_message` longtext COLLATE utf8mb4_unicode_ci COMMENT 'error message if this task failed',
-  `version` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Version that was imported or exported (ex the Git SHA)',
-  `conflicts` longtext COLLATE utf8mb4_unicode_ci COMMENT 'JSON serialized list of conflicts detected during import',
+  `error_message` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'error message if this task failed',
+  `version` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Version that was imported or exported (ex the Git SHA)',
+  `conflicts` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'JSON serialized list of conflicts detected during import',
   PRIMARY KEY (`id`),
   KEY `idx_remote_sync_task_initiated_by` (`initiated_by`),
   KEY `idx_remote_sync_task_current` (`started_at` DESC,`id` DESC),
@@ -3469,22 +3469,22 @@ CREATE TABLE `report_card` (
   `parameters` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'List of parameter associated to a card',
   `parameter_mappings` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'List of parameter associated to a card',
   `collection_preview` bit(1) NOT NULL DEFAULT b'1',
-  `metabase_version` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Metabase version used to create the card.',
-  `type` varchar(16) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'question' COMMENT 'The type of card, could be ''question'', ''model'', ''metric''',
+  `metabase_version` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Metabase version used to create the card.',
+  `type` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'question' COMMENT 'The type of card, could be ''question'', ''model'', ''metric''',
   `initially_published_at` timestamp(6) NULL DEFAULT NULL COMMENT 'The timestamp when the card was first published in a static embed',
   `cache_invalidated_at` timestamp(6) NULL DEFAULT NULL COMMENT 'An invalidation time that can supersede cache_config.invalidated_at',
   `last_used_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
   `view_count` int NOT NULL DEFAULT '0' COMMENT 'Keeps a running count of card views',
   `archived_directly` bit(1) NOT NULL DEFAULT b'0' COMMENT 'Was this thing trashed directly',
-  `dataset_query_metrics_v2_migration_backup` longtext COLLATE utf8mb4_unicode_ci COMMENT 'The copy of dataset_query before the metrics v2 migration',
+  `dataset_query_metrics_v2_migration_backup` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'The copy of dataset_query before the metrics v2 migration',
   `source_card_id` int DEFAULT NULL COMMENT 'The ID of the model or question this card is based on',
   `dashboard_id` int DEFAULT NULL COMMENT 'The dashboard that owns the card, if it is a dashboard-internal card.',
   `card_schema` int NOT NULL DEFAULT '20' COMMENT 'Arbitrary revision number for how we store queries in report_card',
   `document_id` int DEFAULT NULL COMMENT 'Associates cards with a particular document',
-  `legacy_query` longtext COLLATE utf8mb4_unicode_ci COMMENT 'Legacy MBQL version of the query (serialized as JSON) for existing Cards created before v57, to support rollbacks to v56. This column should be removed in v58.',
-  `embedding_type` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The type of embedding for this card',
-  `dimensions` longtext COLLATE utf8mb4_unicode_ci COMMENT 'JSON array of persisted dimension definitions (id, display-name, types)',
-  `dimension_mappings` longtext COLLATE utf8mb4_unicode_ci COMMENT 'JSON array of dimension-to-field mappings (dimension-id, target, table-id)',
+  `legacy_query` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Legacy MBQL version of the query (serialized as JSON) for existing Cards created before v57, to support rollbacks to v56. This column should be removed in v58.',
+  `embedding_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The type of embedding for this card',
+  `dimensions` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'JSON array of persisted dimension definitions (id, display-name, types)',
+  `dimension_mappings` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'JSON array of dimension-to-field mappings (dimension-id, target, table-id)',
   PRIMARY KEY (`id`),
   UNIQUE KEY `public_uuid` (`public_uuid`),
   UNIQUE KEY `entity_id` (`entity_id`),
@@ -3580,12 +3580,12 @@ CREATE TABLE `report_dashboard` (
   `cache_ttl` int DEFAULT NULL COMMENT 'Granular cache TTL for specific dashboard.',
   `entity_id` char(21) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Random NanoID tag for unique identity.',
   `auto_apply_filters` bit(1) NOT NULL DEFAULT b'1',
-  `width` varchar(16) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'fixed',
+  `width` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'fixed',
   `initially_published_at` timestamp(6) NULL DEFAULT NULL COMMENT 'The timestamp when the dashboard was first published in a static embed',
   `view_count` int NOT NULL DEFAULT '0' COMMENT 'Keeps a running count of dashboard views',
   `archived_directly` bit(1) NOT NULL DEFAULT b'0' COMMENT 'Was this thing trashed directly',
   `last_viewed_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'Timestamp of when this dashboard was last viewed',
-  `embedding_type` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The type of embedding for this dashboard',
+  `embedding_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The type of embedding for this dashboard',
   PRIMARY KEY (`id`),
   UNIQUE KEY `public_uuid` (`public_uuid`),
   UNIQUE KEY `entity_id` (`entity_id`),
@@ -3621,8 +3621,8 @@ CREATE TABLE `report_dashboardcard` (
   `id` int NOT NULL AUTO_INCREMENT,
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
   `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-  `size_x` int,
-  `size_y` int,
+  `size_x` int DEFAULT NULL,
+  `size_y` int DEFAULT NULL,
   `row` int NOT NULL,
   `col` int NOT NULL,
   `card_id` int DEFAULT NULL,
@@ -3632,7 +3632,7 @@ CREATE TABLE `report_dashboardcard` (
   `entity_id` char(21) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Random NanoID tag for unique identity.',
   `action_id` int DEFAULT NULL COMMENT 'The related action',
   `dashboard_tab_id` int DEFAULT NULL COMMENT 'The referenced tab id that dashcard is on, it''s nullable for dashboard with no tab',
-  `inline_parameters` longtext COLLATE utf8mb4_unicode_ci COMMENT 'JSON array of parameter IDs that should be displayed inline with this card',
+  `inline_parameters` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'JSON array of parameter IDs that should be displayed inline with this card',
   PRIMARY KEY (`id`),
   UNIQUE KEY `entity_id` (`entity_id`),
   KEY `idx_dashboardcard_card_id` (`card_id`),
@@ -3674,7 +3674,7 @@ CREATE TABLE `revision` (
   `is_creation` bit(1) NOT NULL DEFAULT b'0',
   `message` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `most_recent` bit(1) NOT NULL DEFAULT b'0',
-  `metabase_version` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Metabase version used to create the revision.',
+  `metabase_version` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Metabase version used to create the revision.',
   PRIMARY KEY (`id`),
   KEY `idx_revision_model_model_id` (`model`,`model_id`),
   KEY `fk_revision_ref_user_id` (`user_id`),
@@ -3735,13 +3735,13 @@ DROP TABLE IF EXISTS `search_index_metadata`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `search_index_metadata` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `engine` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The kind of search engine which this index belongs to.',
-  `version` varchar(254) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Used to determine metabase compatibility. Format may depend on engine in future.',
-  `index_name` varchar(254) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The name by which the given engine refers to this particular index, e.g. table name.',
-  `status` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'One of ''pending'', ''active'', or ''retired''',
+  `engine` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The kind of search engine which this index belongs to.',
+  `version` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Used to determine metabase compatibility. Format may depend on engine in future.',
+  `index_name` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The name by which the given engine refers to this particular index, e.g. table name.',
+  `status` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'One of ''pending'', ''active'', or ''retired''',
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'The timestamp of when the index was created',
   `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'The timestamp of when the index status was updated',
-  `lang_code` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'en' COMMENT 'Language code the data in the index is in',
+  `lang_code` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'en' COMMENT 'Language code the data in the index is in',
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_name` (`index_name`),
   UNIQUE KEY `idx_search_index_metadata_unique_status` (`engine`,`version`,`lang_code`,`status`)
@@ -3798,17 +3798,17 @@ DROP TABLE IF EXISTS `security_advisory`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `security_advisory` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Auto-incrementing primary key',
-  `advisory_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Unique advisory identifier (e.g. SC-2026-001)',
-  `severity` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Severity level: critical, high, medium, or low',
-  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Human-readable advisory title',
-  `description` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Short summary of the advisory',
-  `advisory_url` varchar(2048) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Link to the full advisory',
-  `remediation` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Remediation instructions',
-  `affected_versions` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'JSON array of {min, fixed} version ranges',
-  `matching_query` longtext COLLATE utf8mb4_unicode_ci COMMENT 'JSON HoneySQL query keyed by dialect (null = affects all instances)',
+  `advisory_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Unique advisory identifier (e.g. SC-2026-001)',
+  `severity` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Severity level: critical, high, medium, or low',
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Human-readable advisory title',
+  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Short summary of the advisory',
+  `advisory_url` varchar(2048) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Link to the full advisory',
+  `remediation` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Remediation instructions',
+  `affected_versions` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'JSON array of {min, fixed} version ranges',
+  `matching_query` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'JSON HoneySQL query keyed by dialect (null = affects all instances)',
   `published_at` timestamp(6) NOT NULL COMMENT 'When the advisory was published',
   `fetched_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'When Metabase fetched this advisory',
-  `match_status` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Status: active, resolved, not_affected, or error',
+  `match_status` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Status: active, resolved, not_affected, or error',
   `last_evaluated_at` timestamp(6) NULL DEFAULT NULL COMMENT 'Last time the matching query was evaluated',
   `acknowledged_by` int DEFAULT NULL COMMENT 'FK to core_user.id ‚Äî admin who acknowledged the advisory',
   `acknowledged_at` timestamp(6) NULL DEFAULT NULL COMMENT 'When the advisory was acknowledged',
@@ -3880,8 +3880,8 @@ DROP TABLE IF EXISTS `semantic_search_token_tracking`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `semantic_search_token_tracking` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique ID of a request',
-  `model_name` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Name of model used for embeddings generation',
-  `request_type` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Type of request, possibly index or query',
+  `model_name` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Name of model used for embeddings generation',
+  `request_type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Type of request, possibly index or query',
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'Datetime of insertion',
   `total_tokens` int NOT NULL COMMENT 'Total tokens value as per OpenAI compatible API',
   PRIMARY KEY (`id`),
@@ -3906,7 +3906,7 @@ DROP TABLE IF EXISTS `sequences`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sequences` (
-  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The name of the sequence',
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The name of the sequence',
   `next_val` bigint NOT NULL COMMENT 'The next value in this sequence',
   PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='A table for generating atomic sequence numbers';
@@ -3941,7 +3941,7 @@ CREATE TABLE `setting` (
 
 LOCK TABLES `setting` WRITE;
 /*!40000 ALTER TABLE `setting` DISABLE KEYS */;
-INSERT INTO `setting` VALUES ('admin-email','summarypaper@gmail.com'),('analytics-uuid','22482ffb-d230-4827-8b47-6ad2676c4e61'),('anon-tracking-enabled','true'),('embedding-homepage','visible'),('embedding-hub-test-embed-snippet-created','true'),('enable-embedding-static','true'),('encryption-check','unencrypted'),('entity-id-translation-counter','{\"ok\":0,\"not-found\":0,\"invalid-format\":0}'),('example-dashboard-id','1'),('instance-creation','2026-05-09T13:45:19Z'),('non-table-chart-generated','true'),('redirect-all-requests-to-https','false'),('settings-last-updated','2026-05-10 04:01:00'),('setup-license-active-at-setup','false'),('setup-token','32e171de-b663-4a76-85d6-6f022d6ff9f0'),('show-static-embed-terms','false'),('site-locale','en'),('site-name','Summary paper'),('site-url','http://localhost:3000'),('site-uuid','5c83ac2d-7f7e-4563-819a-77ec2ba59bfd'),('startup-time-millis','6282.551358');
+INSERT INTO `setting` VALUES ('admin-email','summarypaper@gmail.com'),('analytics-uuid','22482ffb-d230-4827-8b47-6ad2676c4e61'),('anon-tracking-enabled','true'),('embedding-homepage','visible'),('embedding-hub-test-embed-snippet-created','true'),('enable-embedding-static','true'),('encryption-check','unencrypted'),('entity-id-translation-counter','{\"ok\":0,\"not-found\":0,\"invalid-format\":0}'),('example-dashboard-id','1'),('instance-creation','2026-05-09T13:45:19Z'),('non-table-chart-generated','true'),('redirect-all-requests-to-https','false'),('settings-last-updated','2026-05-10 18:31:48'),('setup-license-active-at-setup','false'),('setup-token','32e171de-b663-4a76-85d6-6f022d6ff9f0'),('show-static-embed-terms','false'),('site-locale','en'),('site-name','Summary paper'),('site-url','http://localhost:3000'),('site-uuid','5c83ac2d-7f7e-4563-819a-77ec2ba59bfd'),('startup-time-millis','6696.448055');
 /*!40000 ALTER TABLE `setting` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -3954,14 +3954,14 @@ DROP TABLE IF EXISTS `source_replacement_run`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `source_replacement_run` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
-  `source_entity_type` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Type of the source entity (card or table)',
+  `source_entity_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Type of the source entity (card or table)',
   `source_entity_id` int NOT NULL COMMENT 'ID of the source entity',
-  `target_entity_type` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Type of the target entity (card or table)',
+  `target_entity_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Type of the target entity (card or table)',
   `target_entity_id` int NOT NULL COMMENT 'ID of the target entity',
-  `status` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Current status (started, succeeded, failed, canceled, timeout)',
+  `status` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Current status (started, succeeded, failed, canceled, timeout)',
   `is_active` bit(1) DEFAULT NULL COMMENT 'True only for currently running replacements, null for completed',
   `progress` float DEFAULT NULL COMMENT 'Progress from 0.0 to 1.0',
-  `message` longtext COLLATE utf8mb4_unicode_ci COMMENT 'Human-readable message; may contain error info',
+  `message` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Human-readable message; may contain error info',
   `user_id` int DEFAULT NULL COMMENT 'User who initiated the replacement',
   `start_time` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'When the replacement started',
   `end_time` timestamp(6) NULL DEFAULT NULL COMMENT 'When the replacement completed (null if still running)',
@@ -3991,8 +3991,8 @@ DROP TABLE IF EXISTS `support_access_grant_log`;
 CREATE TABLE `support_access_grant_log` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier for the grant',
   `user_id` int DEFAULT NULL COMMENT 'ID of the admin user who created this grant',
-  `ticket_number` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Support ticket number associated with this grant',
-  `notes` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Additional notes associated with this grant',
+  `ticket_number` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Support ticket number associated with this grant',
+  `notes` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Additional notes associated with this grant',
   `grant_start_timestamp` timestamp(6) NOT NULL COMMENT 'When the grant becomes active (UTC)',
   `grant_end_timestamp` timestamp(6) NOT NULL COMMENT 'When the grant expires (UTC)',
   `revoked_at` timestamp(6) NULL DEFAULT NULL COMMENT 'When the grant was manually revoked (UTC), null if not revoked',
@@ -4026,7 +4026,7 @@ DROP TABLE IF EXISTS `table_privileges`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `table_privileges` (
   `table_id` int NOT NULL COMMENT 'Table ID',
-  `role` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Role name. NULL indicates the privileges are the current user''s',
+  `role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Role name. NULL indicates the privileges are the current user''s',
   `select` bit(1) NOT NULL DEFAULT b'0',
   `update` bit(1) NOT NULL DEFAULT b'0',
   `insert` bit(1) NOT NULL DEFAULT b'0',
@@ -4061,9 +4061,9 @@ CREATE TABLE `task_history` (
   `ended_at` timestamp(6) NULL DEFAULT NULL,
   `duration` int DEFAULT NULL,
   `task_details` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `status` varchar(21) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'started' COMMENT 'the status of task history, could be started, failed, success, unknown',
+  `status` varchar(21) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'started' COMMENT 'the status of task history, could be started, failed, success, unknown',
   `run_id` int DEFAULT NULL COMMENT 'FK to task_run - groups tasks belonging to the same run',
-  `logs` longtext COLLATE utf8mb4_unicode_ci COMMENT 'JSON array of captured log messages during task execution',
+  `logs` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'JSON array of captured log messages during task execution',
   PRIMARY KEY (`id`),
   KEY `idx_task_history_end_time` (`ended_at`),
   KEY `idx_task_history_db_id` (`db_id`),
@@ -4092,13 +4092,13 @@ DROP TABLE IF EXISTS `task_run`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `task_run` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `run_type` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Type of run: subscription, alert, sync, fingerprint',
-  `entity_type` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Type of associated entity: database, card, dashboard',
+  `run_type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Type of run: subscription, alert, sync, fingerprint',
+  `entity_type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Type of associated entity: database, card, dashboard',
   `entity_id` int NOT NULL COMMENT 'ID of associated entity',
   `started_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'When the run started',
   `ended_at` timestamp(6) NULL DEFAULT NULL COMMENT 'When the run completed (null if still running)',
-  `status` varchar(21) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Overall status: started, success, failed',
-  `process_uuid` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'unknown' COMMENT 'UUID of the Metabase instance that created this run',
+  `status` varchar(21) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Overall status: started, success, failed',
+  `process_uuid` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'unknown' COMMENT 'UUID of the Metabase instance that created this run',
   `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'Last heartbeat timestamp - updated periodically for running tasks',
   PRIMARY KEY (`id`),
   KEY `idx_task_run_type_entity` (`run_type`,`entity_type`,`entity_id`),
@@ -4125,12 +4125,12 @@ DROP TABLE IF EXISTS `tenant`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tenant` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'the ID of the tenant',
-  `name` varchar(254) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'the unique name of the tenant',
-  `slug` varchar(254) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'the slugified version of this tenant''s name',
+  `name` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'the unique name of the tenant',
+  `slug` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'the slugified version of this tenant''s name',
   `is_active` bit(1) NOT NULL DEFAULT b'1' COMMENT 'Whether the tenant is active or not',
   `updated_at` timestamp(6) NOT NULL COMMENT 'The timestamp of when the tenant was updated',
   `created_at` timestamp(6) NOT NULL COMMENT 'The timestamp of when the tenant was created',
-  `attributes` longtext COLLATE utf8mb4_unicode_ci COMMENT 'JSON object containing custom tenant attributes',
+  `attributes` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'JSON object containing custom tenant attributes',
   `tenant_collection_id` int NOT NULL COMMENT 'The ID of the collection',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
@@ -4231,21 +4231,21 @@ DROP TABLE IF EXISTS `transform`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `transform` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
-  `name` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Name',
-  `description` longtext COLLATE utf8mb4_unicode_ci COMMENT 'the description of the transform',
-  `source` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'JSON of source',
-  `target` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'JSON of target',
-  `entity_id` char(21) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Random NanoID tag for unique identity.',
+  `name` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Name',
+  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'the description of the transform',
+  `source` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'JSON of source',
+  `target` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'JSON of target',
+  `entity_id` char(21) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Random NanoID tag for unique identity.',
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'The timestamp of when the transform was created',
   `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'The timestamp of when the transform was updated',
-  `source_type` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `source_type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `creator_id` int NOT NULL DEFAULT '13371338' COMMENT 'User who created this transform',
   `source_database_id` int NOT NULL,
   `collection_id` int DEFAULT NULL COMMENT 'The collection the transform is in',
   `owner_user_id` int DEFAULT NULL COMMENT 'The user ID of the owner of this transform (can be different from creator)',
-  `owner_email` longtext COLLATE utf8mb4_unicode_ci COMMENT 'An optional email address of the owner of this transform (for external owners), exclusive with owner_user_id',
+  `owner_email` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'An optional email address of the owner of this transform (for external owners), exclusive with owner_user_id',
   `target_db_id` int DEFAULT NULL COMMENT 'Target database ID for the transform output',
-  `last_checkpoint_value` longtext COLLATE utf8mb4_unicode_ci COMMENT 'Serialized checkpoint watermark value for incremental transforms, temporal as ISO8601',
+  `last_checkpoint_value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Serialized checkpoint watermark value for incremental transforms, temporal as ISO8601',
   PRIMARY KEY (`id`),
   UNIQUE KEY `entity_id` (`entity_id`),
   KEY `idx_transform_creator_id` (`creator_id`),
@@ -4279,14 +4279,14 @@ DROP TABLE IF EXISTS `transform_job`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `transform_job` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
-  `name` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The name of the transform job.',
-  `description` longtext COLLATE utf8mb4_unicode_ci COMMENT 'A description of the transform job.',
-  `schedule` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Cron expression for job schedule',
-  `entity_id` char(21) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'NanoID identifier for the job',
+  `name` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The name of the transform job.',
+  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'A description of the transform job.',
+  `schedule` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Cron expression for job schedule',
+  `entity_id` char(21) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'NanoID identifier for the job',
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'The timestamp this transform job was created.',
   `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'The timestamp this transform job was last updated.',
-  `built_in_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Type of the built-in transform job: hourly, daily, weekly, monthly.',
-  `ui_display_type` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'cron/raw' COMMENT 'The display type of the schedule, used for the UI only; "cron/raw" or "cron/builder".',
+  `built_in_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Type of the built-in transform job: hourly, daily, weekly, monthly.',
+  `ui_display_type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'cron/raw' COMMENT 'The display type of the schedule, used for the UI only; "cron/raw" or "cron/builder".',
   PRIMARY KEY (`id`),
   UNIQUE KEY `entity_id` (`entity_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Jobs that execute transforms based on tags';
@@ -4312,12 +4312,12 @@ DROP TABLE IF EXISTS `transform_job_run`;
 CREATE TABLE `transform_job_run` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
   `job_id` bigint NOT NULL COMMENT 'Identifier for the transform job',
-  `run_method` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Method used to execute the transform job',
-  `status` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Current status of the transform job (running, completed, failed, etc.)',
+  `run_method` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Method used to execute the transform job',
+  `status` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Current status of the transform job (running, completed, failed, etc.)',
   `is_active` bit(1) DEFAULT NULL COMMENT 'True only for currently running jobs, null for the others',
   `start_time` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'When the transform job started',
   `end_time` timestamp(6) NULL DEFAULT NULL COMMENT 'When the tranform job completed (null if still running)',
-  `message` longtext COLLATE utf8mb4_unicode_ci COMMENT 'Human-readable message about the run; may contain error message in case status is error',
+  `message` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Human-readable message about the run; may contain error message in case status is error',
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'The timestamp this transform job run was created.',
   `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'The timestamp this transform job run was last updated.',
   PRIMARY KEY (`id`)
@@ -4344,7 +4344,7 @@ CREATE TABLE `transform_job_transform_tag` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
   `job_id` int NOT NULL COMMENT 'The id of the transform job.',
   `tag_id` int NOT NULL COMMENT 'The id of the transform tag.',
-  `entity_id` char(21) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Random NanoID tag for unique identity.',
+  `entity_id` char(21) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Random NanoID tag for unique identity.',
   `position` int NOT NULL COMMENT 'The ordering position of this tag for the job.',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_job_tag` (`job_id`,`tag_id`),
@@ -4375,19 +4375,19 @@ DROP TABLE IF EXISTS `transform_run`;
 CREATE TABLE `transform_run` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
   `transform_id` int DEFAULT NULL,
-  `run_method` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Method used to execute the transform job',
-  `status` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Current status of the transform job (running, completed, failed, etc.)',
+  `run_method` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Method used to execute the transform job',
+  `status` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Current status of the transform job (running, completed, failed, etc.)',
   `is_active` bit(1) DEFAULT NULL COMMENT 'True only for currently running jobs, null for the others',
   `start_time` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'When the transform job started',
   `end_time` timestamp(6) NULL DEFAULT NULL COMMENT 'When the transform job completed (null if still running)',
-  `message` longtext COLLATE utf8mb4_unicode_ci COMMENT 'Human-readable message about the run; may contain error message in case status is error',
+  `message` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Human-readable message about the run; may contain error message in case status is error',
   `user_id` int DEFAULT NULL COMMENT 'The user ID who triggered this run (owner for scheduled runs, current user for manual runs)',
-  `transform_name` varchar(254) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Name of transform at time of run, stored for historical purposes',
-  `transform_entity_id` char(21) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Original transform entity_id, stored for historical purposes',
+  `transform_name` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Name of transform at time of run, stored for historical purposes',
+  `transform_entity_id` char(21) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Original transform entity_id, stored for historical purposes',
   `checkpoint_filter_field_id` int DEFAULT NULL COMMENT 'The field ID used for incremental checkpoint filtering',
-  `checkpoint_lo_value` longtext COLLATE utf8mb4_unicode_ci COMMENT 'The low checkpoint value for this run (exclusive lower bound)',
-  `checkpoint_hi_value` longtext COLLATE utf8mb4_unicode_ci COMMENT 'The high checkpoint value for this run (inclusive upper bound)',
-  `metered_as` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The meter bucket this run counts toward (transform-basic, transform-advanced, or null)',
+  `checkpoint_lo_value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'The low checkpoint value for this run (exclusive lower bound)',
+  `checkpoint_hi_value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'The high checkpoint value for this run (inclusive upper bound)',
+  `metered_as` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The meter bucket this run counts toward (transform-basic, transform-advanced, or null)',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_unique_active_transform_run` (`transform_id`,`is_active`),
   KEY `idx_transform_run_last_run_idx` (`transform_id`,`start_time` DESC),
@@ -4440,11 +4440,11 @@ DROP TABLE IF EXISTS `transform_tag`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `transform_tag` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
-  `name` varchar(254) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The name of the transform tag.',
-  `entity_id` char(21) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Random NanoID tag for unique identity.',
+  `name` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The name of the transform tag.',
+  `entity_id` char(21) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Random NanoID tag for unique identity.',
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'The time the transform tag was created.',
   `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'The time the transform tag was last updated.',
-  `built_in_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Type of the built-in transform tag: hourly, daily, weekly, monthly.',
+  `built_in_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Type of the built-in transform tag: hourly, daily, weekly, monthly.',
   PRIMARY KEY (`id`),
   UNIQUE KEY `entity_id` (`entity_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Tags for grouping transforms';
@@ -4471,7 +4471,7 @@ CREATE TABLE `transform_transform_tag` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
   `transform_id` int NOT NULL COMMENT 'The id of the transform.',
   `tag_id` int NOT NULL COMMENT 'The id of the tag.',
-  `entity_id` char(21) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Random NanoID tag for unique identity.',
+  `entity_id` char(21) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Random NanoID tag for unique identity.',
   `position` int NOT NULL COMMENT 'The relative UI ordering of this tag on the transform',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_transform_tag` (`transform_id`,`tag_id`),
@@ -4501,9 +4501,9 @@ DROP TABLE IF EXISTS `user_key_value`;
 CREATE TABLE `user_key_value` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL COMMENT 'The ID of the user this KV-pair is for',
-  `namespace` varchar(254) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The namespace for this KV, e.g. "dashboard-filters" or "nobody-knows"',
-  `key` varchar(254) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The key',
-  `value` longtext COLLATE utf8mb4_unicode_ci COMMENT 'The value, serialized JSON',
+  `namespace` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The namespace for this KV, e.g. "dashboard-filters" or "nobody-knows"',
+  `key` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The key',
+  `value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'The value, serialized JSON',
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'When this row was created',
   `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'When this row was last updated',
   `expires_at` timestamp(6) NULL DEFAULT NULL COMMENT 'If set, when this row expires',
@@ -4532,8 +4532,8 @@ DROP TABLE IF EXISTS `user_parameter_value`;
 CREATE TABLE `user_parameter_value` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL COMMENT 'ID of the User who has set the parameter value',
-  `parameter_id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The parameter ID',
-  `value` longtext COLLATE utf8mb4_unicode_ci COMMENT 'Value of the parameter',
+  `parameter_id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The parameter ID',
+  `value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Value of the parameter',
   `dashboard_id` int DEFAULT NULL COMMENT 'The ID of the dashboard',
   PRIMARY KEY (`id`),
   KEY `idx_user_parameter_value_user_id` (`user_id`),
@@ -4903,9 +4903,9 @@ CREATE TABLE `view_log` (
   `timestamp` timestamp(6) NULL DEFAULT NULL,
   `metadata` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `has_access` bit(1) DEFAULT NULL,
-  `context` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The context of the view, can be collection, question, or dashboard. Only for cards.',
-  `embedding_client` varchar(254) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Used by the embedding team to track SDK usage',
-  `embedding_version` varchar(254) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Used by the embedding team to track SDK version usage',
+  `context` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The context of the view, can be collection, question, or dashboard. Only for cards.',
+  `embedding_client` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Used by the embedding team to track SDK usage',
+  `embedding_version` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Used by the embedding team to track SDK version usage',
   PRIMARY KEY (`id`),
   KEY `idx_view_log_user_id` (`user_id`),
   KEY `idx_view_log_model_id` (`model_id`),
@@ -4933,15 +4933,15 @@ DROP TABLE IF EXISTS `workspace`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `workspace` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(254) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Workspace name',
+  `name` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Workspace name',
   `collection_id` int DEFAULT NULL COMMENT 'FK to workspace''s collection',
   `creator_id` int DEFAULT NULL COMMENT 'FK to owner',
   `execution_user` int DEFAULT NULL COMMENT 'FK to api key''s user',
   `database_id` int DEFAULT NULL COMMENT 'FK to db used for this workspace',
-  `schema` varchar(254) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Isolated schema where work happens',
-  `database_details` longtext COLLATE utf8mb4_unicode_ci COMMENT 'Database details used for isolation of this workspace',
-  `db_status` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'uninitialized' COMMENT 'Status of the database isolation resources (uninitialized, pending, ready, broken)',
-  `base_status` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'empty' COMMENT 'Workspace lifecycle status (empty, active, archived)',
+  `schema` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Isolated schema where work happens',
+  `database_details` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Database details used for isolation of this workspace',
+  `db_status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'uninitialized' COMMENT 'Status of the database isolation resources (uninitialized, pending, ready, broken)',
+  `base_status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'empty' COMMENT 'Workspace lifecycle status (empty, active, archived)',
   `graph_version` bigint NOT NULL DEFAULT '1' COMMENT 'Incremented when graph structure changes (transform add/remove, global transform changes)',
   `created_at` timestamp(6) NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'Timestamp when the workspace was created',
   `updated_at` timestamp(6) NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'Timestamp when the workspace was last updated',
@@ -4972,7 +4972,7 @@ DROP TABLE IF EXISTS `workspace_graph`;
 CREATE TABLE `workspace_graph` (
   `id` int NOT NULL AUTO_INCREMENT,
   `workspace_id` int NOT NULL COMMENT 'Reference to the workspace this graph belongs to',
-  `graph` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'JSON representation of the dependency graph',
+  `graph` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'JSON representation of the dependency graph',
   `graph_version` bigint NOT NULL DEFAULT '0' COMMENT 'The graph_version this cached graph was calculated for',
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'Timestamp when the cached graph was created',
   `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'Timestamp when the cached graph was last updated',
@@ -5002,8 +5002,8 @@ CREATE TABLE `workspace_input` (
   `id` int NOT NULL AUTO_INCREMENT,
   `workspace_id` int NOT NULL COMMENT 'FK to workspace',
   `db_id` int NOT NULL COMMENT 'Database containing the source table',
-  `schema` varchar(254) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Schema of the source table (nullable for DBs without schemas)',
-  `table` varchar(254) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Name of the source table',
+  `schema` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Schema of the source table (nullable for DBs without schemas)',
+  `table` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Name of the source table',
   `table_id` int DEFAULT NULL COMMENT 'FK to metabase_table if table exists and is synced',
   `access_granted` bit(1) NOT NULL DEFAULT b'0' COMMENT 'Whether read access has been granted to the workspace user',
   `created_at` timestamp(6) NOT NULL COMMENT 'Timestamp when the input was created',
@@ -5037,8 +5037,8 @@ CREATE TABLE `workspace_input_external` (
   `id` int NOT NULL AUTO_INCREMENT,
   `workspace_id` int NOT NULL COMMENT 'FK to workspace',
   `db_id` int NOT NULL COMMENT 'Database containing the source table',
-  `schema` varchar(254) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Schema of the source table (nullable for DBs without schemas)',
-  `table` varchar(254) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Name of the source table',
+  `schema` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Schema of the source table (nullable for DBs without schemas)',
+  `table` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Name of the source table',
   `table_id` int DEFAULT NULL COMMENT 'FK to metabase_table if table exists and is synced',
   `access_granted` bit(1) NOT NULL DEFAULT b'0' COMMENT 'Whether read access has been granted to the workspace user',
   `graph_version` bigint NOT NULL DEFAULT '0' COMMENT 'The graph_version this row was calculated for',
@@ -5071,7 +5071,7 @@ CREATE TABLE `workspace_input_transform` (
   `id` int NOT NULL AUTO_INCREMENT,
   `workspace_input_id` int NOT NULL COMMENT 'FK to workspace_input',
   `workspace_id` int NOT NULL COMMENT 'FK to workspace (denormalized for query convenience)',
-  `ref_id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'ref_id of the workspace_transform that depends on this input',
+  `ref_id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'ref_id of the workspace_transform that depends on this input',
   `transform_version` bigint NOT NULL DEFAULT '0' COMMENT 'The analysis_version of the transform when this row was created',
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'Timestamp when the link was created',
   PRIMARY KEY (`id`),
@@ -5102,13 +5102,13 @@ DROP TABLE IF EXISTS `workspace_log`;
 CREATE TABLE `workspace_log` (
   `id` int NOT NULL AUTO_INCREMENT,
   `workspace_id` int NOT NULL COMMENT 'FK to workspace being set up',
-  `task` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Name of the setup task',
+  `task` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Name of the setup task',
   `created_at` timestamp(6) NOT NULL COMMENT 'When the task was created',
   `updated_at` timestamp(6) NOT NULL COMMENT 'When the task was updated',
   `started_at` timestamp(6) NOT NULL COMMENT 'When the task started',
   `completed_at` timestamp(6) NULL DEFAULT NULL COMMENT 'When the task completed',
-  `status` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Task status (started, success, failed)',
-  `message` longtext COLLATE utf8mb4_unicode_ci COMMENT 'Details on the task result if any',
+  `status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Task status (started, success, failed)',
+  `message` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Details on the task result if any',
   PRIMARY KEY (`id`),
   KEY `idx_workspace_log_workspace_id` (`workspace_id`),
   CONSTRAINT `fk_workspace_log_workspace_id` FOREIGN KEY (`workspace_id`) REFERENCES `workspace` (`id`) ON DELETE CASCADE
@@ -5134,8 +5134,8 @@ DROP TABLE IF EXISTS `workspace_merge`;
 CREATE TABLE `workspace_merge` (
   `id` int NOT NULL AUTO_INCREMENT,
   `workspace_id` int DEFAULT NULL COMMENT 'Foreign key to workspace, SET NULL on delete',
-  `workspace_name` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Inlined copy of workspace name (survives deletion)',
-  `commit_message` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Description of the merge operation',
+  `workspace_name` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Inlined copy of workspace name (survives deletion)',
+  `commit_message` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Description of the merge operation',
   `creator_id` int NOT NULL COMMENT 'User who performed the merge',
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'Timestamp when the merge was performed',
   PRIMARY KEY (`id`),
@@ -5166,9 +5166,9 @@ CREATE TABLE `workspace_merge_transform` (
   `id` int NOT NULL AUTO_INCREMENT,
   `workspace_merge_id` int NOT NULL COMMENT 'Foreign key to workspace_merge, CASCADE on delete',
   `workspace_id` int DEFAULT NULL COMMENT 'Foreign key to workspace, SET NULL on delete',
-  `workspace_name` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Inlined copy of workspace name (survives deletion)',
+  `workspace_name` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Inlined copy of workspace name (survives deletion)',
   `transform_id` int DEFAULT NULL COMMENT 'Foreign key to transform',
-  `commit_message` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Description of the merge operation',
+  `commit_message` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Description of the merge operation',
   `merging_user_id` int NOT NULL COMMENT 'User who performed the merge',
   `created_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT 'Timestamp when the merge was performed',
   PRIMARY KEY (`id`),
@@ -5202,13 +5202,13 @@ DROP TABLE IF EXISTS `workspace_output`;
 CREATE TABLE `workspace_output` (
   `id` int NOT NULL AUTO_INCREMENT,
   `workspace_id` int NOT NULL COMMENT 'FK to workspace',
-  `ref_id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'FK to workspace_transform.ref_id (producer)',
+  `ref_id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'FK to workspace_transform.ref_id (producer)',
   `db_id` int NOT NULL COMMENT 'Database where the output table is created',
-  `global_schema` varchar(254) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Schema of the output table',
-  `global_table` varchar(254) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Name of the output table',
+  `global_schema` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Schema of the output table',
+  `global_table` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Name of the output table',
   `global_table_id` int DEFAULT NULL COMMENT 'FK to metabase table for the global output table',
-  `isolated_schema` varchar(254) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Schema name in the isolated workspace namespace',
-  `isolated_table` varchar(254) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Table name in the isolated workspace namespace',
+  `isolated_schema` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Schema name in the isolated workspace namespace',
+  `isolated_table` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Table name in the isolated workspace namespace',
   `isolated_table_id` int DEFAULT NULL COMMENT 'FK to metabase table for the isolated output table',
   `transform_version` bigint NOT NULL DEFAULT '0' COMMENT 'The analysis_version of the transform when this row was created',
   `created_at` timestamp(6) NOT NULL COMMENT 'Timestamp when the output was created',
@@ -5243,11 +5243,11 @@ CREATE TABLE `workspace_output_external` (
   `workspace_id` int NOT NULL COMMENT 'FK to workspace',
   `transform_id` int NOT NULL COMMENT 'FK to transform (the external transform)',
   `db_id` int NOT NULL COMMENT 'Database where the output table is created',
-  `global_schema` varchar(254) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Schema of the original output table',
-  `global_table` varchar(254) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Name of the original output table',
+  `global_schema` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Schema of the original output table',
+  `global_table` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Name of the original output table',
   `global_table_id` int DEFAULT NULL COMMENT 'FK to metabase_table for the global output table',
-  `isolated_schema` varchar(254) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Schema name in the isolated workspace namespace',
-  `isolated_table` varchar(254) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Table name in the isolated workspace namespace',
+  `isolated_schema` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Schema name in the isolated workspace namespace',
+  `isolated_table` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Table name in the isolated workspace namespace',
   `isolated_table_id` int DEFAULT NULL COMMENT 'FK to metabase_table for the isolated output table',
   `graph_version` bigint NOT NULL DEFAULT '0' COMMENT 'The graph_version this row was calculated for',
   `created_at` timestamp(6) NOT NULL COMMENT 'Timestamp when the output was created',
@@ -5278,23 +5278,23 @@ DROP TABLE IF EXISTS `workspace_transform`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `workspace_transform` (
-  `ref_id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Representation id for the workspace transform, not unique across workspaces',
+  `ref_id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Representation id for the workspace transform, not unique across workspaces',
   `workspace_id` int NOT NULL COMMENT 'FK to workspace containing this transform',
   `global_id` int DEFAULT NULL COMMENT 'FK to transform table if checked out from global',
   `collection_id` int DEFAULT NULL COMMENT 'FK to collection containing this transform',
   `creator_id` int DEFAULT NULL COMMENT 'FK to core_user who created this workspace transform',
-  `name` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Name of the transform',
-  `description` longtext COLLATE utf8mb4_unicode_ci COMMENT 'Description of the transform',
-  `source` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'JSON of source configuration',
-  `target` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'JSON of target configuration',
-  `entity_id` char(21) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Random NanoID tag for unique identity of this changeset entry only',
+  `name` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Name of the transform',
+  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Description of the transform',
+  `source` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'JSON of source configuration',
+  `target` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'JSON of target configuration',
+  `entity_id` char(21) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Random NanoID tag for unique identity of this changeset entry only',
   `checked_out_at` timestamp(6) NULL DEFAULT NULL COMMENT 'Timestamp when the transform was checked out',
   `archived_at` timestamp(6) NULL DEFAULT NULL COMMENT 'If set, marks that the global transform should be archived when merging',
   `created_at` timestamp(6) NOT NULL COMMENT 'Timestamp when the workspace transform was created',
   `updated_at` timestamp(6) NOT NULL COMMENT 'Timestamp when the workspace transform was last updated',
   `last_run_at` timestamp(6) NULL DEFAULT NULL COMMENT 'Timestamp when this transform was last run',
-  `last_run_message` longtext COLLATE utf8mb4_unicode_ci COMMENT 'Message from the last transform run (success or failure message)',
-  `last_run_status` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Status of the last transform run (succeeded or failed)',
+  `last_run_message` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Message from the last transform run (success or failure message)',
+  `last_run_status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Status of the last transform run (succeeded or failed)',
   `definition_changed` bit(1) NOT NULL DEFAULT b'1' COMMENT 'Indicates if the transform definition has changed and needs re-execution',
   `analysis_version` bigint NOT NULL DEFAULT '1' COMMENT 'Incremented when transform source/target changes, triggers re-analysis',
   `input_data_changed` bit(1) NOT NULL DEFAULT b'0' COMMENT 'Indicates if upstream data has changed and transform needs re-execution',
@@ -5588,4 +5588,4 @@ USE `metabase_appdb`;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-10  4:21:39
+-- Dump completed on 2026-05-10 18:34:34

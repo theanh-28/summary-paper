@@ -17,6 +17,7 @@ services:
       - db_data:/var/lib/mysql
       - ./database/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro              # Tạo metabase_appdb
       - ./database/metabase_restore.sql:/docker-entrypoint-initdb.d/02-restore.sql:ro  # Restore dashboards (nếu đã export)
+      - ./database/database_restore.sql:/docker-entrypoint-initdb.d/03-database_restore.sql:ro  # Restore seed data
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
@@ -30,7 +31,7 @@ services:
         max-file: "3"
 
   # ===========================================================================
-  # Backend — FastAPI + Alembic + Seed
+  # Backend — FastAPI + Alembic
   # ===========================================================================
   backend:
     build: ./backend
@@ -45,7 +46,7 @@ services:
     volumes:
       - ./backend:/app
       - backend_uploads:/app/uploads
-    command: sh -c "alembic upgrade head && python seed.py && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+    command: sh -c "sleep 15 && alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/')"]
