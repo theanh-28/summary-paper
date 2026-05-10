@@ -13,7 +13,7 @@ echo ============================================
 echo   Exporting Metabase Dashboards...
 echo ============================================
 
-docker exec summary_mysql mysqldump -u summary_user -psummary_pass --databases metabase_appdb > database\metabase_restore.sql
+docker exec summary_mysql mysqldump -u summary_user -psummary_pass --no-tablespaces --databases metabase_appdb > "%~dp0..\database\metabase_restore.sql"
 
 if %ERRORLEVEL% EQU 0 (
     echo.
