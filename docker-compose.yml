@@ -11,6 +11,9 @@ services:
       MYSQL_DATABASE: summary_paper         # Application DB (tự tạo bởi Docker MySQL)
       MYSQL_USER: summary_user
       MYSQL_PASSWORD: summary_pass
+      TZ: Asia/Ho_Chi_Minh # Thêm dòng này để set múi giờ cho OS của container
+    # Thêm dòng command này để ép MySQL engine sử dụng múi giờ +7 cho các hàm như NOW()
+    command: --default-time-zone='+07:00'
     ports:
       - "3307:3306"
     volumes:
@@ -43,6 +46,8 @@ services:
       - ./backend/.env.docker
     ports:
       - "8000:8000"
+    environment:
+      TZ: Asia/Ho_Chi_Minh # Thêm dòng này để code Python sinh log và xử lý datetime chuẩn giờ VN
     volumes:
       - ./backend:/app
       - backend_uploads:/app/uploads

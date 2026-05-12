@@ -15,6 +15,19 @@ function Dashboard() {
 
     useEffect(() => {
         fetchEmbedUrl();
+        
+        // CSS hack to remove padding for full width dashboard
+        const mainContent = document.querySelector('.main-content');
+        if (mainContent) {
+            mainContent.style.padding = '0';
+            mainContent.style.maxWidth = 'none';
+        }
+        return () => {
+            if (mainContent) {
+                mainContent.style.padding = '';
+                mainContent.style.maxWidth = '';
+            }
+        };
     }, []);
 
     const fetchEmbedUrl = async () => {
@@ -30,7 +43,7 @@ function Dashboard() {
                     
                     // Cấu hình Metabase
                     window.metabaseConfig = {
-                        theme: { preset: "dark" },
+                        theme: { preset: "light" }, // Cập nhật sang giao diện sáng
                         isGuest: true,
                         instanceUrl: metabaseSiteUrl
                     };
@@ -67,20 +80,9 @@ function Dashboard() {
     }
 
     return (
-        <div className="dashboard-container" id="dashboard-page">
-            <div className="dashboard-header">
-                <h2 style={{ marginBottom: '0.5rem' }}>
-                    {['admin', 'root'].includes(user?.role) ? '📊 Admin Dashboard' : '📈 Dashboard Cá Nhân'}
-                </h2>
-                <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem' }}>
-                    {['admin', 'root'].includes(user?.role)
-                        ? 'Tổng quan hệ thống — analytics toàn bộ dữ liệu'
-                        : 'Dữ liệu và thống kê của bạn'}
-                </p>
-            </div>
-
+        <div className="dashboard-container" id="dashboard-page" style={{ height: '100%', width: '100%', display: 'flex', flexDirection: 'column' }}>
             {error ? (
-                <div className="glass-card" style={{ textAlign: 'center' }}>
+                <div className="glass-card" style={{ textAlign: 'center', margin: '2rem' }}>
                     <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem' }}>
                         ⚠️ {error}
                     </p>
@@ -89,27 +91,26 @@ function Dashboard() {
                     </p>
                 </div>
             ) : (
-                <div className="glass-card" style={{ padding: '0', overflow: 'hidden' }}>
+                <div style={{ flex: 1, overflow: 'hidden', height: '100vh' }}>
                     {token ? (
-                        <div style={{ padding: '1rem', background: '#000', borderRadius: '16px' }}>
-                            <metabase-dashboard 
-                                token={token} 
-                                with-title="true" 
-                                with-downloads="true"
-                            ></metabase-dashboard>
-                        </div>
+                        <metabase-dashboard 
+                            token={token} 
+                            with-downloads="true"
+                            style={{ width: '100%', height: '100%', display: 'block' }}
+                        ></metabase-dashboard>
                     ) : (
                         <iframe
                             title="Metabase Dashboard"
                             src={embedUrl}
                             width="100%"
-                            height="800"
+                            height="100%"
                             frameBorder="0"
                             allowFullScreen={true}
                             style={{
                                 border: 'none',
-                                borderRadius: '16px',
                                 display: 'block',
+                                width: '100%',
+                                height: '100%'
                             }}
                         ></iframe>
                     )}
