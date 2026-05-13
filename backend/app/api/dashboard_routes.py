@@ -59,7 +59,7 @@ async def get_embed_url(current_user: User = Depends(get_current_user)):
     else:
         token = _generate_metabase_token(
             dashboard_id=settings.metabase_user_dashboard_id,
-            params={"user_id": current_user.id},  # Filter theo user_id
+            params={"id": current_user.id},  # Filter theo user_id
         )
 
     embed_url = _generate_metabase_embed_url(token)
