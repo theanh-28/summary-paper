@@ -29,7 +29,7 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 # Giới hạn file upload: 10MB
 MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
-ALLOWED_CONTENT_TYPES = {"application/pdf"}
+ALLOWED_CONTENT_TYPES = {"application/pdf", "text/plain"}
 
 
 @router.post("/upload", response_model=PaperRead, status_code=status.HTTP_201_CREATED)
@@ -40,21 +40,23 @@ async def upload_and_create_paper(
     db: AsyncSession = Depends(get_db),
 ):
     """
-    Upload một file PDF lên server, tự động trích xuất nội dung và lưu vào database.
-    - File tối đa 10MB, chỉ hỗ trợ PDF
-    - Nội dung text sẽ được trích xuất bằng thư viện pypdf
-    - Bài báo (Paper) mới sẽ được tự động tạo với nội dung vừa trích xuất
+    Upload một file PDF/TXT lên server, tự động trích xuất nội dung và lưu vào database.
     """
+    if not file.filename:
+        raise HTTPException(status_code=400, detail="File không hợp lệ")
+
+    # Lấy đuôi file (ví dụ: '.pdf' hoặc '.txt')
+    file_ext = os.path.splitext(file.filename)[1].lower()
+
     # --- Validate file extension ---
-    if not file.filename or not file.filename.lower().endswith(".pdf"):
-        raise HTTPException(status_code=400, detail="Chỉ hỗ trợ file định dạng PDF")
+    if file_ext not in [".pdf", ".txt"]:
+        raise HTTPException(status_code=400, detail="Chỉ hỗ trợ file định dạng PDF hoặc TXT")
 
     # --- Validate MIME type ---
     if file.content_type not in ALLOWED_CONTENT_TYPES:
-        raise HTTPException(status_code=400, detail="File không đúng định dạng PDF")
+        raise HTTPException(status_code=400, detail="File không đúng định dạng PDF hoặc TXT")
 
     # --- Generate safe filename (no path traversal) ---
-    file_ext = ".pdf"
     safe_filename = f"user_{current_user.id}_{uuid.uuid4().hex}{file_ext}"
     file_path = os.path.join(UPLOAD_DIR, safe_filename)
 
@@ -75,12 +77,18 @@ async def upload_and_create_paper(
                         status_code=400, 
                         detail="File quá lớn. Giới hạn 10MB."
                     )
-                    
                 # Ghi ngay chunk vừa đọc xuống đĩa cứng
                 await out_file.write(chunk)
 
-        # Trích xuất text từ PDF — chạy trong thread pool vì là blocking I/O
-        extracted_text, page_count = await asyncio.to_thread(extract_text_from_pdf, file_path)
+        # --- TRÍCH XUẤT TEXT TÙY THEO ĐỊNH DẠNG FILE ---
+        if file_ext == ".pdf":
+            # Chạy trong thread pool vì là blocking I/O
+            extracted_text, page_count = await asyncio.to_thread(extract_text_from_pdf, file_path)
+        else:
+            # Nếu là file .txt, đọc trực tiếp bằng utf-8
+            async with aiofiles.open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+                extracted_text = await f.read()
+            page_count = 1  # File text mặc định gán là 1 trang
 
         # Lưu vào database
         paper_service = PaperService(PaperRepository(db), UserRepository(db))
@@ -95,20 +103,21 @@ async def upload_and_create_paper(
         return paper
 
     except Exception as e:
-        # Cleanup (Xóa) file ngay lập tức nếu có lỗi xảy ra (ví dụ lỗi vượt quá dung lượng)
+        # Cleanup (Xóa) file ngay lập tức nếu có lỗi xảy ra
         if os.path.exists(file_path):
             try:
                 os.remove(file_path)
             except OSError:
                 pass
         
-        # Nếu lỗi là do chúng ta ném ra (HTTPException 400), thì đẩy tiếp lỗi đó về cho Frontend
+        # Nếu lỗi là do chúng ta ném ra (HTTPException 400)
         if isinstance(e, HTTPException):
             raise e
             
         # Các lỗi hệ thống khác
         logger.error("Error processing uploaded file for user %s: %s", current_user.id, str(e))
         raise HTTPException(status_code=500, detail="Lỗi khi xử lý file. Vui lòng thử lại.")
+
 
 @router.post("/", response_model=PaperRead, status_code=status.HTTP_201_CREATED)
 async def create_paper(

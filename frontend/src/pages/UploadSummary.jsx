@@ -30,8 +30,7 @@ function UploadSummary() {
 
             // 2. Generate summary
             const summaryRes = await api.post('/summaries/generate', {
-                paper_id: paperId,
-                type: 'short'
+                paper_id: paperId
             });
 
             setSummary(summaryRes.data);
@@ -59,7 +58,7 @@ function UploadSummary() {
                     />
                     <input 
                         type="file" 
-                        accept=".pdf" 
+                        accept=".pdf,.txt" 
                         onChange={e => setFile(e.target.files[0])} 
                         required 
                         style={{padding: '0.8rem'}}
@@ -74,7 +73,6 @@ function UploadSummary() {
                 {summary && (
                     <div className="summary-card" style={{marginTop: '2rem'}}>
                         <h3 style={{marginBottom: '1rem'}}>Kết quả Tóm tắt:</h3>
-                        <span className="badge">{summary.type}</span>
                         <p style={{lineHeight: '1.6'}}>{summary.content}</p>
                     </div>
                 )}

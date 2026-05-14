@@ -6,18 +6,15 @@ from pydantic import BaseModel, ConfigDict
 
 class SummaryCreate(BaseModel):
     paper_id: int
-    type: Literal["short", "detailed"]
     content: str
 
 
 class SummaryGenerate(BaseModel):
     paper_id: int
-    type: Literal["short", "detailed"] = "short"
 
 
 
 class SummaryUpdate(BaseModel):
-    type: Literal["short", "detailed"] | None = None
     content: str | None = None
 
 
@@ -26,7 +23,6 @@ class SummaryRead(BaseModel):
 
     id: int
     paper_id: int
-    type: Literal["short", "detailed"]
     content: str
     created_at: datetime
 

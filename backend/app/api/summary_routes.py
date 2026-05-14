@@ -27,7 +27,6 @@ async def create_summary(
         return await summary_service.create_summary(
             paper_id=payload.paper_id,
             owner_id=current_user.id,
-            summary_type=payload.type,
             content=payload.content,
         )
     except ValueError as exc:
@@ -48,7 +47,6 @@ async def generate_summary(
         return await summary_service.generate_and_save_summary(
             paper_id=payload.paper_id,
             owner_id=current_user.id,
-            summary_type=payload.type,
         )
     except ValueError as exc:
         raise HTTPException(
@@ -104,7 +102,6 @@ async def update_summary(
     summary = await summary_service.update_summary(
         summary_id=summary_id,
         owner_id=current_user.id,
-        summary_type=payload.type,
         content=payload.content,
     )
     if not summary:

@@ -9,17 +9,16 @@ class SummaryService:
         self.summary_repository = summary_repository
         self.paper_repository = paper_repository
 
-    async def create_summary(self, paper_id: int, owner_id: int, summary_type: str, content: str) -> Summary:
+    async def create_summary(self, paper_id: int, owner_id: int, content: str) -> Summary:
         paper = await self.paper_repository.get_by_id_and_owner(paper_id=paper_id, user_id=owner_id)
         if not paper:
             raise ValueError("Paper not found or access denied")
         return await self.summary_repository.create(
             paper_id=paper_id,
-            summary_type=summary_type,
             content=content,
         )
 
-    async def generate_and_save_summary(self, paper_id: int, owner_id: int, summary_type: str = "short") -> Summary:
+    async def generate_and_save_summary(self, paper_id: int, owner_id: int) -> Summary:
         from datetime import datetime, timezone
         
         paper = await self.paper_repository.get_by_id_and_owner(paper_id=paper_id, user_id=owner_id)
@@ -49,7 +48,6 @@ class SummaryService:
             
             return await self.summary_repository.create(
                 paper_id=paper_id,
-                summary_type=summary_type,
                 content=generated_text,
             )
         except Exception as e:
@@ -80,7 +78,6 @@ class SummaryService:
         self,
         summary_id: int,
         owner_id: int,
-        summary_type: str | None = None,
         content: str | None = None,
     ) -> Summary | None:
         summary = await self.summary_repository.get_by_id(summary_id)
@@ -91,7 +88,6 @@ class SummaryService:
             return None
         return await self.summary_repository.update(
             summary=summary,
-            summary_type=summary_type,
             content=content,
         )
 

@@ -10,8 +10,8 @@ class SummaryRepository:
     def __init__(self, db: AsyncSession):
         self.db = db
 
-    async def create(self, paper_id: int, summary_type: str, content: str) -> Summary:
-        summary = Summary(paper_id=paper_id, type=summary_type, content=content)
+    async def create(self, paper_id: int, content: str) -> Summary:
+        summary = Summary(paper_id=paper_id, content=content)
         self.db.add(summary)
         await self.db.commit()
         await self.db.refresh(summary)
@@ -44,11 +44,8 @@ class SummaryRepository:
     async def update(
         self,
         summary: Summary,
-        summary_type: str | None = None,
         content: str | None = None,
     ) -> Summary:
-        if summary_type is not None:
-            summary.type = summary_type
         if content is not None:
             summary.content = content
         await self.db.commit()

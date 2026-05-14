@@ -52,7 +52,6 @@ function PaperView() {
                 {summaries.length > 0 ? (
                     summaries.map(s => (
                         <div key={s.id} className="summary-card" style={{marginBottom: '2rem'}}>
-                            <span className="badge" style={{marginBottom: '1rem', display: 'inline-block'}}>{s.type}</span>
                             <p style={{lineHeight: '1.8', fontSize: '1.05rem', whiteSpace: 'pre-wrap'}}>{s.content}</p>
                             <div style={{marginTop: '1rem', color: 'var(--text-muted)', fontSize: '0.9rem'}}>
                                 Tạo lúc: {new Date(s.created_at).toLocaleString('vi-VN')}

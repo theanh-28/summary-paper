@@ -1,4 +1,5 @@
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Text, Enum
+from sqlalchemy.dialects.mysql import LONGTEXT
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
@@ -11,7 +12,7 @@ class Paper(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), index=True, nullable=False)
     title = Column(String(500), nullable=False)
-    content = Column(Text, nullable=True)
+    content = Column(LONGTEXT, nullable=True)
     file_path = Column(String(1024), nullable=True)
     page_count = Column(Integer, nullable=True)
     status = Column(Enum("uploaded", "processing", "completed", "failed", name="paper_status"), nullable=False, default="uploaded", server_default="uploaded")

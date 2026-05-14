@@ -31,6 +31,10 @@ class Settings(BaseSettings):
     metabase_admin_dashboard_id: int = 1  # ID of admin dashboard in Metabase
     metabase_user_dashboard_id: int = 2   # ID of user dashboard in Metabase
 
+    # --- AI API ---
+    # Đọc URL từ file .env, nếu không có sẽ lấy giá trị mặc định này
+    ai_api_url: str = "http://192.168.110.55:8000/summarize"
+
     # --- General ---
     debug: bool = False  # Default OFF for production safety; enable via DEBUG=true
 
