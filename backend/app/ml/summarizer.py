@@ -17,15 +17,17 @@ async def summarize(text: str) -> str:
             # Lấy base URL và nối thêm endpoint /summarize
             api_endpoint = f"{settings.ai_api_url.rstrip('/')}/summarize"
             
-            # Gửi method POST tới URL với JSON body như đối tác yêu cầu
-            # Quan trọng: Thêm header ngrok-skip-browser-warning để bypass trang cảnh báo của ngrok
+            # Cập nhật theo yêu cầu mới của model HuggingFace Space
+            headers = {
+                "Content-Type": "application/json"
+            }
+            if settings.hf_token:
+                headers["Authorization"] = f"Bearer {settings.hf_token}"
+                
             response = await client.post(
                 api_endpoint, 
                 json={"text": text}, 
-                headers={
-                    "ngrok-skip-browser-warning": "true",
-                    "Content-Type": "application/json"
-                },
+                headers=headers,
                 timeout=300.0 # Timeout 300s chờ model xử lý
             )
             

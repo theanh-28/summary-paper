@@ -33,7 +33,8 @@ class Settings(BaseSettings):
 
     # --- AI API ---
     # Đọc URL từ file .env, nếu không có sẽ lấy giá trị mặc định này
-    ai_api_url: str = "http://192.168.110.55:8000/summarize"
+    ai_api_url: str = "https://taismiel-summper.hf.space"
+    hf_token: str = ""
 
     # --- General ---
     debug: bool = False  # Default OFF for production safety; enable via DEBUG=true
