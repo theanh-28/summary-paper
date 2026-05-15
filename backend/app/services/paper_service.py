@@ -1,9 +1,12 @@
 from __future__ import annotations
+import logging
 import os
 
 from app.models.paper import Paper
 from app.repositories.paper_repository import PaperRepository
 from app.repositories.user_repository import UserRepository
+
+logger = logging.getLogger(__name__)
 
 
 class PaperService:
@@ -17,7 +20,11 @@ class PaperService:
         title: str,
         content: str | None = None,
         file_path: str | None = None,
+        file_url: str | None = None,
+        storage_path: str | None = None,
+        storage_provider: str | None = None,
         page_count: int | None = None,
+        status: str = "uploaded",
     ) -> Paper:
         # user_id đã được verify bởi JWT dependency ở route layer,
         # không cần query DB thêm lần nữa
@@ -26,7 +33,11 @@ class PaperService:
             title=title,
             content=content,
             file_path=file_path,
+            file_url=file_url,
+            storage_path=storage_path,
+            storage_provider=storage_provider,
             page_count=page_count,
+            status=status,
         )
 
     async def get_paper_by_id(self, paper_id: int) -> Paper | None:
@@ -84,15 +95,24 @@ class PaperService:
             return False
         
         file_path = paper.file_path
+        storage_path = paper.storage_path
+        storage_provider = paper.storage_provider
         
         await self.paper_repository.delete(paper)
         
-        # Xóa file vật lý nếu có
+        # Xóa file từ Object Storage nếu có
+        if storage_provider == "supabase" and storage_path:
+            try:
+                from app.storage.supabase_storage import delete_file_from_storage
+                await delete_file_from_storage(storage_path)
+            except Exception as e:
+                logger.error("Failed to delete file from storage: %s", str(e))
+        
+        # Xóa file local (backward compat)
         if file_path and os.path.exists(file_path):
             try:
                 os.remove(file_path)
             except Exception as e:
-                # Log error if needed, but don't fail the deletion
-                pass
+                logger.error("Failed to delete local file: %s", str(e))
                 
         return True

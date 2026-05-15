@@ -34,6 +34,28 @@ services:
         max-file: "3"
 
   # ===========================================================================
+  # Redis — Message Queue cho Background Worker (ARQ)
+  # ===========================================================================
+  redis:
+    image: redis:7-alpine
+    container_name: summary_redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ===========================================================================
   # Backend — FastAPI + Alembic
   # ===========================================================================
   backend:
@@ -41,6 +63,8 @@ services:
     container_name: summary_backend
     depends_on:
       db:
+        condition: service_healthy
+      redis:
         condition: service_healthy
     env_file:
       - ./backend/.env.docker
@@ -59,6 +83,35 @@ services:
       timeout: 10s
       retries: 3
       start_period: 15s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ===========================================================================
+  # Worker — ARQ Background Task Processor
+  #
+  # Xử lý: text extraction, AI summarization
+  # Không block HTTP request, scale worker độc lập
+  # ===========================================================================
+  worker:
+    build: ./backend
+    container_name: summary_worker
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    env_file:
+      - ./backend/.env.docker
+    environment:
+      TZ: Asia/Ho_Chi_Minh
+    volumes:
+      - ./backend:/app
+      - backend_uploads:/app/uploads
+    command: sh -c "sleep 20 && arq app.worker.worker_settings.WorkerSettings"
+    restart: unless-stopped
     logging:
       driver: "json-file"
       options:
@@ -144,5 +197,6 @@ services:
 
 volumes:
   db_data:               # MySQL data — persist qua docker compose down
-  backend_uploads:       # Uploaded PDF files
+  redis_data:            # Redis data — persist background job state
+  backend_uploads:       # Uploaded PDF files (fallback khi chưa có Object Storage)
   frontend_node_modules:

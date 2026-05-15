@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../services/api';
 
@@ -7,29 +7,34 @@ function PaperView() {
     const [paper, setPaper] = useState(null);
     const [summaries, setSummaries] = useState([]);
     const [loading, setLoading] = useState(true);
+    const pollingRef = useRef(null);
 
     useEffect(() => {
         if (id) {
             fetchData();
         }
+        return () => {
+            if (pollingRef.current) {
+                clearInterval(pollingRef.current);
+            }
+        };
     }, [id]);
 
     const fetchData = async () => {
         setLoading(true);
         try {
-            // Lấy thông tin bài báo (để hiển thị title) 
-            // Nếu API không có get paper by id thì mình cần API đó.
-            // Nhưng hiện tại API back-end chưa chắc có /papers/:id, 
-            // ta có thể fetch summaries trước và nếu cần thì dựa vào đó.
-            // Để chắc chắn, ta sẽ gọi API summaries.
-            const sumRes = await api.get(`/summaries/by-paper/${id}`);
-            setSummaries(sumRes.data);
-            
-            // Lấy lại danh sách papers để tìm title (hoặc gọi API /papers/{id} nếu có)
-            const papersRes = await api.get('/papers/');
-            const foundPaper = papersRes.data.find(p => p.id === parseInt(id));
-            if (foundPaper) setPaper(foundPaper);
-            
+            // Lấy thông tin paper trực tiếp
+            const paperRes = await api.get(`/papers/${id}`);
+            setPaper(paperRes.data);
+
+            if (paperRes.data.status === 'completed') {
+                // Lấy summaries nếu đã completed
+                const sumRes = await api.get(`/summaries/by-paper/${id}`);
+                setSummaries(sumRes.data);
+            } else if (paperRes.data.status === 'processing' || paperRes.data.status === 'uploaded') {
+                // Bắt đầu polling nếu đang xử lý
+                startPolling();
+            }
         } catch (err) {
             console.error("Error fetching data", err);
         } finally {
@@ -37,29 +42,123 @@ function PaperView() {
         }
     };
 
-    if (loading) return <div style={{textAlign: 'center', marginTop: '5rem'}}>Đang tải dữ liệu...</div>;
+    const startPolling = () => {
+        if (pollingRef.current) clearInterval(pollingRef.current);
+        
+        pollingRef.current = setInterval(async () => {
+            try {
+                const res = await api.get(`/papers/${id}`);
+                setPaper(res.data);
 
-    if (!paper && summaries.length === 0) {
-        return <div style={{textAlign: 'center', marginTop: '5rem'}}>Không tìm thấy bài báo.</div>;
+                if (res.data.status === 'completed') {
+                    clearInterval(pollingRef.current);
+                    const sumRes = await api.get(`/summaries/by-paper/${id}`);
+                    setSummaries(sumRes.data);
+                }
+
+                if (res.data.status === 'failed') {
+                    clearInterval(pollingRef.current);
+                }
+            } catch (err) {
+                console.error("Polling error:", err);
+            }
+        }, 3000);
+    };
+
+    const handleRegenerate = async () => {
+        try {
+            await api.post('/summaries/generate', { paper_id: parseInt(id) });
+            setPaper(prev => ({ ...prev, status: 'uploaded' }));
+            startPolling();
+        } catch (err) {
+            console.error("Error regenerating:", err);
+        }
+    };
+
+    if (loading) {
+        return (
+            <div className="paper-view-loading">
+                <div className="spinner"></div>
+                <p>Đang tải dữ liệu...</p>
+            </div>
+        );
+    }
+
+    if (!paper) {
+        return (
+            <div className="paper-view-empty">
+                <p>Không tìm thấy bài báo.</p>
+            </div>
+        );
     }
 
     return (
-        <div className="history-container" style={{maxWidth: '1000px', margin: '0 auto', padding: '2rem'}}>
-            <div className="summaries-view glass-card" style={{padding: '3rem'}}>
-                <h3 style={{marginBottom: '2rem', fontSize: '1.5rem'}}>
-                    Kết quả AI cho: <span style={{color: 'var(--primary)'}}>{paper ? paper.title : `Bài báo #${id}`}</span>
-                </h3>
-                {summaries.length > 0 ? (
-                    summaries.map(s => (
-                        <div key={s.id} className="summary-card" style={{marginBottom: '2rem'}}>
-                            <p style={{lineHeight: '1.8', fontSize: '1.05rem', whiteSpace: 'pre-wrap'}}>{s.content}</p>
-                            <div style={{marginTop: '1rem', color: 'var(--text-muted)', fontSize: '0.9rem'}}>
-                                Tạo lúc: {new Date(s.created_at).toLocaleString('vi-VN')}
-                            </div>
+        <div className="paper-view-container">
+            <div className="glass-card paper-detail-card">
+                {/* Paper Header */}
+                <div className="paper-detail-header">
+                    <h2>{paper.title}</h2>
+                    <div className="paper-meta-row">
+                        <span className={`status-pill status-${paper.status}`}>
+                            {paper.status === 'uploaded' && '📤 Đã upload'}
+                            {paper.status === 'processing' && '⏳ Đang xử lý'}
+                            {paper.status === 'completed' && '✅ Hoàn tất'}
+                            {paper.status === 'failed' && '❌ Thất bại'}
+                        </span>
+                        {paper.page_count && (
+                            <span className="meta-tag">📄 {paper.page_count} trang</span>
+                        )}
+                        {paper.processing_time_seconds && (
+                            <span className="meta-tag">⏱️ {paper.processing_time_seconds}s</span>
+                        )}
+                        <span className="meta-tag">
+                            📅 {new Date(paper.created_at).toLocaleString('vi-VN')}
+                        </span>
+                    </div>
+                </div>
+
+                {/* Processing Status */}
+                {(paper.status === 'processing' || paper.status === 'uploaded') && (
+                    <div className="processing-indicator">
+                        <div className="pulse-dot"></div>
+                        <span>AI đang phân tích nội dung...</span>
+                        <div className="processing-spinner"></div>
+                    </div>
+                )}
+
+                {/* Error Message */}
+                {paper.status === 'failed' && (
+                    <div className="error-banner">
+                        <p>❌ {paper.error_message || 'Xử lý thất bại.'}</p>
+                        <button className="btn-retry" onClick={handleRegenerate}>
+                            🔄 Thử lại
+                        </button>
+                    </div>
+                )}
+
+                {/* Summaries */}
+                {paper.status === 'completed' && (
+                    <div className="summaries-section">
+                        <div className="section-header">
+                            <h3>📝 Kết quả AI</h3>
+                            <button className="btn-regenerate" onClick={handleRegenerate}>
+                                🔄 Tạo lại
+                            </button>
                         </div>
-                    ))
-                ) : (
-                    <p style={{color: 'var(--text-muted)'}}>Chưa có bản tóm tắt nào cho bài báo này.</p>
+                        
+                        {summaries.length > 0 ? (
+                            summaries.map(s => (
+                                <div key={s.id} className="summary-card">
+                                    <p className="summary-text">{s.content}</p>
+                                    <div className="summary-footer">
+                                        Tạo lúc: {new Date(s.created_at).toLocaleString('vi-VN')}
+                                    </div>
+                                </div>
+                            ))
+                        ) : (
+                            <p className="text-muted">Chưa có bản tóm tắt nào.</p>
+                        )}
+                    </div>
                 )}
             </div>
         </div>

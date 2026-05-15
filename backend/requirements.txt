@@ -15,3 +15,8 @@ aiofiles
 httpx
 PyJWT
 python-docx
+# --- Background Worker ---
+arq
+redis
+# --- Object Storage (Supabase) ---
+supabase

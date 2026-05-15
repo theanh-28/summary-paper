@@ -36,6 +36,14 @@ class Settings(BaseSettings):
     ai_api_url: str = "https://taismiel-summper.hf.space"
     hf_token: str = ""
 
+    # --- Redis (Background Worker) ---
+    redis_url: str = "redis://localhost:6379"
+
+    # --- Supabase Object Storage ---
+    supabase_url: str = ""
+    supabase_key: str = ""
+    supabase_bucket: str = "papers"
+
     # --- General ---
     debug: bool = False  # Default OFF for production safety; enable via DEBUG=true
 

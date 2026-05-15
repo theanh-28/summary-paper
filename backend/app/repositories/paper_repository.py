@@ -16,12 +16,17 @@ class PaperRepository:
         title: str,
         content: str | None = None,
         file_path: str | None = None,
+        file_url: str | None = None,
+        storage_path: str | None = None,
+        storage_provider: str | None = None,
         page_count: int | None = None,
         status: str = "uploaded",
     ) -> Paper:
         paper = Paper(
-            user_id=user_id, title=title, content=content, 
-            file_path=file_path, page_count=page_count, status=status
+            user_id=user_id, title=title, content=content,
+            file_path=file_path, file_url=file_url,
+            storage_path=storage_path, storage_provider=storage_provider,
+            page_count=page_count, status=status,
         )
         self.db.add(paper)
         await self.db.commit()
@@ -40,13 +45,18 @@ class PaperRepository:
         return result.scalar_one_or_none()
 
     async def list(self, skip: int = 0, limit: int = 100) -> list[Paper]:
-        result = await self.db.execute(select(Paper).order_by(Paper.id).offset(skip).limit(limit))
+        result = await self.db.execute(
+            select(Paper).order_by(Paper.created_at.desc()).offset(skip).limit(limit)
+        )
         return list(result.scalars().all())
 
     async def list_by_owner(self, user_id: int, skip: int = 0, limit: int = 100) -> list[Paper]:
-        """Chỉ trả về các paper thuộc về user_id."""
+        """Chỉ trả về các paper thuộc về user_id, sắp xếp mới nhất trước."""
         result = await self.db.execute(
-            select(Paper).where(Paper.user_id == user_id).order_by(Paper.id).offset(skip).limit(limit)
+            select(Paper)
+            .where(Paper.user_id == user_id)
+            .order_by(Paper.created_at.desc())
+            .offset(skip).limit(limit)
         )
         return list(result.scalars().all())
 
@@ -61,6 +71,9 @@ class PaperRepository:
         title: str | None = None,
         content: str | None = None,
         file_path: str | None = None,
+        file_url: str | None = None,
+        storage_path: str | None = None,
+        storage_provider: str | None = None,
         page_count: int | None = None,
         status: str | None = None,
         processing_time_seconds: int | None = None,
@@ -72,6 +85,12 @@ class PaperRepository:
             paper.content = content
         if file_path is not None:
             paper.file_path = file_path
+        if file_url is not None:
+            paper.file_url = file_url
+        if storage_path is not None:
+            paper.storage_path = storage_path
+        if storage_provider is not None:
+            paper.storage_provider = storage_provider
         if page_count is not None:
             paper.page_count = page_count
         if status is not None:

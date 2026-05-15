@@ -1,5 +1,9 @@
-"""User ORM model with RBAC support."""
-from sqlalchemy import Boolean, Column, DateTime, Enum, Integer, String
+"""User ORM model with RBAC support.
+
+Đã refactor: ENUM → VARCHAR(50) cho role để tránh table lock khi ALTER.
+Validation thực hiện ở tầng application (deps.py, service layer).
+"""
+from sqlalchemy import Boolean, Column, DateTime, Integer, String
 from sqlalchemy.sql import func
 
 from app.db.base import Base
@@ -12,8 +16,9 @@ class User(Base):
     email = Column(String(255), unique=True, index=True, nullable=False)
     password = Column(String(255), nullable=False)
     full_name = Column(String(255), nullable=True)
+    # VARCHAR thay vì ENUM để tránh table lock khi ALTER và dễ mở rộng
     role = Column(
-        Enum("root", "admin", "user", name="user_role"),
+        String(50),
         nullable=False,
         default="user",
         server_default="user",
