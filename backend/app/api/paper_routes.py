@@ -18,6 +18,7 @@ from app.repositories.user_repository import UserRepository
 from app.schemas.paper import PaperCreate, PaperRead, PaperUpdate
 from app.services.paper_service import PaperService
 from app.utils.pdf_utils import extract_text_from_pdf
+from app.utils.docx_utils import extract_text_from_docx
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +30,7 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 # Giới hạn file upload: 10MB
 MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
-ALLOWED_CONTENT_TYPES = {"application/pdf", "text/plain"}
+ALLOWED_CONTENT_TYPES = {"application/pdf", "text/plain", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"}
 
 
 @router.post("/upload", response_model=PaperRead, status_code=status.HTTP_201_CREATED)
@@ -40,7 +41,7 @@ async def upload_and_create_paper(
     db: AsyncSession = Depends(get_db),
 ):
     """
-    Upload một file PDF/TXT lên server, tự động trích xuất nội dung và lưu vào database.
+    Upload một file PDF/TXT/DOCX lên server, tự động trích xuất nội dung và lưu vào database.
     """
     if not file.filename:
         raise HTTPException(status_code=400, detail="File không hợp lệ")
@@ -49,12 +50,12 @@ async def upload_and_create_paper(
     file_ext = os.path.splitext(file.filename)[1].lower()
 
     # --- Validate file extension ---
-    if file_ext not in [".pdf", ".txt"]:
-        raise HTTPException(status_code=400, detail="Chỉ hỗ trợ file định dạng PDF hoặc TXT")
+    if file_ext not in [".pdf", ".txt", ".docx"]:
+        raise HTTPException(status_code=400, detail="Chỉ hỗ trợ file định dạng PDF, TXT hoặc DOCX")
 
     # --- Validate MIME type ---
     if file.content_type not in ALLOWED_CONTENT_TYPES:
-        raise HTTPException(status_code=400, detail="File không đúng định dạng PDF hoặc TXT")
+        raise HTTPException(status_code=400, detail="File không đúng định dạng PDF, TXT hoặc DOCX")
 
     # --- Generate safe filename (no path traversal) ---
     safe_filename = f"user_{current_user.id}_{uuid.uuid4().hex}{file_ext}"
@@ -84,6 +85,8 @@ async def upload_and_create_paper(
         if file_ext == ".pdf":
             # Chạy trong thread pool vì là blocking I/O
             extracted_text, page_count = await asyncio.to_thread(extract_text_from_pdf, file_path)
+        elif file_ext == ".docx":
+            extracted_text, page_count = await asyncio.to_thread(extract_text_from_docx, file_path)
         else:
             # Nếu là file .txt, đọc trực tiếp bằng utf-8
             async with aiofiles.open(file_path, 'r', encoding='utf-8', errors='ignore') as f:

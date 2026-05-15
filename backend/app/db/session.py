@@ -9,6 +9,12 @@ from sqlalchemy.orm import sessionmaker
 from app.core.config import settings
 
 
+import ssl
+
+ssl_context = ssl.create_default_context()
+ssl_context.check_hostname = False
+ssl_context.verify_mode = ssl.CERT_NONE
+
 # Echo SQL during development for easier debugging.
 # Pool pre-ping detects stale connections before use.
 engine = create_async_engine(
@@ -18,6 +24,7 @@ engine = create_async_engine(
     pool_size=10,       # Số connection cố định trong pool
     max_overflow=20,    # Connection tạm thời khi vượt pool_size
     pool_recycle=3600,  # Recycle connections mỗi giờ để tránh timeout
+    connect_args={"ssl": ssl_context}
 )
 
 # Async session factory

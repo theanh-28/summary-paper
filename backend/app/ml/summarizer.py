@@ -14,11 +14,19 @@ async def summarize(text: str) -> str:
     try:
         # Sử dụng httpx để tạo async request
         async with httpx.AsyncClient() as client:
+            # Lấy base URL và nối thêm endpoint /summarize
+            api_endpoint = f"{settings.ai_api_url.rstrip('/')}/summarize"
+            
             # Gửi method POST tới URL với JSON body như đối tác yêu cầu
+            # Quan trọng: Thêm header ngrok-skip-browser-warning để bypass trang cảnh báo của ngrok
             response = await client.post(
-                settings.ai_api_url, 
+                api_endpoint, 
                 json={"text": text}, 
-                timeout=200.0 # Timeout 60s chờ model xử lý
+                headers={
+                    "ngrok-skip-browser-warning": "true",
+                    "Content-Type": "application/json"
+                },
+                timeout=300.0 # Timeout 300s chờ model xử lý
             )
             
             # Quăng lỗi nếu HTTP status không phải 200 OK

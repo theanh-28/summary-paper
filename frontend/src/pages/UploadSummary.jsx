@@ -46,7 +46,7 @@ function UploadSummary() {
         <div className="upload-container" style={{padding: '2rem'}}>
             <div className="glass-card" style={{maxWidth: '1000px', margin: '0 auto', padding: '3rem'}}>
                 <h2 style={{marginBottom: '1rem'}}>Upload & Summarize</h2>
-                <p style={{marginBottom: '2rem', color: 'var(--text-muted)'}}>Tải lên file PDF để hệ thống AI tự động phân tích và tóm tắt</p>
+                <p style={{marginBottom: '2rem', color: 'var(--text-muted)'}}>Tải lên file PDF, TXT hoặc DOCX để hệ thống AI tự động phân tích và tóm tắt</p>
                 
                 <form onSubmit={handleUploadAndSummarize}>
                     <input 
@@ -58,7 +58,7 @@ function UploadSummary() {
                     />
                     <input 
                         type="file" 
-                        accept=".pdf,.txt" 
+                        accept=".pdf,.txt,.docx" 
                         onChange={e => setFile(e.target.files[0])} 
                         required 
                         style={{padding: '0.8rem'}}
