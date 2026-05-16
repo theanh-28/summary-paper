@@ -33,7 +33,7 @@ class Settings(BaseSettings):
 
     # --- AI API ---
     # Đọc URL từ file .env, nếu không có sẽ lấy giá trị mặc định này
-    ai_api_url: str = "https://taismiel-summper.hf.space"
+    ai_api_url: str = "http://47.129.243.122:7860"
     hf_token: str = ""
 
     # --- Redis (Background Worker) ---

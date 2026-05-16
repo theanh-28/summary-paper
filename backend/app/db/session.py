@@ -24,7 +24,10 @@ engine = create_async_engine(
     pool_size=10,       # Số connection cố định trong pool
     max_overflow=20,    # Connection tạm thời khi vượt pool_size
     pool_recycle=3600,  # Recycle connections mỗi giờ để tránh timeout
-    connect_args={"ssl": ssl_context}
+    connect_args={
+        "ssl": ssl_context,
+        "init_command": "SET time_zone = '+07:00'",
+        }
 )
 
 # Async session factory
