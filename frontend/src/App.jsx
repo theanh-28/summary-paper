@@ -7,6 +7,7 @@ import PaperView from './pages/PaperView';
 import Dashboard from './pages/Dashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import Profile from './pages/Profile';
+import UserGuide from './pages/UserGuide';
 import Navbar from './components/Navbar';
 import PrivateRoute from './components/PrivateRoute';
 import AdminRoute from './components/AdminRoute';
@@ -53,10 +54,10 @@ function AppRoutes() {
                         }
                     />
                     <Route
-                        path="/profile"
+                        path="/guide"
                         element={
                             <PrivateRoute>
-                                <Profile />
+                                <UserGuide />
                             </PrivateRoute>
                         }
                     />

@@ -152,6 +152,9 @@ function Navbar() {
                                 <Link to="/dashboard" className="dropdown-item" onClick={() => setDropdownOpen(false)}>
                                     📈 Dashboard
                                 </Link>
+                                <Link to="/guide" className="dropdown-item" onClick={() => setDropdownOpen(false)}>
+                                    📖 Hướng dẫn sử dụng
+                                </Link>
                                 {isAdmin() && (
                                     <Link to="/admin" className="dropdown-item admin-item" onClick={() => setDropdownOpen(false)}>
                                         ⚙️ Quản trị hệ thống

@@ -4,46 +4,74 @@ from app.core.config import settings
 
 logger = logging.getLogger(__name__)
 
+
+class SummarizationError(Exception):
+    """Lỗi xảy ra khi gọi API AI tóm tắt không thành công."""
+    pass
+
+
 async def summarize(text: str) -> str:
     """
-    Hàm gọi API tóm tắt văn bản từ server AI của đối tác.
+    Gọi API tóm tắt văn bản từ server AI.
+    
+    Raises:
+        SummarizationError: Khi API trả lỗi hoặc không kết nối được.
+        ValueError: Khi nội dung đầu vào trống.
     """
-    if not text:
-        return "Nội dung bài báo trống."
+    if not text or not text.strip():
+        raise ValueError("Nội dung bài báo trống, không thể tóm tắt.")
+    
+    api_endpoint = f"{settings.ai_api_url.rstrip('/')}/summarize"
+    
+    headers = {
+        "Content-Type": "application/json"
+    }
+    if settings.hf_token:
+        headers["Authorization"] = f"Bearer {settings.hf_token}"
     
     try:
-        # Sử dụng httpx để tạo async request
         async with httpx.AsyncClient() as client:
-            # Lấy base URL và nối thêm endpoint /summarize
-            api_endpoint = f"{settings.ai_api_url.rstrip('/')}/summarize"
-            
-            # Cập nhật theo yêu cầu mới của model HuggingFace Space
-            headers = {
-                "Content-Type": "application/json"
-            }
-            if settings.hf_token:
-                headers["Authorization"] = f"Bearer {settings.hf_token}"
-                
             response = await client.post(
                 api_endpoint, 
                 json={"text": text}, 
                 headers=headers,
-                timeout=300.0 # Timeout 300s chờ model xử lý
+                timeout=300.0  # Timeout 300s chờ model xử lý
             )
             
-            # Quăng lỗi nếu HTTP status không phải 200 OK
-            response.raise_for_status() 
+            response.raise_for_status()
             
             data = response.json()
+            summary = data.get("summary")
             
-            # --- QUAN TRỌNG ---
-            # Giả định API của đối tác trả về object: {"summary": "nội dung tóm tắt..."}
-            # Nếu họ dùng key khác (ví dụ "result", "data"), bạn cần đổi chữ "summary" ở dòng dưới cho khớp.
-            return data.get("summary", "Không tìm thấy nội dung tóm tắt từ server.")
+            if not summary or not summary.strip():
+                raise SummarizationError(
+                    "Server AI trả về kết quả trống. Có thể nội dung quá ngắn hoặc không hỗ trợ."
+                )
+            
+            return summary
 
-    except httpx.RequestError as exc:
-        logger.error(f"Lỗi mạng khi gọi API AI: {exc}")
-        return f"Lỗi kết nối tới server AI."
+    except httpx.ConnectError as exc:
+        logger.error("Không thể kết nối tới server AI tại %s: %s", api_endpoint, exc)
+        raise SummarizationError(
+            f"Không thể kết nối tới server AI ({api_endpoint}). Kiểm tra lại URL hoặc server đã hoạt động chưa."
+        ) from exc
+    
+    except httpx.TimeoutException as exc:
+        logger.error("Timeout khi gọi API AI: %s", exc)
+        raise SummarizationError(
+            "Server AI phản hồi quá chậm (timeout 300s). Thử lại sau hoặc dùng bài báo ngắn hơn."
+        ) from exc
+    
     except httpx.HTTPStatusError as exc:
-        logger.error(f"Lỗi từ server AI (Status {exc.response.status_code}): {exc.response.text}")
-        return f"Server AI gặp lỗi trong quá trình xử lý."
+        status_code = exc.response.status_code
+        detail = exc.response.text[:200] if exc.response.text else "Không có chi tiết"
+        logger.error("Server AI trả lỗi HTTP %d: %s", status_code, detail)
+        raise SummarizationError(
+            f"Server AI trả lỗi HTTP {status_code}: {detail}"
+        ) from exc
+    
+    except httpx.RequestError as exc:
+        logger.error("Lỗi mạng khi gọi API AI: %s", exc)
+        raise SummarizationError(
+            f"Lỗi mạng khi kết nối tới server AI: {str(exc)[:200]}"
+        ) from exc

@@ -227,6 +227,60 @@ button:disabled { opacity: 0.7; cursor: not-allowed; }
 .btn-secondary { background: transparent; color: var(--text-main); border: 1px solid var(--glass-border); padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
 .btn-secondary:hover:not(:disabled) { background: rgba(0,0,0,0.03); }
 
+/* ===== User Guide ===== */
+.guide-container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+.guide-header { margin-bottom: 2rem; }
+.guide-header h2 { font-size: 2rem; margin-bottom: 0.5rem; }
+.guide-header p { color: var(--text-muted); }
+
+.guide-tabs { display: flex; gap: 0.5rem; margin-bottom: 2rem; border-bottom: 2px solid var(--glass-border); padding-bottom: 0; }
+.guide-tab { background: transparent; border: none; padding: 0.75rem 1.5rem; font-size: 1rem; font-weight: 600; cursor: pointer; color: var(--text-muted); border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.2s; border-radius: 8px 8px 0 0; }
+.guide-tab:hover { color: var(--text-main); background: rgba(0,0,0,0.02); }
+.guide-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+.guide-content { display: flex; flex-direction: column; gap: 1.5rem; animation: fadeIn 0.3s ease-out; }
+
+.guide-section { position: relative; }
+.guide-section h3 { font-size: 1.2rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+.guide-section p { color: var(--text-muted); line-height: 1.7; margin-bottom: 1rem; }
+.guide-section-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+
+.guide-steps { padding-left: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem; margin: 1rem 0; }
+.guide-steps li { line-height: 1.7; color: var(--text-main); padding-left: 0.5rem; }
+.guide-steps li::marker { color: var(--primary); font-weight: 700; }
+
+.guide-highlight { background: linear-gradient(135deg, rgba(37,99,235,0.08), rgba(139,92,246,0.08)); border: 1px solid rgba(37,99,235,0.15); border-radius: 10px; padding: 1rem 1.25rem; font-size: 0.95rem; margin-top: 0.5rem; }
+
+.guide-note { background: rgba(217,119,6,0.08); border: 1px solid rgba(217,119,6,0.15); border-radius: 10px; padding: 1rem 1.25rem; font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem; }
+
+.guide-warning { background: rgba(220,38,38,0.08); border: 1px solid rgba(220,38,38,0.15); border-radius: 10px; padding: 1rem 1.25rem; font-size: 0.9rem; color: var(--text-muted); margin-top: 1rem; }
+
+.guide-status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.5rem; }
+.guide-status-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border-radius: 10px; background: rgba(0,0,0,0.02); }
+.guide-status-item span:last-child { font-size: 0.9rem; color: var(--text-muted); }
+
+.guide-features { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.5rem; }
+.guide-feature-item { display: flex; flex-direction: column; gap: 0.25rem; padding: 1rem 1.25rem; background: rgba(0,0,0,0.02); border-radius: 10px; transition: all 0.2s; }
+.guide-feature-item:hover { background: rgba(0,0,0,0.04); transform: translateX(4px); }
+.guide-feature-item strong { font-size: 0.95rem; }
+.guide-feature-item span { font-size: 0.9rem; color: var(--text-muted); }
+
+/* Role Permission Table */
+.guide-role-table { display: flex; flex-direction: column; margin-top: 0.5rem; border: 1px solid var(--glass-border); border-radius: 12px; overflow: hidden; }
+.guide-role-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 0; padding: 0.75rem 1rem; border-bottom: 1px solid var(--glass-border); align-items: center; font-size: 0.9rem; }
+.guide-role-row:last-child { border-bottom: none; }
+.guide-role-header { background: rgba(37,99,235,0.06); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); }
+.guide-role-row span { text-align: center; }
+.guide-role-row span:first-child { text-align: left; font-weight: 500; }
+
+@media (max-width: 768px) {
+  .guide-status-grid { grid-template-columns: 1fr; }
+  .guide-role-row { grid-template-columns: 1.5fr 1fr 1fr 1fr; font-size: 0.8rem; padding: 0.5rem 0.75rem; }
+  .guide-tabs { flex-direction: column; }
+  .guide-tab { text-align: left; border-bottom: none; border-left: 3px solid transparent; border-radius: 0 8px 8px 0; }
+  .guide-tab.active { border-left-color: var(--primary); border-bottom-color: transparent; }
+}
+
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
   .history-layout { grid-template-columns: 1fr; }
