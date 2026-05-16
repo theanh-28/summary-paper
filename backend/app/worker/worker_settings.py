@@ -13,11 +13,16 @@ def _parse_redis_url(url: str) -> RedisSettings:
     """Parse redis:// URL thành RedisSettings."""
     from urllib.parse import urlparse
     parsed = urlparse(url)
+    
+    # Kiểm tra xem URL có yêu cầu bảo mật SSL/TLS không (Upstash hoặc External Redis)
+    use_ssl = parsed.scheme == "rediss"
+    
     return RedisSettings(
         host=parsed.hostname or "localhost",
         port=parsed.port or 6379,
         password=parsed.password,
         database=int(parsed.path.lstrip("/") or 0),
+        ssl=use_ssl,
     )
 
 
