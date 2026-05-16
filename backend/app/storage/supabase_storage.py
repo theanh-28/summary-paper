@@ -1,7 +1,7 @@
 """Object Storage — Supabase Storage integration.
 
-Upload/download/delete files trên Supabase Storage thay vì lưu trực tiếp trên ổ cứng local.
-Điều này giải quyết vấn đề ephemeral filesystem trên PaaS (Render, Railway, Fly.io).
+Upload/download/delete files trên Supabase Storage.
+Đây là nơi lưu trữ file duy nhất của hệ thống (không có local storage).
 """
 from __future__ import annotations
 

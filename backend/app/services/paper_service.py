@@ -1,6 +1,5 @@
 from __future__ import annotations
 import logging
-import os
 
 from app.models.paper import Paper
 from app.repositories.paper_repository import PaperRepository
@@ -18,25 +17,15 @@ class PaperService:
         self,
         user_id: int,
         title: str,
-        content: str | None = None,
-        file_path: str | None = None,
         file_url: str | None = None,
         storage_path: str | None = None,
-        storage_provider: str | None = None,
-        page_count: int | None = None,
         status: str = "uploaded",
     ) -> Paper:
-        # user_id đã được verify bởi JWT dependency ở route layer,
-        # không cần query DB thêm lần nữa
         return await self.paper_repository.create(
             user_id=user_id,
             title=title,
-            content=content,
-            file_path=file_path,
             file_url=file_url,
             storage_path=storage_path,
-            storage_provider=storage_provider,
-            page_count=page_count,
             status=status,
         )
 
@@ -44,7 +33,6 @@ class PaperService:
         return await self.paper_repository.get_by_id(paper_id)
 
     async def get_paper_by_owner(self, paper_id: int, owner_id: int) -> Paper | None:
-        """Lấy paper chỉ khi thuộc về owner_id."""
         return await self.paper_repository.get_by_id_and_owner(
             paper_id=paper_id, user_id=owner_id
         )
@@ -64,13 +52,10 @@ class PaperService:
         paper_id: int,
         owner_id: int,
         title: str | None = None,
-        content: str | None = None,
-        file_path: str | None = None,
         status: str | None = None,
         processing_time_seconds: int | None = None,
         error_message: str | None = None,
     ) -> Paper | None:
-        # Kiểm tra tồn tại VÀ quyền sở hữu cùng lúc
         paper = await self.paper_repository.get_by_id_and_owner(
             paper_id=paper_id, user_id=owner_id
         )
@@ -79,40 +64,27 @@ class PaperService:
         return await self.paper_repository.update(
             paper=paper,
             title=title,
-            content=content,
-            file_path=file_path,
             status=status,
             processing_time_seconds=processing_time_seconds,
             error_message=error_message,
         )
 
     async def delete_paper(self, paper_id: int, owner_id: int) -> bool:
-        # Chỉ xóa nếu paper thuộc về owner_id
         paper = await self.paper_repository.get_by_id_and_owner(
             paper_id=paper_id, user_id=owner_id
         )
         if not paper:
             return False
         
-        file_path = paper.file_path
         storage_path = paper.storage_path
-        storage_provider = paper.storage_provider
         
         await self.paper_repository.delete(paper)
         
-        # Xóa file từ Object Storage nếu có
-        if storage_provider == "supabase" and storage_path:
+        if storage_path:
             try:
                 from app.storage.supabase_storage import delete_file_from_storage
                 await delete_file_from_storage(storage_path)
             except Exception as e:
-                logger.error("Failed to delete file from storage: %s", str(e))
-        
-        # Xóa file local (backward compat)
-        if file_path and os.path.exists(file_path):
-            try:
-                os.remove(file_path)
-            except Exception as e:
-                logger.error("Failed to delete local file: %s", str(e))
+                logger.error("Failed to delete file from Supabase: %s", str(e))
                 
         return True

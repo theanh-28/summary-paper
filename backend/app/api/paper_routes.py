@@ -3,15 +3,13 @@
 Đã refactor:
 - Upload trả response ngay (202 Accepted) trong < 1 giây
 - Text extraction + AI summarization chạy trong background worker
-- Hỗ trợ Object Storage (Supabase) song song với local storage
+- File lưu trữ hoàn toàn trên Supabase Object Storage
 """
 from __future__ import annotations
 
 import logging
 import os
-import uuid
 
-import aiofiles
 from fastapi import APIRouter, Depends, HTTPException, status, File, UploadFile, Form, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -27,10 +25,6 @@ from app.services.paper_service import PaperService
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/v1/papers", tags=["papers"])
-
-# Thư mục chứa file upload (fallback khi không có Object Storage)
-UPLOAD_DIR = "uploads"
-os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 # Giới hạn file upload: 10MB
 MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
@@ -70,11 +64,11 @@ async def upload_and_create_paper(
     db: AsyncSession = Depends(get_db),
 ):
     """
-    Upload file PDF/TXT/DOCX.
+    Upload file PDF/TXT/DOCX lên Supabase Storage.
     
-    **Kiến trúc mới (Async)**:
+    **Kiến trúc (Async)**:
     1. Nhận file
-    2. Upload lên Object Storage (hoặc lưu local nếu chưa cấu hình Supabase)
+    2. Upload lên Supabase Object Storage
     3. Tạo record trong database (status=uploaded)
     4. Đẩy task vào Redis Queue cho worker xử lý
     5. Trả response ngay lập tức (202 Accepted) — KHÔNG chờ AI
@@ -105,43 +99,26 @@ async def upload_and_create_paper(
 
     file_bytes = bytes(file_bytes)
 
-    # --- Storage: ưu tiên Supabase, fallback sang local ---
-    file_path = None
-    file_url = None
-    storage_path_val = None
-    storage_provider = None
+    # --- Upload lên Supabase Storage ---
+    if not settings.supabase_url or not settings.supabase_key:
+        raise HTTPException(
+            status_code=500,
+            detail="Supabase chưa được cấu hình. Vui lòng liên hệ quản trị viên."
+        )
 
-    if settings.supabase_url and settings.supabase_key:
-        # Upload lên Supabase Storage
-        try:
-            from app.storage.supabase_storage import upload_file_to_storage
-            result = await upload_file_to_storage(
-                file_bytes=file_bytes,
-                original_filename=file.filename,
-                user_id=current_user.id,
-                content_type=file.content_type or "application/octet-stream",
-            )
-            file_url = result["file_url"]
-            storage_path_val = result["storage_path"]
-            storage_provider = result["storage_provider"]
-            # Cũng lưu vào file_path để backward compat
-            file_path = storage_path_val
-        except Exception as e:
-            logger.error("Supabase upload failed, falling back to local: %s", str(e))
-            # Fallback sang local
-            storage_provider = None
-
-    if not storage_provider:
-        # Lưu file local (Docker development hoặc fallback)
-        safe_filename = f"user_{current_user.id}_{uuid.uuid4().hex}{file_ext}"
-        file_path = os.path.join(UPLOAD_DIR, safe_filename)
-        storage_provider = "local"
-        try:
-            async with aiofiles.open(file_path, 'wb') as out_file:
-                await out_file.write(file_bytes)
-        except Exception as e:
-            logger.error("Failed to save file locally: %s", str(e))
-            raise HTTPException(status_code=500, detail="Lỗi khi lưu file. Vui lòng thử lại.")
+    try:
+        from app.storage.supabase_storage import upload_file_to_storage
+        result = await upload_file_to_storage(
+            file_bytes=file_bytes,
+            original_filename=file.filename,
+            user_id=current_user.id,
+            content_type=file.content_type or "application/octet-stream",
+        )
+        file_url = result["file_url"]
+        storage_path_val = result["storage_path"]
+    except Exception as e:
+        logger.error("Supabase upload failed: %s", str(e))
+        raise HTTPException(status_code=500, detail="Lỗi khi upload file lên storage. Vui lòng thử lại.")
 
     try:
         # --- Tạo DB record (status=uploaded, CHƯA extract text) ---
@@ -149,11 +126,8 @@ async def upload_and_create_paper(
         paper = await paper_service.create_paper(
             user_id=current_user.id,
             title=title,
-            content=None,  # Worker sẽ extract text sau
-            file_path=file_path,
             file_url=file_url,
             storage_path=storage_path_val,
-            storage_provider=storage_provider,
             status="uploaded",
         )
 
@@ -168,20 +142,14 @@ async def upload_and_create_paper(
             )
 
         logger.info(
-            "Paper uploaded: id=%s user=%s storage=%s",
-            paper.id, current_user.id, storage_provider
+            "Paper uploaded: id=%s user=%s storage=supabase",
+            paper.id, current_user.id
         )
         return paper
 
     except HTTPException:
         raise
     except Exception as e:
-        # Cleanup file nếu có lỗi
-        if storage_provider == "local" and file_path and os.path.exists(file_path):
-            try:
-                os.remove(file_path)
-            except OSError:
-                pass
         logger.error("Error processing uploaded file for user %s: %s", current_user.id, str(e))
         raise HTTPException(status_code=500, detail="Lỗi khi xử lý file. Vui lòng thử lại.")
 
@@ -197,8 +165,6 @@ async def create_paper(
     return await paper_service.create_paper(
         user_id=current_user.id,
         title=payload.title,
-        content=payload.content,
-        file_path=payload.file_path,
     )
 
 
@@ -255,8 +221,6 @@ async def update_paper(
         paper_id=paper_id,
         owner_id=current_user.id,
         title=payload.title,
-        content=payload.content,
-        file_path=payload.file_path,
     )
     if not paper:
         raise HTTPException(

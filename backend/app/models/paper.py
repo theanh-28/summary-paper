@@ -2,11 +2,11 @@
 
 Đã refactor:
 - ENUM → VARCHAR(50) cho status (dễ mở rộng, tránh lock table khi ALTER)
-- Thêm file_url, storage_path, storage_provider cho Object Storage
+- File lưu trữ hoàn toàn trên Supabase (file_url, storage_path)
+- Không lưu content vào DB (worker giữ trong RAM, gửi AI xong bỏ)
 - Thêm index cho các cột thường query (status, created_at, user_id)
 """
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Text, Index
-from sqlalchemy.dialects.mysql import LONGTEXT
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
@@ -19,19 +19,12 @@ class Paper(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), index=True, nullable=False)
     title = Column(String(500), nullable=False)
-    content = Column(LONGTEXT, nullable=True)
     
-    # --- File Storage ---
-    file_path = Column(String(1024), nullable=True)         # Legacy: local file path
-    file_url = Column(String(2048), nullable=True)          # Object Storage public URL
-    storage_path = Column(String(1024), nullable=True)      # Object Storage internal path (for delete)
-    storage_provider = Column(String(50), nullable=True)    # "local" | "supabase"
-    
-    # --- Metadata ---
-    page_count = Column(Integer, nullable=True)
+    # --- File Storage (Supabase only) ---
+    file_url = Column(String(2048), nullable=True)          # Supabase public URL
+    storage_path = Column(String(1024), nullable=True)      # Supabase internal path (for download/delete)
     
     # --- State Machine ---
-    # VARCHAR thay vì ENUM để tránh table lock khi ALTER và dễ mở rộng
     status = Column(
         String(50), nullable=False, default="uploaded", server_default="uploaded"
     )

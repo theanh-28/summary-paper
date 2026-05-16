@@ -74,7 +74,6 @@ services:
       TZ: Asia/Ho_Chi_Minh # Thêm dòng này để code Python sinh log và xử lý datetime chuẩn giờ VN
     volumes:
       - ./backend:/app
-      - backend_uploads:/app/uploads
     command: sh -c "sleep 15 && alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
     restart: unless-stopped
     healthcheck:
@@ -109,7 +108,6 @@ services:
       TZ: Asia/Ho_Chi_Minh
     volumes:
       - ./backend:/app
-      - backend_uploads:/app/uploads
     command: sh -c "sleep 20 && arq app.worker.worker_settings.WorkerSettings"
     restart: unless-stopped
     logging:
@@ -198,5 +196,4 @@ services:
 volumes:
   db_data:               # MySQL data — persist qua docker compose down
   redis_data:            # Redis data — persist background job state
-  backend_uploads:       # Uploaded PDF files (fallback khi chưa có Object Storage)
   frontend_node_modules:

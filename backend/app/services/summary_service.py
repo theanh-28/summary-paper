@@ -19,44 +19,15 @@ class SummaryService:
         )
 
     async def generate_and_save_summary(self, paper_id: int, owner_id: int) -> Summary:
-        from datetime import datetime, timezone
+        """Legacy method — summarization hiện tại được xử lý bởi ARQ Worker.
         
-        paper = await self.paper_repository.get_by_id_and_owner(paper_id=paper_id, user_id=owner_id)
-        if not paper:
-            raise ValueError("Paper not found or access denied")
-            
-        content_to_summarize = paper.content or ""
-        
-        start_time = datetime.now(timezone.utc)
-        
-        # Cập nhật trạng thái đang xử lý
-        await self.paper_repository.update(paper=paper, status="processing")
-        
-        try:
-            # Gọi hàm async (gọi ra API bên ngoài)
-            generated_text = await summarize(content_to_summarize)
-            
-            end_time = datetime.now(timezone.utc)
-            processing_time = int((end_time - start_time).total_seconds())
-            
-            await self.paper_repository.update(
-                paper=paper,
-                status="completed",
-                processing_time_seconds=processing_time,
-                error_message=""
-            )
-            
-            return await self.summary_repository.create(
-                paper_id=paper_id,
-                content=generated_text,
-            )
-        except Exception as e:
-            await self.paper_repository.update(
-                paper=paper,
-                status="failed",
-                error_message=str(e)
-            )
-            raise ValueError(f"Failed to generate summary: {str(e)}")
+        Method này vẫn giữ lại để backward compat nhưng sẽ raise lỗi
+        vì paper.content đã bị xóa khỏi model.
+        """
+        raise NotImplementedError(
+            "Summarization is now handled by the ARQ background worker. "
+            "Use the /upload endpoint which automatically enqueues a worker task."
+        )
 
 
     async def get_summary_by_id(self, summary_id: int, owner_id: int) -> Summary | None:
