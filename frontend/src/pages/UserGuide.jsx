@@ -39,7 +39,6 @@ function UserGuide() {
                 <div className="guide-content">
                     {/* 1. Tổng quan */}
                     <div className="glass-card guide-section">
-                        <div className="guide-section-icon">🎯</div>
                         <h3>Tổng quan</h3>
                         <p>
                             <strong>AI Summary</strong> tự động tóm tắt bài báo khoa học bằng AI. Chỉ cần tải file lên, bạn sẽ nhận được bản tóm tắt tiếng Việt ngắn gọn.
@@ -51,7 +50,6 @@ function UserGuide() {
 
                     {/* 2. Upload & Tóm tắt */}
                     <div className="glass-card guide-section">
-                        <div className="guide-section-icon">📤</div>
                         <h3>1. Tạo tóm tắt</h3>
                         <ol className="guide-steps">
                             <li>Nhấn <strong>✍️ Tạo Tóm Tắt</strong> ở menu trái.</li>
@@ -65,7 +63,6 @@ function UserGuide() {
 
                     {/* 3. Xem kết quả */}
                     <div className="glass-card guide-section">
-                        <div className="guide-section-icon">📋</div>
                         <h3>2. Xem kết quả</h3>
                         <ol className="guide-steps">
                             <li>Chờ trạng thái bài báo chuyển thành <span className="status-pill status-completed">✅ Hoàn tất</span>.</li>
@@ -75,7 +72,6 @@ function UserGuide() {
 
                     {/* 4. Trạng thái bài báo */}
                     <div className="glass-card guide-section">
-                        <div className="guide-section-icon">🔄</div>
                         <h3>Các trạng thái</h3>
                         <div className="guide-status-grid">
                             <div className="guide-status-item">
@@ -99,7 +95,6 @@ function UserGuide() {
 
                     {/* 5. Dashboard & Hồ sơ */}
                     <div className="glass-card guide-section">
-                        <div className="guide-section-icon">⚡</div>
                         <h3>Tính năng khác</h3>
                         <div className="guide-features">
                             <div className="guide-feature-item">
@@ -120,7 +115,6 @@ function UserGuide() {
                 <div className="guide-content">
                     {/* 1. Tổng quan quyền */}
                     <div className="glass-card guide-section">
-                        <div className="guide-section-icon">🔐</div>
                         <h3>Phân quyền</h3>
                         <div className="guide-role-table">
                             <div className="guide-role-row guide-role-header">
@@ -164,7 +158,6 @@ function UserGuide() {
 
                     {/* 2. Trang quản trị */}
                     <div className="glass-card guide-section">
-                        <div className="guide-section-icon">⚙️</div>
                         <h3>Trang Quản trị hệ thống</h3>
                         <p>Truy cập qua menu góc trái dưới → <strong>⚙️ Quản trị hệ thống</strong></p>
                         <ol className="guide-steps">
@@ -176,7 +169,6 @@ function UserGuide() {
 
                     {/* 3. Quản lý người dùng */}
                     <div className="glass-card guide-section">
-                        <div className="guide-section-icon">👥</div>
                         <h3>Quản lý người dùng</h3>
                         <div className="guide-features">
                             <div className="guide-feature-item">
@@ -199,7 +191,6 @@ function UserGuide() {
 
                     {/* 4. Giám sát hệ thống */}
                     <div className="glass-card guide-section">
-                        <div className="guide-section-icon">📊</div>
                         <h3>Giám sát & Sự cố</h3>
                         <div className="guide-features">
                             <div className="guide-feature-item">
