@@ -1,110 +1,90 @@
 # SUMMARY-PAPER (Hệ thống Tóm tắt Bài báo AI)
 
-Hệ thống tóm tắt văn bản tích hợp AI sử dụng FastAPI, React, và các mô hình NLP (Xử lý ngôn ngữ tự nhiên) chuyên dụng cho việc xử lý các bài báo khoa học, học thuật.
+Hệ thống ứng dụng AI để tự động tóm tắt các tài liệu học thuật và bài báo khoa học. Dự án được xây dựng với kiến trúc Fullstack hiện đại, hỗ trợ xử lý đa định dạng tài liệu, xử lý nền tốc độ cao và phân quyền người dùng chặt chẽ.
 
 ## 📌 Tổng quan dự án
-Đây là một ứng dụng web Fullstack được thiết kế dành cho các nhà nghiên cứu, sinh viên và chuyên gia để nhanh chóng tóm tắt các bài báo học thuật. Hệ thống cho phép người dùng tải lên tài liệu PDF, bóc tách văn bản tự động, và sử dụng các mô hình AI/ML để tạo ra các bản tóm tắt ngắn gọn hoặc chi tiết.
 
-Hiện tại, hệ thống đã được xây dựng hoàn chỉnh với Frontend (React Single Page Application), Backend (FastAPI), và cơ sở dữ liệu (Async MySQL). 
+SUMMARY-PAPER giúp người dùng tải lên các tài liệu nghiên cứu và nhanh chóng nhận lại bản tóm tắt tiếng Việt ngắn gọn. Hệ thống được thiết kế để chịu tải tốt với cơ chế xử lý nền bằng Redis/ARQ, lưu trữ file an toàn trên Supabase, tích hợp Dashboard phân tích dữ liệu qua Metabase và sẵn sàng chạy trên môi trường Production (Render/Vercel).
 
-## ✨ Tính năng nổi bật
-- **Xác thực người dùng:** Hệ thống đăng ký và đăng nhập bảo mật bằng JWT.
-- **Quản lý Bài báo:** Tải lên các file tài liệu nghiên cứu (PDF) và tự động trích xuất nội dung văn bản bằng `pypdf`.
-- **Tóm tắt bằng AI:** Tích hợp bộ khung (framework) logic ML sẵn sàng để kết nối với các API NLP thật.
-- **Lịch sử Tóm tắt:** Lưu trữ và xem lại các bản tóm tắt đã tạo trước đó.
-- **Môi trường Container hóa:** Toàn bộ hệ thống được đóng gói bằng Docker Compose, giúp việc phát triển và triển khai trở nên liền mạch.
+## ✨ Tính năng cốt lõi
+
+- **Hỗ trợ Đa định dạng:** Xử lý và trích xuất văn bản từ các file **PDF, DOCX, TXT**.
+- **Tóm tắt AI Tự động:** Tích hợp API mô hình AI ngoài để phân tích và tóm tắt tự động nội dung học thuật.
+- **Xử lý Nền (Background Processing):** Tích hợp hàng đợi (queue) với **Redis & ARQ** giúp các tác vụ tóm tắt nặng không làm tắc nghẽn server.
+- **Phân quyền nâng cao (RBAC):** Hệ thống có 3 cấp độ tài khoản (User, Admin, Root) với các phân quyền truy cập và quản lý dữ liệu khác nhau. Quản trị viên có thể quản lý, khóa hoặc xóa tài khoản.
+- **Lưu trữ Cloud:** Upload và lưu trữ tài liệu an toàn trên **Supabase Object Storage**.
+- **Analytics Dashboard:** Tích hợp **Metabase Signed Embedding** ngay trong giao diện quản trị viên để theo dõi số liệu thống kê chi tiết.
 
 ## 🛠️ Công nghệ sử dụng
-- **Frontend:** React, Vite, Axios, React Router.
-- **Backend:** Python, FastAPI, SQLAlchemy (Async), PyMySQL, Alembic, PyPDF.
-- **Database:** MySQL 8.0.
-- **Triển khai (Deployment):** Docker, Docker Compose.
+
+- **Frontend:** React, Vite, Axios, React Router, Vanilla CSS.
+- **Backend:** Python, FastAPI, SQLAlchemy (Async), PyMySQL, Alembic, Pydantic, ARQ.
+- **Cơ sở dữ liệu:** MySQL / TiDB.
+- **Queue / Caching:** Redis.
+- **Object Storage:** Supabase.
+- **Analytics:** Metabase.
+- **Triển khai (Deployment):** Docker & Docker Compose (Local), Render (Backend, Worker), Vercel (Frontend).
 
 ## 📂 Cấu trúc thư mục
+
 ```text
 SUMMARY-PAPER/
-├── backend/                # Mã nguồn ứng dụng FastAPI
-│   ├── alembic/            # Quản lý lịch sử thay đổi cơ sở dữ liệu (Migrations)
-│   ├── app/                # Logic cốt lõi (API, DB, ML, Models)
-│   ├── Dockerfile          # Cấu hình build container Backend
-│   └── requirements.txt    # Các thư viện Python cần thiết
-├── frontend/               # Mã nguồn React + Vite
-│   ├── src/                # Components, Pages, và Services
-│   ├── Dockerfile          # Cấu hình build container Frontend
-│   └── package.json        # Các thư viện Node.js cần thiết
-├── docker-compose.yml      # Tệp cấu hình chạy đồng thời Frontend, Backend và Database
+├── backend/                # API Backend & Background Workers (FastAPI, ARQ)
+│   ├── alembic/            # Quản lý lịch sử thay đổi Database (Migrations)
+│   ├── app/                # Logic hệ thống (API, Models, Repositories, ML)
+│   ├── requirements.txt    # Thư viện Python
+│   └── worker.py           # Background Worker xử lý hàng đợi Redis
+├── frontend/               # Ứng dụng giao diện người dùng (React + Vite)
+│   ├── src/                # Components, Pages, Context, Services
+│   └── package.json        # Thư viện Node.js
+├── database/               # Scripts khởi tạo DB (nếu có)
+└── docker-compose.yml      # Cấu hình khởi chạy toàn bộ dịch vụ cho môi trường Local
 ```
 
-## 🚀 Hướng dẫn Cài đặt & Chạy dự án
+## 🚀 Hướng dẫn Cài đặt & Khởi chạy (Local)
+
+Cách dễ nhất để phát triển và kiểm thử ở môi trường Local là sử dụng **Docker Compose**.
 
 ### Yêu cầu hệ thống
-- Cài đặt sẵn [Docker](https://www.docker.com/) và Docker Compose.
-- (Tùy chọn) Python 3.10+ và Node.js 18+ nếu muốn chạy không dùng Docker.
+- Đã cài đặt [Docker](https://www.docker.com/) và Docker Compose.
 
-### Chạy bằng Docker Compose (Khuyên dùng)
-Cách nhanh nhất và dễ nhất để khởi chạy hệ thống là sử dụng Docker.
+### 1. Cấu hình biến môi trường
+Bạn cần tạo các file `.env` cho backend và frontend dựa trên file mẫu `.env.example`. 
 
-1. **Clone repository về máy:**
-   ```bash
-   git clone <repository-url>
-   cd SUMMARY-PAPER
-   ```
+**Backend (`backend/.env.docker`):**
+Cung cấp các thông tin thiết yếu như chuỗi kết nối MySQL, URL kết nối Redis, thông tin Supabase, cấu hình Metabase và API key của AI Model.
 
-2. **Thiết lập biến môi trường (Environment Variables):**
-   Vì lý do bảo mật, file `.env.docker` không được push lên Git. Bạn cần tự tạo nó dựa trên file mẫu:
-   ```bash
-   # Copy từ file example
-   cp backend/.env.example backend/.env.docker
-   ```
-
-3. **Khởi chạy ứng dụng:**
-   ```bash
-   docker-compose up --build -d
-   ```
-   *Lưu ý: Lệnh này sẽ tự động build frontend React, khởi tạo backend FastAPI, thiết lập database MySQL, và tự động chạy Alembic migrations (`alembic upgrade head`) để tạo các bảng trong CSDL.*
-
-4. **Truy cập ứng dụng:**
-   - **Giao diện Frontend (UI):** `http://localhost:5173`
-   - **Tài liệu API Backend (Swagger):** `http://localhost:8000/docs`
-   - **Giao diện quản lý Database (phpMyAdmin):** `http://localhost:8080` (Cổng kết nối raw MySQL cho tool ngoài là `3307`)
-
-### Hướng dẫn chạy Local (Không dùng Docker)
-
-Nếu bạn muốn chạy từng service riêng biệt:
-
-**1. Cơ sở dữ liệu (Database)**
-Đảm bảo bạn đang chạy MySQL server trên máy. Cập nhật thông tin kết nối trong file `backend/.env.dev` cho phù hợp.
-
-**2. Backend**
+### 2. Khởi chạy bằng Docker
+Tại thư mục gốc của dự án, mở Terminal và chạy lệnh:
 ```bash
-cd backend
-python -m venv venv
-source venv/bin/activate  # Trên Windows: venv\Scripts\activate
-pip install -r requirements.txt
-alembic upgrade head
-uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+docker-compose up --build
 ```
 
-**3. Frontend**
-```bash
-cd frontend
-npm install
-npm run dev
-```
+Lệnh này sẽ tự động:
+- Khởi tạo Container cho Database (MySQL).
+- Khởi tạo Redis cho hàng đợi tác vụ.
+- Build và chạy Backend API (FastAPI) trên cổng `8000`.
+- Chạy Background Worker (ARQ) để chờ xử lý tóm tắt.
+- Build và chạy Frontend (React/Vite) trên cổng `5173`.
+- Tự động chạy Alembic migrations để tạo cấu trúc bảng dữ liệu.
 
-## 🔍 Phân tích Luồng hoạt động (Workflow)
-Hệ thống hiện tại hoạt động theo luồng như sau:
-1. **Xác thực (Authentication):** Người dùng đăng ký/đăng nhập. Backend kiểm tra và cấp phát mã JWT. Frontend lưu mã này vào `localStorage` và tự động gắn vào các request tiếp theo thông qua Axios interceptors.
-2. **Tải lên tài liệu (Upload):** Người dùng tải lên file PDF tại trang `UploadSummary`. File được gửi đến endpoint `/papers/upload` của Backend. Tại đây, text được bóc tách bằng thư viện `pypdf` và lưu vào MySQL.
-3. **Tóm tắt (Summarization):** Frontend gọi endpoint `/summaries/generate` cùng với `paper_id`. File `ml/summarizer.py` của Backend sẽ xử lý văn bản. *(Lưu ý: Chức năng tóm tắt hiện tại đang sử dụng Mock API giả lập. Cần thay thế bằng API gọi Model AI thật trong tệp `summarizer.py` khi tích hợp).*
-4. **Lịch sử (History):** Các bản tóm tắt được lưu vào CSDL và người dùng có thể xem lại tại trang `History`.
+### 3. Truy cập hệ thống
+- **Giao diện Web:** `http://localhost:5173`
+- **Tài liệu API (Swagger UI):** `http://localhost:8000/docs`
 
-## ⚠️ Các vấn đề cần lưu ý & Cảnh báo Bảo mật
-- **Cấu hình CORS:** Backend hiện đang cho phép tất cả các nguồn truy cập (`allow_origins=["*"]`). Trước khi đưa lên môi trường Production, cần cập nhật file `backend/app/main.py` để chỉ cho phép domain thật của frontend.
-- **Tóm tắt bằng AI (ML Summarization):** Logic AI hiện tại đang được làm giả (mock). Cần có URL inference từ đội ngũ làm AI để thay thế hàm giả lập trong `backend/app/ml/summarizer.py`.
-- **Lưu trữ JWT:** Token hiện đang được lưu tại `localStorage`. Để nâng cao tính bảo mật (chống tấn công XSS), nên cân nhắc chuyển sang lưu token dưới dạng `httpOnly` cookies trong tương lai.
+## 🔍 Kiến trúc & Luồng hoạt động (Workflow)
 
-## 🔮 Định hướng Phát triển
-- Tích hợp các mô hình AI/NLP thật cho tính năng Tóm tắt Trích xuất (Extractive) và Tóm tắt Tóm lược (Abstractive).
-- Thêm Dashboard Power BI để theo dõi số liệu sử dụng ứng dụng, hoạt động người dùng và các chủ đề phổ biến.
-- Triển khai Phân quyền (Role-Based Access Control - RBAC) để phân tách vai trò giữa Admin và Người dùng thường.
+1. **Xác thực:** Đăng nhập qua API, Backend trả về JWT token. Frontend lưu JWT ở bộ nhớ cục bộ để xác thực các request.
+2. **Tải tài liệu:** Người dùng upload file (PDF, DOCX, TXT). Backend lưu file lên Supabase Storage, lưu thông tin metadata vào Database với trạng thái `uploaded`.
+3. **Đẩy vào Hàng đợi (Queue):** Backend gửi một Job tóm tắt vào hàng đợi Redis thông qua ARQ.
+4. **Xử lý ngầm (Worker):** ARQ Worker nhận Job, tải nội dung từ Supabase, bóc tách text (bằng `pypdf`, `python-docx`), và gửi text sang API của AI Model để lấy kết quả. 
+5. **Hoàn tất:** Khi AI xử lý xong, Worker cập nhật trạng thái bài báo thành `completed` và lưu bản tóm tắt vào Database.
+6. **Thống kê:** Admin có thể xem toàn bộ biểu đồ, số liệu người dùng thông qua Dashboard Metabase được nhúng an toàn qua cơ chế Signed JWT.
+
+## 📦 Triển khai (Production)
+
+Hệ thống đã được tinh chỉnh để sẵn sàng triển khai thực tế:
+- **TiDB Serverless** thay thế MySQL cục bộ.
+- **Render** dùng để host API Backend (Web Service) và Background Worker (Background Service). Cần kết nối với Redis trên đám mây (ví dụ: Upstash Redis).
+- **Vercel** dùng để host Frontend tĩnh cực nhanh.
+- Biến môi trường trên Production được quản lý trực tiếp qua giao diện của Render và Vercel.
