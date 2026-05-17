@@ -166,7 +166,7 @@ function Profile() {
                                 {passwordMsg.text}
                             </div>
                         )}
-                        <button type="submit" disabled={passwordLoading} className="btn-secondary">
+                        <button type="submit" disabled={passwordLoading} className="btn-primary">
                             {passwordLoading ? 'Đang xử lý...' : 'Cập Nhật Mật Khẩu'}
                         </button>
                     </form>

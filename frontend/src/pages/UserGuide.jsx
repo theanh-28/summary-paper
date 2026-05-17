@@ -42,61 +42,57 @@ function UserGuide() {
                         <div className="guide-section-icon">🎯</div>
                         <h3>Tổng quan</h3>
                         <p>
-                            <strong>AI Summary</strong> là công cụ tóm tắt bài báo khoa học tự động bằng AI.
-                            Bạn chỉ cần upload file, hệ thống sẽ trích xuất nội dung và tạo bản tóm tắt ngắn gọn bằng tiếng Việt.
+                            <strong>AI Summary</strong> tự động tóm tắt bài báo khoa học bằng AI. Chỉ cần tải file lên, bạn sẽ nhận được bản tóm tắt tiếng Việt ngắn gọn.
                         </p>
                         <div className="guide-highlight">
-                            💡 Hỗ trợ file: <strong>PDF</strong>, <strong>DOCX</strong> và <strong>TXT</strong>
+                            💡 Định dạng hỗ trợ: <strong>PDF</strong>, <strong>DOCX</strong> và <strong>TXT</strong>
                         </div>
                     </div>
 
                     {/* 2. Upload & Tóm tắt */}
                     <div className="glass-card guide-section">
                         <div className="guide-section-icon">📤</div>
-                        <h3>Bước 1 — Upload bài báo</h3>
+                        <h3>1. Tạo tóm tắt</h3>
                         <ol className="guide-steps">
-                            <li>Nhấn <strong>✍️ Tạo Tóm Tắt</strong> ở sidebar bên trái</li>
-                            <li>Nhập <strong>tiêu đề</strong> cho bài báo</li>
-                            <li>Chọn file từ máy tính (PDF, DOCX hoặc TXT)</li>
-                            <li>Nhấn <strong>Tải lên & Tóm tắt</strong></li>
+                            <li>Nhấn <strong>✍️ Tạo Tóm Tắt</strong> ở menu trái.</li>
+                            <li>Nhập tiêu đề và chọn file đính kèm.</li>
+                            <li>Nhấn <strong>Tải lên & Tóm tắt</strong>.</li>
                         </ol>
                         <div className="guide-note">
-                            ⏳ Quá trình xử lý mất khoảng <strong>30 giây – 3 phút</strong> tùy độ dài bài báo.
-                            Bạn có thể rời trang, hệ thống vẫn xử lý ở nền.
+                            ⏳ Quá trình xử lý mất <strong>30s – 3 phút</strong>. Hệ thống chạy ngầm nên bạn có thể làm việc khác trong lúc chờ.
                         </div>
                     </div>
 
                     {/* 3. Xem kết quả */}
                     <div className="glass-card guide-section">
                         <div className="guide-section-icon">📋</div>
-                        <h3>Bước 2 — Xem kết quả tóm tắt</h3>
+                        <h3>2. Xem kết quả</h3>
                         <ol className="guide-steps">
-                            <li>Sau khi xử lý xong, trạng thái chuyển thành <span className="status-pill status-completed">✅ Hoàn tất</span></li>
-                            <li>Nhấn vào bài báo ở mục <strong>"Gần đây"</strong> trên sidebar để xem chi tiết</li>
-                            <li>Nội dung tóm tắt hiển thị bên dưới thông tin bài báo</li>
+                            <li>Chờ trạng thái bài báo chuyển thành <span className="status-pill status-completed">✅ Hoàn tất</span>.</li>
+                            <li>Chọn bài báo ở mục <strong>"Gần đây"</strong> (menu trái) để đọc bản tóm tắt chi tiết.</li>
                         </ol>
                     </div>
 
                     {/* 4. Trạng thái bài báo */}
                     <div className="glass-card guide-section">
                         <div className="guide-section-icon">🔄</div>
-                        <h3>Các trạng thái bài báo</h3>
+                        <h3>Các trạng thái</h3>
                         <div className="guide-status-grid">
                             <div className="guide-status-item">
                                 <span className="status-pill status-uploaded">📄 Đã tải</span>
-                                <span>File đã upload, chờ xử lý</span>
+                                <span>File đã lên hệ thống, chờ xếp hàng</span>
                             </div>
                             <div className="guide-status-item">
                                 <span className="status-pill status-processing">⏳ Đang xử lý</span>
-                                <span>AI đang trích xuất và tóm tắt</span>
+                                <span>AI đang đọc và tóm tắt nội dung</span>
                             </div>
                             <div className="guide-status-item">
                                 <span className="status-pill status-completed">✅ Hoàn tất</span>
-                                <span>Tóm tắt đã sẵn sàng</span>
+                                <span>Bản tóm tắt đã sẵn sàng</span>
                             </div>
                             <div className="guide-status-item">
                                 <span className="status-pill status-failed">❌ Lỗi</span>
-                                <span>Xử lý thất bại — thử upload lại</span>
+                                <span>Xử lý thất bại, vui lòng thử lại</span>
                             </div>
                         </div>
                     </div>
@@ -104,19 +100,15 @@ function UserGuide() {
                     {/* 5. Dashboard & Hồ sơ */}
                     <div className="glass-card guide-section">
                         <div className="guide-section-icon">⚡</div>
-                        <h3>Các tính năng khác</h3>
+                        <h3>Tính năng khác</h3>
                         <div className="guide-features">
                             <div className="guide-feature-item">
-                                <strong>📈 Dashboard</strong>
-                                <span>Xem thống kê số bài đã xử lý, tỷ lệ thành công</span>
+                                <strong>📈 Tổng quan</strong>
+                                <span>Xem thống kê số lượng bài báo và tỷ lệ thành công của bạn.</span>
                             </div>
                             <div className="guide-feature-item">
                                 <strong>👤 Hồ sơ tài khoản</strong>
-                                <span>Cập nhật tên hiển thị, đổi mật khẩu</span>
-                            </div>
-                            <div className="guide-feature-item">
-                                <strong>📂 Lịch sử</strong>
-                                <span>Xem lại tất cả bài báo đã upload ở sidebar "Gần đây"</span>
+                                <span>Chỉnh sửa tên hiển thị và cập nhật mật khẩu bảo mật.</span>
                             </div>
                         </div>
                     </div>
@@ -129,7 +121,7 @@ function UserGuide() {
                     {/* 1. Tổng quan quyền */}
                     <div className="glass-card guide-section">
                         <div className="guide-section-icon">🔐</div>
-                        <h3>Phân quyền hệ thống</h3>
+                        <h3>Phân quyền</h3>
                         <div className="guide-role-table">
                             <div className="guide-role-row guide-role-header">
                                 <span>Quyền hạn</span>
@@ -138,19 +130,13 @@ function UserGuide() {
                                 <span>👑 Root</span>
                             </div>
                             <div className="guide-role-row">
-                                <span>Upload & xem tóm tắt</span>
+                                <span>Tạo & xem tóm tắt</span>
                                 <span>✅</span>
                                 <span>✅</span>
                                 <span>✅</span>
                             </div>
                             <div className="guide-role-row">
-                                <span>Dashboard cá nhân</span>
-                                <span>✅</span>
-                                <span>✅</span>
-                                <span>✅</span>
-                            </div>
-                            <div className="guide-role-row">
-                                <span>Quản trị hệ thống</span>
+                                <span>Truy cập quản trị</span>
                                 <span>❌</span>
                                 <span>✅</span>
                                 <span>✅</span>
@@ -162,13 +148,13 @@ function UserGuide() {
                                 <span>✅</span>
                             </div>
                             <div className="guide-role-row">
-                                <span>Xóa / vô hiệu hóa tài khoản</span>
+                                <span>Đổi cấp độ tài khoản</span>
                                 <span>❌</span>
-                                <span>⚠️ Hạn chế</span>
+                                <span>✅</span>
                                 <span>✅</span>
                             </div>
                             <div className="guide-role-row">
-                                <span>Thay đổi vai trò người dùng</span>
+                                <span>Xóa tài khoản</span>
                                 <span>❌</span>
                                 <span>❌</span>
                                 <span>✅</span>
@@ -180,11 +166,11 @@ function UserGuide() {
                     <div className="glass-card guide-section">
                         <div className="guide-section-icon">⚙️</div>
                         <h3>Trang Quản trị hệ thống</h3>
-                        <p>Truy cập qua menu tài khoản → <strong>⚙️ Quản trị hệ thống</strong></p>
+                        <p>Truy cập qua menu góc trái dưới → <strong>⚙️ Quản trị hệ thống</strong></p>
                         <ol className="guide-steps">
-                            <li><strong>Bảng thống kê:</strong> Tổng số người dùng, bài báo, tóm tắt và tỷ lệ xử lý thành công</li>
-                            <li><strong>Bảng Metabase:</strong> Dashboard phân tích dữ liệu nâng cao (nếu đã cấu hình)</li>
-                            <li><strong>Danh sách người dùng:</strong> Xem, kích hoạt/vô hiệu hóa và quản lý tài khoản</li>
+                            <li><strong>Bảng thống kê:</strong> Theo dõi tổng quan dữ liệu toàn hệ thống.</li>
+                            <li><strong>Dashboard Metabase:</strong> Phân tích dữ liệu chuyên sâu (nếu có).</li>
+                            <li><strong>Danh sách tài khoản:</strong> Xem và quản lý tất cả người dùng.</li>
                         </ol>
                     </div>
 
@@ -194,40 +180,39 @@ function UserGuide() {
                         <h3>Quản lý người dùng</h3>
                         <div className="guide-features">
                             <div className="guide-feature-item">
-                                <strong>🔄 Kích hoạt / Vô hiệu hóa</strong>
-                                <span>Nhấn nút bật/tắt ở cột "Trạng thái" để kích hoạt hoặc khóa tài khoản</span>
-                            </div>
-                            <div className="guide-feature-item">
-                                <strong>🗑️ Xóa tài khoản</strong>
-                                <span>Chỉ Root mới có thể xóa tài khoản. Thao tác này không thể hoàn tác</span>
+                                <strong>🔄 Trạng thái (Bật/Tắt)</strong>
+                                <span>Khóa hoặc mở khóa tài khoản của người dùng.</span>
                             </div>
                             <div className="guide-feature-item">
                                 <strong>🏷️ Đổi vai trò</strong>
-                                <span>Chỉ Root mới có thể nâng/hạ quyền người dùng (user ↔ admin)</span>
+                                <span>Admin / Root có thể nâng hoặc hạ quyền của người dùng (User ↔ Admin).</span>
+                            </div>
+                            <div className="guide-feature-item">
+                                <strong>🗑️ Xóa tài khoản (Chỉ Root)</strong>
+                                <span>Xóa vĩnh viễn dữ liệu. Hành động này không thể hoàn tác.</span>
                             </div>
                         </div>
                         <div className="guide-warning">
-                            ⚠️ <strong>Lưu ý:</strong> Không thể tự vô hiệu hóa hoặc xóa chính tài khoản của mình.
-                            Tài khoản Root không thể bị xóa bởi bất kỳ ai.
+                            ⚠️ Bạn không thể tự khóa/xóa tài khoản của chính mình. Tài khoản cấp Root không thể bị xóa.
                         </div>
                     </div>
 
                     {/* 4. Giám sát hệ thống */}
                     <div className="glass-card guide-section">
                         <div className="guide-section-icon">📊</div>
-                        <h3>Giám sát & Xử lý sự cố</h3>
+                        <h3>Giám sát & Sự cố</h3>
                         <div className="guide-features">
                             <div className="guide-feature-item">
                                 <strong>📈 Theo dõi Dashboard</strong>
-                                <span>Kiểm tra tỷ lệ xử lý thành công. Nếu tỷ lệ thấp, có thể do lỗi kết nối AI hoặc file không hợp lệ</span>
+                                <span>Kiểm tra tỷ lệ thành công. Tỷ lệ thấp thường do file bị hỏng hoặc lỗi AI.</span>
                             </div>
                             <div className="guide-feature-item">
-                                <strong>🔴 Bài báo lỗi</strong>
-                                <span>Bài có trạng thái "failed" sẽ hiển thị lý do lỗi. Người dùng có thể thử upload lại</span>
+                                <strong>🔴 Kiểm tra bài báo lỗi</strong>
+                                <span>Bài báo báo lỗi sẽ có mô tả nguyên nhân để hỗ trợ khắc phục.</span>
                             </div>
                             <div className="guide-feature-item">
-                                <strong>🔧 Kiểm tra Render Logs</strong>
-                                <span>Truy cập Render Dashboard → Service → Logs để xem chi tiết lỗi backend</span>
+                                <strong>🔧 System Logs</strong>
+                                <span>Quản trị viên cần kiểm tra Logs trên Render Dashboard để xem chi tiết lỗi kỹ thuật.</span>
                             </div>
                         </div>
                     </div>

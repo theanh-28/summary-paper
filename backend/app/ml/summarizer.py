@@ -35,7 +35,7 @@ async def summarize(text: str) -> str:
                 api_endpoint, 
                 json={"text": text}, 
                 headers=headers,
-                timeout=300.0  # Timeout 300s chờ model xử lý
+                timeout=600.0  # Timeout 600s chờ model xử lý
             )
             
             response.raise_for_status()
@@ -59,7 +59,7 @@ async def summarize(text: str) -> str:
     except httpx.TimeoutException as exc:
         logger.error("Timeout khi gọi API AI: %s", exc)
         raise SummarizationError(
-            "Server AI phản hồi quá chậm (timeout 300s). Thử lại sau hoặc dùng bài báo ngắn hơn."
+            "Server AI phản hồi quá chậm (timeout 600s). Thử lại sau hoặc dùng bài báo ngắn hơn."
         ) from exc
     
     except httpx.HTTPStatusError as exc:
